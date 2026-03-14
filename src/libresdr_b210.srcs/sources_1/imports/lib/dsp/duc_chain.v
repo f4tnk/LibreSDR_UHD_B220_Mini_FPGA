@@ -35,10 +35,12 @@ module duc_chain
 
    wire [17:0] scale_factor;
    wire [31:0] phase_inc;
-   reg [31:0]  phase;
+   wire [15:0] phase_inc_hi;     // V2: upper 16 bits for 48-bit NCO
+   reg [47:0]  phase;            // V2: 48-bit phase accumulator
    wire [7:0]  interp_rate;
    wire [3:0]  tx_femux_a, tx_femux_b;
    wire        enable_hb1, enable_hb2;
+   wire        enable_hb3;       // V2: 3rd halfband enable
    wire        rate_change;
 
    setting_reg #(.my_addr(BASE+0)) sr_0
@@ -49,17 +51,26 @@ module duc_chain
      (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
       .in(set_data),.out(scale_factor),.changed());
 
-   setting_reg #(.my_addr(BASE+2), .width(10)) sr_2
+   setting_reg #(.my_addr(BASE+2), .width(11)) sr_2
      (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
-      .in(set_data),.out({enable_hb1, enable_hb2, interp_rate}),.changed(rate_change));
+      // V2: bit layout {enable_hb3[10], enable_hb1[9], enable_hb2[8], interp_rate[7:0]}
+      // UHD driver writes hb1<<9 | hb0<<8 — hb3 at bit 10 is optional (0=bypassed)
+      .in(set_data),.out({enable_hb3, enable_hb1, enable_hb2, interp_rate}),.changed(rate_change));
+
+   // V2: NCO 48-bit upper phase increment (default 0 = backward compatible 32-bit)
+   setting_reg #(.my_addr(BASE+8), .width(16)) sr_phase_hi
+     (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
+      .in(set_data),.out(phase_inc_hi),.changed());
 
    // Strobes are all now delayed by 1 cycle for timing reasons
    wire        strobe_cic_pre, strobe_hb1_pre, strobe_hb2_pre;
+   wire        strobe_hb3_pre;   // V2: HB3 strobe
    reg 	       strobe_cic = 1;
    reg 	       strobe_hb1 = 1;
    reg 	       strobe_hb2 = 1;
+   reg 	       strobe_hb3 = 1;   // V2: HB3 strobe (registered)
 
-  assign strobe = strobe_hb1;
+  assign strobe = strobe_hb3;    // V2: strobe now comes from HB3 (outermost)
 
    cic_strober #(.WIDTH(8))
      cic_strober(.clock(clk),.reset(rst),.enable(run & ~rate_change),.rate(interp_rate),
@@ -70,19 +81,24 @@ module duc_chain
    cic_strober #(.WIDTH(2))
      hb1_strober(.clock(clk),.reset(rst),.enable(run & ~rate_change),.rate(enable_hb1 ? 2'd2 : 2'd1),
 		 .strobe_fast(strobe_hb2_pre),.strobe_slow(strobe_hb1_pre) );
+   // V2: HB3 strober — additional ×2 before HB1
+   cic_strober #(.WIDTH(2))
+     hb3_strober(.clock(clk),.reset(rst),.enable(run & ~rate_change),.rate(enable_hb3 ? 2'd2 : 2'd1),
+		 .strobe_fast(strobe_hb1_pre),.strobe_slow(strobe_hb3_pre) );
 
+   always @(posedge clk) strobe_hb3 <= strobe_hb3_pre;
    always @(posedge clk) strobe_hb1 <= strobe_hb1_pre;
    always @(posedge clk) strobe_hb2 <= strobe_hb2_pre;
    always @(posedge clk) strobe_cic <= strobe_cic_pre;
 
-   // NCO
+   // V2: NCO — 48-bit phase accumulator
    always @(posedge clk)
      if(rst)
        phase <= 0;
      else if(~run)
        phase <= 0;
      else
-       phase <= phase + phase_inc;
+       phase <= phase + {phase_inc_hi, phase_inc};
 
    wire        signed [17:0] da, db;
    wire        signed [35:0] prod_i, prod_q;
@@ -90,13 +106,26 @@ module duc_chain
    wire [17:0] i_interp, q_interp;
 
    wire [17:0] hb1_i, hb1_q, hb2_i, hb2_q;
+   wire [17:0] hb3_i, hb3_q;    // V2: HB3 output
 
    wire [7:0]  cpo = enable_hb2 ? ({interp_rate,1'b0}) : interp_rate;
    // Note that max CIC rate is 128, which would give an overflow on cpo if enable_hb2 is true,
    //   but the default case inside hb_interp handles this
    generate
       if (NEW_HB_INTERP == 1) begin: new_hb
-	 // First stage of halfband interpolation filters. These run at a max CPO of 2 when CIC is bypassed and HB2 enabled.
+
+	 // V2: 3rd halfband interpolation (HB3) — outermost stage, accepts user input
+	 // Uses small_hb_int (7-tap, compact) for ×2 interpolation
+	 small_hb_int #(.WIDTH(18)) hb3_i0
+	   (.clk(clk), .rst(rst), .bypass(~enable_hb3),
+	    .stb_in(strobe_hb3), .data_in({sample[31:16],2'b00}),
+	    .output_rate(cpo), .stb_out(strobe_hb1), .data_out(hb3_i));
+	 small_hb_int #(.WIDTH(18)) hb3_q0
+	   (.clk(clk), .rst(rst), .bypass(~enable_hb3),
+	    .stb_in(strobe_hb3), .data_in({sample[15:0],2'b00}),
+	    .output_rate(cpo), .stb_out(strobe_hb1), .data_out(hb3_q));
+
+	 // First stage of halfband interpolation filters (HB1).
 	 hb47_int
 	   #(.WIDTH(18),
 	     .DEVICE(DEVICE))
@@ -106,7 +135,7 @@ module duc_chain
 		.rst(rst),
 		.bypass(~enable_hb1),
 		.stb_in(strobe_hb1),
-		.data_in({sample[31:16],2'b00}),
+		.data_in(hb3_i),
 		.output_rate(cpo),
 		.stb_out(strobe_hb2),
 		.data_out(hb1_i)
@@ -121,7 +150,7 @@ module duc_chain
 		.rst(rst),
 		.bypass(~enable_hb1),
 		.stb_in(strobe_hb1),
-		.data_in({sample[15:0],2'b00}),
+		.data_in(hb3_q),
 		.output_rate(cpo),
 		.stb_out(strobe_hb2),
 		.data_out(hb1_q)
@@ -160,10 +189,20 @@ module duc_chain
 
       end else begin: old_hb
 
+	 // V2: HB3 interpolation — outermost stage
+	 small_hb_int #(.WIDTH(18)) hb3_i1
+	   (.clk(clk),.rst(rst),.bypass(~enable_hb3),
+	    .stb_in(strobe_hb3),.data_in({sample[31:16],2'b00}),
+	    .output_rate(cpo),.stb_out(strobe_hb1),.data_out(hb3_i));
+	 small_hb_int #(.WIDTH(18)) hb3_q1
+	   (.clk(clk),.rst(rst),.bypass(~enable_hb3),
+	    .stb_in(strobe_hb3),.data_in({sample[15:0],2'b00}),
+	    .output_rate(cpo),.stb_out(strobe_hb1),.data_out(hb3_q));
+
 	 hb_interp #(.IWIDTH(18),.OWIDTH(18),.ACCWIDTH(WIDTH)) hb_interp_i
-	   (.clk(clk),.rst(rst),.bypass(~enable_hb1),.cpo(cpo),.stb_in(strobe_hb1),.data_in({sample[31:16], 2'b0}),.stb_out(strobe_hb2),.data_out(hb1_i));
+	   (.clk(clk),.rst(rst),.bypass(~enable_hb1),.cpo(cpo),.stb_in(strobe_hb1),.data_in(hb3_i),.stb_out(strobe_hb2),.data_out(hb1_i));
 	 hb_interp #(.IWIDTH(18),.OWIDTH(18),.ACCWIDTH(WIDTH)) hb_interp_q
-	   (.clk(clk),.rst(rst),.bypass(~enable_hb1),.cpo(cpo),.stb_in(strobe_hb1),.data_in({sample[15:0], 2'b0}),.stb_out(strobe_hb2),.data_out(hb1_q));
+	   (.clk(clk),.rst(rst),.bypass(~enable_hb1),.cpo(cpo),.stb_in(strobe_hb1),.data_in(hb3_q),.stb_out(strobe_hb2),.data_out(hb1_q));
 
 	 small_hb_int #(.WIDTH(18)) small_hb_interp_i
 	   (.clk(clk),.rst(rst),.bypass(~enable_hb2),.stb_in(strobe_hb2),.data_in(hb1_i),
@@ -175,12 +214,12 @@ module duc_chain
       end // block: old_hb
    endgenerate
 
-   cic_interp  #(.bw(18),.N(4),.log2_of_max_rate(7))
+   cic_interp  #(.bw(18),.N(4),.log2_of_max_rate(8))
      cic_interp_i(.clock(clk),.reset(rst),.enable(run & ~rate_change),.rate(interp_rate),
 		  .strobe_in(strobe_cic),.strobe_out(1'd1),
 		  .signal_in(hb2_i),.signal_out(i_interp));
 
-   cic_interp  #(.bw(18),.N(4),.log2_of_max_rate(7))
+   cic_interp  #(.bw(18),.N(4),.log2_of_max_rate(8))
      cic_interp_q(.clock(clk),.reset(rst),.enable(run & ~rate_change),.rate(interp_rate),
 		  .strobe_in(strobe_cic),.strobe_out(1'd1),
 		  .signal_in(hb2_q),.signal_out(q_interp));
@@ -197,7 +236,7 @@ module duc_chain
    cordic_z24 #(.bitwidth(cwidth))
      cordic(.clock(clk), .reset(rst), .enable(run),
 	    .xi({i_interp,{(cwidth-18){1'b0}}}),.yi({q_interp,{(cwidth-18){1'b0}}}),
-	    .zi(phase[31:32-zwidth]),
+	    .zi(phase[47:48-zwidth]),
 	    .xo(da_c),.yo(db_c),.zo() );
 
    MULT_MACRO #(.DEVICE(DEVICE),  // Target Device: "VIRTEX5", "VIRTEX6", "SPARTAN6","7SERIES"
@@ -239,6 +278,6 @@ module duc_chain
    //
    // Debug
    //
-   assign 	     debug = {strobe_cic, strobe_hb1, strobe_hb2,run};
+   assign 	     debug = {strobe_cic, strobe_hb1, strobe_hb2, strobe_hb3, run};
 
 endmodule // duc_chain

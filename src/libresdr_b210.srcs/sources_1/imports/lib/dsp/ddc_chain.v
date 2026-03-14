@@ -34,7 +34,8 @@ module ddc_chain
    localparam  zwidth = 24;
 
    wire [31:0] phase_inc;
-   reg [31:0]  phase;
+   wire [15:0] phase_inc_hi;     // V2: upper 16 bits for 48-bit NCO
+   reg [47:0]  phase;            // V2: 48-bit phase accumulator
 
    wire [17:0] scale_factor;
    wire [cwidth-1:0] to_cordic_i, to_cordic_q;
@@ -44,7 +45,9 @@ module ddc_chain
 
 
    wire        strobe_cic, strobe_hb1, strobe_hb2;
+   wire        strobe_hb3;       // V2: 3rd halfband strobe
    wire        enable_hb1, enable_hb2;
+   wire        enable_hb3;       // V2: 3rd halfband enable
    wire [7:0]  cic_decim_rate;
 
    reg [WIDTH-1:0]  rx_fe_i_mux, rx_fe_q_mux;
@@ -61,14 +64,44 @@ module ddc_chain
      (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
       .in(set_data),.out(scale_factor),.changed());
 
-   setting_reg #(.my_addr(BASE+2), .width(10)) sr_2
+   // V2: bit layout {enable_hb3[10], enable_hb1[9], enable_hb2[8], cic_decim_rate[7:0]}
+   // UHD driver writes hb0<<9 | hb1<<8 — hb3 at bit 10 is optional (0=bypassed)
+   setting_reg #(.my_addr(BASE+2), .width(11)) sr_2
      (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
-      .in(set_data),.out({enable_hb1, enable_hb2, cic_decim_rate}),.changed());
+      .in(set_data),.out({enable_hb3, enable_hb1, enable_hb2, cic_decim_rate}),.changed());
 
    setting_reg #(.my_addr(BASE+3), .width(4)) sr_3
      (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
       .in(set_data),.out({invert_i,invert_q,realmode,swap_iq}),.changed());
 
+   // DC offset correction control (enabled by default at reset)
+   wire dc_offset_bypass;
+   setting_reg #(.my_addr(BASE+5), .width(1)) sr_dc_offset
+     (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
+      .in(set_data),.out(dc_offset_bypass),.changed());
+
+   // V2: IQ imbalance correction coefficients
+   wire [17:0] iq_alpha;  // Amplitude correction (Q2.16, 1.0 = 0x10000)
+   wire [17:0] iq_beta;   // Phase correction     (Q2.16, 0.0 = 0x00000)
+
+   // V3: RPDF dither LFSR — eliminates CIC idle tones (±1 LSB rectangular PDF)
+   reg [15:0] lfsr = 16'hACE1;
+   always @(posedge clk)
+     if (rst)
+       lfsr <= 16'hACE1;
+     else
+       lfsr <= {lfsr[14:0], lfsr[15] ^ lfsr[13] ^ lfsr[12] ^ lfsr[10]};
+   setting_reg #(.my_addr(BASE+6), .width(18), .at_reset(18'h10000)) sr_iq_alpha
+     (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
+      .in(set_data),.out(iq_alpha),.changed());
+   setting_reg #(.my_addr(BASE+7), .width(18), .at_reset(18'h00000)) sr_iq_beta
+     (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
+      .in(set_data),.out(iq_beta),.changed());
+
+   // V2: NCO 48-bit upper phase increment (default 0 = backward compatible 32-bit)
+   setting_reg #(.my_addr(BASE+8), .width(16)) sr_phase_hi
+     (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
+      .in(set_data),.out(phase_inc_hi),.changed());
 
    // MUX so we can do realmode signals on either input
 
@@ -84,14 +117,44 @@ module ddc_chain
           rx_fe_q_mux <= realmode ? {WIDTH{1'b0}} : invert_q ? ~rx_fe_q : rx_fe_q;
        end
 
-   // NCO
+   // DC offset correction - removes DC component from RX signal
+   // Enabled by default (bypass=0). Write 1 to BASE+5 to disable.
+   // Cutoff frequency ≈ fs/(2*pi*2^20) ≈ 9 Hz at 61.44 MSPS
+   wire [WIDTH-1:0] rx_fe_i_dc, rx_fe_q_dc;
+   wire strobe_dc_i, strobe_dc_q;
+
+   dc_offset_correct #(.WIDTH(WIDTH), .ALPHA(20)) dc_correct_i
+     (.clk(clk), .rst(rst), .bypass(dc_offset_bypass),
+      .strobe_in(1'b1), .in(rx_fe_i_mux), .out(rx_fe_i_dc), .strobe_out(strobe_dc_i));
+
+   dc_offset_correct #(.WIDTH(WIDTH), .ALPHA(20)) dc_correct_q
+     (.clk(clk), .rst(rst), .bypass(dc_offset_bypass),
+      .strobe_in(1'b1), .in(rx_fe_q_mux), .out(rx_fe_q_dc), .strobe_out(strobe_dc_q));
+
+   // V2: IQ imbalance correction — after DC offset, before CORDIC
+   //   I_out = alpha * I_in
+   //   Q_out = beta  * I_in + Q_in
+   // Default: alpha=1.0 (0x10000), beta=0.0 → transparent
+   wire [WIDTH-1:0] rx_fe_i_iq, rx_fe_q_iq;
+   wire strobe_iq;
+
+   iq_balance #(.WIDTH(WIDTH), .DEVICE(DEVICE)) iq_bal
+     (.clk(clk), .rst(rst),
+      .alpha(iq_alpha), .beta(iq_beta),
+      .strobe_in(1'b1),
+      .i_in(rx_fe_i_dc), .q_in(rx_fe_q_dc),
+      .i_out(rx_fe_i_iq), .q_out(rx_fe_q_iq),
+      .strobe_out(strobe_iq));
+
+   // V2: NCO — 48-bit phase accumulator for sub-Hz resolution
+   // freq_resolution = fs / 2^48 ≈ 0.00022 Hz @ 61.44 MSPS
    always @(posedge clk)
      if(rst)
        phase <= 0;
      else if(~run)
        phase <= 0;
      else
-       phase <= phase + phase_inc;
+       phase <= phase + {phase_inc_hi, phase_inc};
 
    // CORDIC  24-bit I/O
    // (Algorithmic gain through CORDIC => 1.647 * 0.5 = 0.8235)
@@ -99,17 +162,33 @@ module ddc_chain
    // Total worst case gain => 0.8235 * 1.4142 = 1.1646
    // So add an extra MSB bit for word growth.
 
-   sign_extend #(.bits_in(WIDTH), .bits_out(cwidth)) sign_extend_cordic_i (.in(rx_fe_i_mux), .out(to_cordic_i));
-   sign_extend #(.bits_in(WIDTH), .bits_out(cwidth)) sign_extend_cordic_q (.in(rx_fe_q_mux), .out(to_cordic_q));
+   sign_extend #(.bits_in(WIDTH), .bits_out(cwidth)) sign_extend_cordic_i (.in(rx_fe_i_iq), .out(to_cordic_i));
+   sign_extend #(.bits_in(WIDTH), .bits_out(cwidth)) sign_extend_cordic_q (.in(rx_fe_q_iq), .out(to_cordic_q));
 
    cordic_z24 #(.bitwidth(cwidth))
    cordic(.clock(clk), .reset(rst), .enable(run),
-	  .xi(to_cordic_i),. yi(to_cordic_q), .zi(phase[31:32-zwidth]),
+	  .xi(to_cordic_i),. yi(to_cordic_q), .zi(phase[47:48-zwidth]),
 	  .xo(i_cordic),.yo(q_cordic),.zo() );
 
+   // V3: Round 25→24 bit (was truncation) + add RPDF dither for CIC idle tones
+   wire [23:0] i_cordic_rounded = i_cordic[24:1] + {23'b0, i_cordic[0]};
+   wire [23:0] q_cordic_rounded = q_cordic[24:1] + {23'b0, q_cordic[0]};
+   // Overflow-safe: if round would wrap max positive, saturate
+   wire i_cord_ovf = ~i_cordic[24] & (&i_cordic[23:1]) & i_cordic[0];
+   wire q_cord_ovf = ~q_cordic[24] & (&q_cordic[23:1]) & q_cordic[0];
+
+   // V3: Safe dither injection — prevent wrap when signal is at min negative (-2^23)
+   wire [WIDTH-1:0] i_cord_rnd = i_cord_ovf ? i_cordic[24:1] : i_cordic_rounded;
+   wire [WIDTH-1:0] q_cord_rnd = q_cord_ovf ? q_cordic[24:1] : q_cordic_rounded;
+   // Dither is 0 or -1 (RPDF ±0.5 LSB). Suppress dither=-1 when signal is min negative to prevent wrap.
+   wire i_at_min = i_cord_rnd[WIDTH-1] & ~(|i_cord_rnd[WIDTH-2:0]);  // true if 0x800000
+   wire q_at_min = q_cord_rnd[WIDTH-1] & ~(|q_cord_rnd[WIDTH-2:0]);
+   wire i_dither = lfsr[0] & ~i_at_min;
+   wire q_dither = lfsr[8] & ~q_at_min;
+
    always @(posedge clk) begin
-      i_cordic_pipe[23:0] <= i_cordic[24:1];
-      q_cordic_pipe[23:0] <= q_cordic[24:1];
+      i_cordic_pipe <= i_cord_rnd + {{(WIDTH-1){i_dither}}, i_dither};
+      q_cordic_pipe <= q_cord_rnd + {{(WIDTH-1){q_dither}}, q_dither};
    end
 
 
@@ -157,6 +236,25 @@ module ddc_chain
 	 localparam HB1_SCALE = 18;
 	 localparam HB2_SCALE = 18;
 
+	 // V4: Overflow-safe rounding for HB1 47→24b extraction (+6 dB vs truncation)
+	 // Prevents wrap-to-negative when truncated value = max positive and round bit = 1
+	 wire [WIDTH-1:0] i_hb1_rnd, q_hb1_rnd;
+	 wire i_hb1_ovf = ~i_hb1[23+HB1_SCALE] & (&i_hb1[22+HB1_SCALE:HB1_SCALE]) & i_hb1[HB1_SCALE-1];
+	 wire q_hb1_ovf = ~q_hb1[23+HB1_SCALE] & (&q_hb1[22+HB1_SCALE:HB1_SCALE]) & q_hb1[HB1_SCALE-1];
+	 assign i_hb1_rnd = i_hb1_ovf ? i_hb1[23+HB1_SCALE:HB1_SCALE]
+	                               : (i_hb1[23+HB1_SCALE:HB1_SCALE] + {{23{1'b0}}, i_hb1[HB1_SCALE-1]});
+	 assign q_hb1_rnd = q_hb1_ovf ? q_hb1[23+HB1_SCALE:HB1_SCALE]
+	                               : (q_hb1[23+HB1_SCALE:HB1_SCALE] + {{23{1'b0}}, q_hb1[HB1_SCALE-1]});
+
+	 // V4: Overflow-safe rounding for HB2 47→24b extraction
+	 wire [WIDTH-1:0] i_hb2_rnd, q_hb2_rnd;
+	 wire i_hb2_ovf = ~i_hb2[23+HB2_SCALE] & (&i_hb2[22+HB2_SCALE:HB2_SCALE]) & i_hb2[HB2_SCALE-1];
+	 wire q_hb2_ovf = ~q_hb2[23+HB2_SCALE] & (&q_hb2[22+HB2_SCALE:HB2_SCALE]) & q_hb2[HB2_SCALE-1];
+	 assign i_hb2_rnd = i_hb2_ovf ? i_hb2[23+HB2_SCALE:HB2_SCALE]
+	                               : (i_hb2[23+HB2_SCALE:HB2_SCALE] + {{23{1'b0}}, i_hb2[HB2_SCALE-1]});
+	 assign q_hb2_rnd = q_hb2_ovf ? q_hb2[23+HB2_SCALE:HB2_SCALE]
+	                               : (q_hb2[23+HB2_SCALE:HB2_SCALE] + {{23{1'b0}}, q_hb2[HB2_SCALE-1]});
+
 
 	 assign strobe_hb1 = data_valid1;
 	 assign strobe_hb2 = data_valid2;
@@ -191,84 +289,101 @@ module ddc_chain
 	    .coef_din(coef_din), // input [17 : 0] coef_din
 	    .rfd(rfd2), // output rfd
 	    .nd(nd2), // input nd
-	    .din_1(i_hb1[23+HB1_SCALE:HB1_SCALE]), // input [23 : 0] din_1
-	    .din_2(q_hb1[23+HB1_SCALE:HB1_SCALE]), // input [23 : 0] din_2
+	    .din_1(i_hb1_rnd), // input [23 : 0] din_1 — V4: rounded (was truncated)
+	    .din_2(q_hb1_rnd), // input [23 : 0] din_2 — V4: rounded (was truncated)
 	    .rdy(rdy2), // output rdy
 	    .data_valid(data_valid2), // output data_valid
 	    .dout_1(i_hb2), // output [46 : 0] dout_1
 	    .dout_2(q_hb2)); // output [46 : 0] dout_2
 
+	 // V2: 3rd halfband filter (HB3) — additional ×2 decimation
+	 // Uses small_hb_dec (7-tap, 1 DSP each)
+	 // Placed after the HB1/HB2 output mux, before scaling.
+	 // When bypassed (~enable_hb3), passes data through unchanged.
+	 wire [WIDTH-1:0] i_hb3, q_hb3;
 
-
-	 reg [18:0]  i_unscaled, q_unscaled;
-	 reg 	     strobe_unscaled;
+	 // Select data source for HB3 based on HB1/HB2 enables
+	 reg [WIDTH-1:0]  i_pre_hb3, q_pre_hb3;
+	 reg              strobe_pre_hb3;
 
 	 always @(posedge clk)
 	   case({enable_hb1,enable_hb2})
-	     // No Halfbands enabled, no decimation.
-	     2'd0 :
-	       begin
-		  strobe_unscaled <= strobe_cic;
-		  i_unscaled <= i_cic[23:5];
-		  q_unscaled <= q_cic[23:5];
-	       end
-	     // ILLEGAL. Only half sample rate half band enabled.
-	     2'd1 :
-	       begin
-		  strobe_unscaled <= strobe_cic;
-		  i_unscaled <= i_cic[23:5];
-		  q_unscaled <= q_cic[23:5];
-	       end
-	     // One Halfband enabled, decimate by 2.
-	     2'd2 :
-	       begin
-		  strobe_unscaled <= strobe_hb1;
-		  i_unscaled <= i_hb1[23+HB1_SCALE:5+HB1_SCALE];
-		  q_unscaled <= q_hb1[23+HB1_SCALE:5+HB1_SCALE];
-	       end
-	     // Both Halfbands enabled, decimate by 4.
-	     2'd3 :
-	       begin
-		  strobe_unscaled <= strobe_hb2;
-		  i_unscaled <= i_hb2[23+HB2_SCALE:5+HB2_SCALE];
-		  q_unscaled <= q_hb2[23+HB2_SCALE:5+HB2_SCALE];
+	     2'd0 : begin
+		strobe_pre_hb3 <= strobe_cic;
+		i_pre_hb3 <= i_cic;
+		q_pre_hb3 <= q_cic;
 	     end
-	   endcase // case (hb_rate)
+	     2'd1 : begin
+		strobe_pre_hb3 <= strobe_cic;
+		i_pre_hb3 <= i_cic;
+		q_pre_hb3 <= q_cic;
+	     end
+	     2'd2 : begin
+		strobe_pre_hb3 <= strobe_hb1;
+		// V4: Overflow-safe rounded HB1 (was inline add without overflow check)
+		i_pre_hb3 <= i_hb1_rnd;
+		q_pre_hb3 <= q_hb1_rnd;
+	     end
+	     2'd3 : begin
+		strobe_pre_hb3 <= strobe_hb2;
+		// V4: Overflow-safe rounded HB2 (was inline add without overflow check)
+		i_pre_hb3 <= i_hb2_rnd;
+		q_pre_hb3 <= q_hb2_rnd;
+	     end
+	   endcase
 
-	 // Need to clip 1 bit here or we loose small signal performance out the truncated LSB's for worst case CIC gain cases.
-	 // NOTE: We can only clip here with CORDIC rotating, CIC in it's highest gain configurations and an input signal thats
-	 // saturated.
-	 wire strobe_unscaled_clip;
-	 wire [17:0] i_unscaled_clip, q_unscaled_clip;
+	 small_hb_dec #(.WIDTH(WIDTH), .DEVICE(DEVICE)) hb3_i
+	   (.clk(clk), .rst(rst), .bypass(~enable_hb3), .run(run),
+	    .stb_in(strobe_pre_hb3), .data_in(i_pre_hb3),
+	    .stb_out(strobe_hb3), .data_out(i_hb3));
 
-	 clip_reg #(.bits_in(19), .bits_out(18), .STROBED(1)) unscaled_clip_i
-	   (.clk(clk), .in(i_unscaled[18:0]), .strobe_in(strobe_unscaled), .out(i_unscaled_clip[17:0]), .strobe_out(strobe_unscaled_clip));
-	 clip_reg #(.bits_in(19), .bits_out(18), .STROBED(1)) unscaled_clip_q
-	   (.clk(clk), .in(q_unscaled[18:0]), .strobe_in(strobe_unscaled), .out(q_unscaled_clip[17:0]), .strobe_out());
+	 small_hb_dec #(.WIDTH(WIDTH), .DEVICE(DEVICE)) hb3_q
+	   (.clk(clk), .rst(rst), .bypass(~enable_hb3), .run(run),
+	    .stb_in(strobe_pre_hb3), .data_in(q_pre_hb3),
+	    .stb_out(), .data_out(q_hb3));
+
+	 // V9: External bypass mux — avoids HB3's internal 1-cycle bypass register
+	 // When HB3 disabled, route pre_hb3 directly (0 extra cycles).
+	 // When HB3 enabled, use filter output (HB3 has its own decimation timing).
+	 wire [WIDTH-1:0] i_to_mult = enable_hb3 ? i_hb3 : i_pre_hb3;
+	 wire [WIDTH-1:0] q_to_mult = enable_hb3 ? q_hb3 : q_pre_hb3;
+	 wire             strobe_to_mult = enable_hb3 ? strobe_hb3 : strobe_pre_hb3;
+
+	 // V6/V9: Full 24-bit precision into prescale multiply
+	 // DSP48E1 natively supports 25×18 signed — no input truncation needed.
+	 // Single pipeline register (matches V4's clip_reg latency — keeps total
+	 // pipeline depth identical to avoid UHD accum_timeout).
+	 reg [WIDTH:0]    i_prescale_ext, q_prescale_ext;
+	 reg              strobe_prescale_ext;
+	 always @(posedge clk) begin
+	    strobe_prescale_ext <= strobe_to_mult;
+	    i_prescale_ext <= {i_to_mult[WIDTH-1], i_to_mult};
+	    q_prescale_ext <= {q_to_mult[WIDTH-1], q_to_mult};
+	 end
 
 	 // Apply scaling gain to compensate for CORDIC and CIC gain adjustments so that signal swing over network transport has
 	 // optimal dynamic range.
-	 wire [35:0] 	  prod_i, prod_q;
+	 wire [WIDTH+18:0]  prod_i, prod_q;  // 25+18=43 bit product
 
 	 MULT_MACRO #(.DEVICE(DEVICE),  // Target Device: "VIRTEX5", "VIRTEX6", "SPARTAN6","7SERIES"
 		      .LATENCY(1),         // Desired clock cycle latency, 0-4
-		      .WIDTH_A(18),        // Multiplier A-input bus width, 1-25
+		      .WIDTH_A(WIDTH+1),   // V6: 25-bit (full 24+sign) — DSP48E1 native 25×18
 		      .WIDTH_B(18))        // Multiplier B-input bus width, 1-18
 	 mult_i (.P(prod_i),             // Multiplier output bus, width determined by WIDTH_P parameter
-		.A(i_unscaled_clip),         // Multiplier input A bus, width determined by WIDTH_A parameter
+		.A(i_prescale_ext),          // V6: full precision input
 		.B(scale_factor),       // Multiplier input B bus, width determined by WIDTH_B parameter
-		.CE(strobe_unscaled_clip),   // 1-bit active high input clock enable
+		.CE(strobe_prescale_ext),    // 1-bit active high input clock enable
 		.CLK(clk),              // 1-bit positive edge clock input
 		.RST(rst));             // 1-bit input active high reset
 
 	 MULT_MACRO #(.DEVICE(DEVICE),  // Target Device: "VIRTEX5", "VIRTEX6", "SPARTAN6","7SERIES"
 		      .LATENCY(1),         // Desired clock cycle latency, 0-4
-		      .WIDTH_A(18),        // Multiplier A-input bus width, 1-25
+		      .WIDTH_A(WIDTH+1),   // V6: 25-bit (full 24+sign) — DSP48E1 native 25×18
 		      .WIDTH_B(18))        // Multiplier B-input bus width, 1-18
 	 mult_q (.P(prod_q),             // Multiplier output bus, width determined by WIDTH_P parameter
-		.A(q_unscaled_clip),         // Multiplier input A bus, width determined by WIDTH_A parameter
+		.A(q_prescale_ext),          // V6: full precision input
 		.B(scale_factor),       // Multiplier input B bus, width determined by WIDTH_B parameter
-		.CE(strobe_unscaled_clip),   // 1-bit active high input clock enable
+		.CE(strobe_prescale_ext),    // 1-bit active high input clock enable
 		.CLK(clk),              // 1-bit positive edge clock input
 		.RST(rst));             // 1-bit input active high reset
 
@@ -276,16 +391,17 @@ module ddc_chain
 	 wire 		  strobe_clip;
 	 wire [32:0] 	  i_clip, q_clip;
 
-	 always @(posedge clk)  strobe_scaled <= strobe_unscaled_clip;
+	 always @(posedge clk)  strobe_scaled <= strobe_prescale_ext;
 
-	 clip_reg #(.bits_in(36), .bits_out(33), .STROBED(1)) clip_i
-	   (.clk(clk), .in(prod_i[35:0]), .strobe_in(strobe_scaled), .out(i_clip), .strobe_out(strobe_clip));
-	 clip_reg #(.bits_in(36), .bits_out(33), .STROBED(1)) clip_q
-	   (.clk(clk), .in(prod_q[35:0]), .strobe_in(strobe_scaled), .out(q_clip), .strobe_out());
+	 clip_reg #(.bits_in(WIDTH+19), .bits_out(33), .STROBED(1)) clip_i
+	   (.clk(clk), .in(prod_i), .strobe_in(strobe_scaled), .out(i_clip), .strobe_out(strobe_clip));
+	 clip_reg #(.bits_in(WIDTH+19), .bits_out(33), .STROBED(1)) clip_q
+	   (.clk(clk), .in(prod_q), .strobe_in(strobe_scaled), .out(q_clip), .strobe_out());
 
-	 round_sd #(.WIDTH_IN(33), .WIDTH_OUT(16)) round_i
+	 // V5: 2nd-order sigma-delta → -12 dB/octave noise floor (+8 dB SNR)
+	 round_sd #(.WIDTH_IN(33), .WIDTH_OUT(16), .SD_ORDER(2)) round_i
 	   (.clk(clk), .reset(rst), .in(i_clip), .strobe_in(strobe_clip), .out(sample[31:16]), .strobe_out(strobe));
-	 round_sd #(.WIDTH_IN(33), .WIDTH_OUT(16)) round_q
+	 round_sd #(.WIDTH_IN(33), .WIDTH_OUT(16), .SD_ORDER(2)) round_q
 	   (.clk(clk), .reset(rst), .in(q_clip), .strobe_in(strobe_clip), .out(sample[15:0]), .strobe_out());
 
       end else begin: old_hb // block: new_hb
@@ -315,37 +431,39 @@ module ddc_chain
 	   (.clk(clk),.rst(rst),.bypass(~enable_hb2),.run(run),.cpi(cpi_hb),
 	    .stb_in(strobe_hb1),.data_in(q_hb1),.stb_out(),.data_out(q_hb2));
 
-	 // Need to clip 1 bit here or we loose small signal performance out the truncated LSB's for worst case CIC gain cases.
-	 wire strobe_unscaled_clip;
-	 wire [17:0] i_unscaled_clip, q_unscaled_clip;
-
-	 clip_reg #(.bits_in(19), .bits_out(18), .STROBED(1)) unscaled_clip_i
-	   (.clk(clk), .in(i_hb2[WIDTH-1:WIDTH-19]), .strobe_in(strobe_hb2), .out(i_unscaled_clip[17:0]), .strobe_out(strobe_unscaled_clip));
-	 clip_reg #(.bits_in(19), .bits_out(18), .STROBED(1)) unscaled_clip_q
-	   (.clk(clk), .in(q_hb2[WIDTH-1:WIDTH-19]), .strobe_in(strobe_hb2), .out(q_unscaled_clip[17:0]), .strobe_out());
+	 // V6: Full 24-bit precision into prescale multiply (old_hb path)
+	 // Was: truncate 24→19 MSBs → clip 19→18 → MULT 18×18 (lost 6 bits)
+	 // Now: full 24-bit → sign-extend 25 → MULT 25×18 (DSP48E1 native)
+	 reg [WIDTH:0]    i_prescale_ext, q_prescale_ext;
+	 reg              strobe_prescale_ext;
+	 always @(posedge clk) begin
+	    strobe_prescale_ext <= strobe_hb2;
+	    i_prescale_ext <= {i_hb2[WIDTH-1], i_hb2};
+	    q_prescale_ext <= {q_hb2[WIDTH-1], q_hb2};
+	 end
 
 	 //scalar operation (gain of 6 bits)
-	 wire [35:0] 	  prod_i, prod_q;
+	 wire [WIDTH+18:0]  prod_i, prod_q;  // V6: 25+18=43 bit product
 
 	 MULT_MACRO #(.DEVICE(DEVICE),  // Target Device: "VIRTEX5", "VIRTEX6", "SPARTAN6","7SERIES"
 		      .LATENCY(1),         // Desired clock cycle latency, 0-4
-		      .WIDTH_A(18),        // Multiplier A-input bus width, 1-25
+		      .WIDTH_A(WIDTH+1),   // V6: 25-bit (full 24+sign) — DSP48E1 native 25×18
 		      .WIDTH_B(18))        // Multiplier B-input bus width, 1-18
 	 mult_i (.P(prod_i),             // Multiplier output bus, width determined by WIDTH_P parameter
-		.A(i_unscaled_clip),// Multiplier input A bus, width determined by WIDTH_A parameter
+		.A(i_prescale_ext),          // V6: full precision input
 		.B(scale_factor),       // Multiplier input B bus, width determined by WIDTH_B parameter
-		.CE(strobe_unscaled_clip),        // 1-bit active high input clock enable
+		.CE(strobe_prescale_ext),    // 1-bit active high input clock enable
 		.CLK(clk),              // 1-bit positive edge clock input
 		.RST(rst));             // 1-bit input active high reset
 
 	 MULT_MACRO #(.DEVICE(DEVICE),  // Target Device: "VIRTEX5", "VIRTEX6", "SPARTAN6","7SERIES"
 		      .LATENCY(1),         // Desired clock cycle latency, 0-4
-		      .WIDTH_A(18),        // Multiplier A-input bus width, 1-25
+		      .WIDTH_A(WIDTH+1),   // V6: 25-bit (full 24+sign) — DSP48E1 native 25×18
 		      .WIDTH_B(18))        // Multiplier B-input bus width, 1-18
 	 mult_q (.P(prod_q),             // Multiplier output bus, width determined by WIDTH_P parameter
-		.A(q_unscaled_clip),// Multiplier input A bus, width determined by WIDTH_A parameter
+		.A(q_prescale_ext),          // V6: full precision input
 		.B(scale_factor),       // Multiplier input B bus, width determined by WIDTH_B parameter
-		.CE(strobe_unscaled_clip),        // 1-bit active high input clock enable
+		.CE(strobe_prescale_ext),    // 1-bit active high input clock enable
 		.CLK(clk),              // 1-bit positive edge clock input
 		.RST(rst));             // 1-bit input active high reset
 
@@ -353,16 +471,17 @@ module ddc_chain
 	 wire 		  strobe_clip;
 	 wire [32:0] 	  i_clip, q_clip;
 
-	 always @(posedge clk)  strobe_scaled <= strobe_unscaled_clip;
+	 always @(posedge clk)  strobe_scaled <= strobe_prescale_ext;
 
-	 clip_reg #(.bits_in(36), .bits_out(33), .STROBED(1)) clip_i
-	   (.clk(clk), .in(prod_i[35:0]), .strobe_in(strobe_scaled), .out(i_clip), .strobe_out(strobe_clip));
-	 clip_reg #(.bits_in(36), .bits_out(33), .STROBED(1)) clip_q
-	   (.clk(clk), .in(prod_q[35:0]), .strobe_in(strobe_scaled), .out(q_clip), .strobe_out());
+	 clip_reg #(.bits_in(WIDTH+19), .bits_out(33), .STROBED(1)) clip_i
+	   (.clk(clk), .in(prod_i), .strobe_in(strobe_scaled), .out(i_clip), .strobe_out(strobe_clip));
+	 clip_reg #(.bits_in(WIDTH+19), .bits_out(33), .STROBED(1)) clip_q
+	   (.clk(clk), .in(prod_q), .strobe_in(strobe_scaled), .out(q_clip), .strobe_out());
 
-	 round_sd #(.WIDTH_IN(33), .WIDTH_OUT(16)) round_i
+	 // V5: 2nd-order sigma-delta → -12 dB/octave noise floor (+8 dB SNR)
+	 round_sd #(.WIDTH_IN(33), .WIDTH_OUT(16), .SD_ORDER(2)) round_i
 	   (.clk(clk), .reset(rst), .in(i_clip), .strobe_in(strobe_clip), .out(sample[31:16]), .strobe_out(strobe));
-	 round_sd #(.WIDTH_IN(33), .WIDTH_OUT(16)) round_q
+	 round_sd #(.WIDTH_IN(33), .WIDTH_OUT(16), .SD_ORDER(2)) round_q
 	   (.clk(clk), .reset(rst), .in(q_clip), .strobe_in(strobe_clip), .out(sample[15:0]), .strobe_out());
 
       end // block: old_hb
@@ -370,6 +489,6 @@ module ddc_chain
 
 
 
-   assign debug = {enable_hb1, enable_hb2, run, strobe, strobe_cic, strobe_hb1, strobe_hb2};
+   assign debug = {enable_hb1, enable_hb2, enable_hb3, run, strobe, strobe_cic, strobe_hb1, strobe_hb2};
 
 endmodule // ddc_chain

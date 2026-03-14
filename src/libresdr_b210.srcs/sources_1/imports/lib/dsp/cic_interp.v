@@ -11,7 +11,7 @@
 
 
 module cic_interp
-  #(parameter bw = 16, parameter N = 4, parameter log2_of_max_rate = 7)
+  #(parameter bw = 16, parameter N = 4, parameter log2_of_max_rate = 8)
     (input clock,
      input reset,
      input enable,
