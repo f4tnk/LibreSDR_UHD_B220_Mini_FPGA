@@ -1,27 +1,694 @@
-# LibreSDR B220 Mini FPGA — Optimisations F4TNK
+# 📡 LibreSDR B220 Mini FPGA — Optimisations F4TNK
 
-## Version 1.1 (Conservatif — DSP uniquement) — Mars 2026
-
-**Fichier bitstream :** `usrp_b220_fpga_v1.bin`  
-**Cible :** XC7A200T-FBG484-2 (Artix-7 200T)  
-**Outil :** Vivado 2025.2  
-**Compilé le :** 13 mars 2026 (13h18 → 13h35)  
-**Auteur :** F4TNK  
-**Stratégie :** Modifications DSP internes uniquement — aucun changement GPIF/USB/FIFO
+<p align="center">
+  <strong>🛰️ Firmware FPGA optimisé pour la réception satellite LEO via SatNOGS</strong><br/>
+  <em>Fork optimisé par F4TNK — Mars 2026</em>
+</p>
 
 ---
 
-## Contexte
+## 📋 Table des matières
 
-Le projet LibreSDR B220 Mini est un firmware FPGA dérivé du USRP B210 (Ettus Research), porté sur la carte LibreSDR équipée d'un **Xilinx Artix-7 XC7A200T** (et non d'un Spartan-6 comme la carte B210 originale). Le design utilise intégralement les primitives 7-Series (DSP48E1, BUFR, BUFGMUX, IDDR/ODDR, MMCM) et le transceiver RF **AD9361** (Analog Devices — 12 bits I/Q, DDR CMOS, jusqu'à ~61,44 MSPS).
-
-La V1.1 est une version **conservatrice** : seules les modifications internes à la chaîne DSP sont appliquées (extension CIC, correction DC). Les interfaces GPIF/USB et les tailles de FIFO restent strictement identiques à la version d'origine (V0) pour garantir la compatibilité avec le contrôleur FX3 et le driver UHD.
-
-> **Note historique :** La V1.0 incluait également des augmentations de FIFO (GPIF 14→15, RADIO/SAMPLE 11→13, EXTRA_BUFF 12→14) et un changement SLEW SLOW→FAST sur les sorties GPIF. Ces modifications empêchaient le chargement du firmware. Elles ont été retirées dans la V1.1.
+- [🎯 Présentation du projet](#-présentation-du-projet)
+- [🔧 Matériel cible](#-matériel-cible)
+- [⚡ Quick Start](#-quick-start)
+- [🏗️ Architecture DSP](#️-architecture-dsp)
+- [📦 Fichiers du dépôt](#-fichiers-du-dépôt)
+- [🔨 Compilation (Build)](#-compilation-build)
+- [🚀 Déploiement](#-déploiement)
+- [📈 Historique des versions](#-historique-des-versions)
+  - [V1.1 — CIC 256 + DC offset](#-version-11--cic-256--dc-offset-correct)
+  - [V2 — IQ balance + HB3 + NCO 48 bits](#-version-2--iq-balance--hb3--nco-48-bits)
+  - [V3 — CORDIC 24 étages + rounding global](#-version-3--cordic-24-étages--rounding--fix-hb-bits)
+  - [V3.1 — Fix dither overflow](#-version-31--fix-dither-overflow)
+  - [V4 — IQ pleine précision + HB overflow-safe](#-version-4--iq-pleine-précision--hb-overflow-safe)
+  - [V5 — Sigma-delta 2ème ordre](#-version-5--sigma-delta-2ème-ordre)
+  - [V6 — Stratégies Vivado (obsolète)](#-version-6--stratégies-vivado-obsolète)
+  - [V7 — HB full-precision (échec)](#-version-7--hb-full-precision-échec)
+  - [V8 — HB latency-safe (échec)](#-version-8--hb-latency-safe-échec)
+  - [V9/V9b — Fix pipeline + stratégies par défaut (PRODUCTION)](#-version-9b--fix-pipeline--stratégies-par-défaut-production)
+- [📊 Tableau récapitulatif des versions](#-tableau-récapitulatif-des-versions)
+- [🚨 Règles absolues](#-règles-absolues)
+- [📚 Ressources FPGA XC7A200T](#-ressources-fpga-xc7a200t)
 
 ---
 
-## Ressources FPGA disponibles — XC7A200T
+## 🎯 Présentation du projet
+
+### ❓ C'est quoi ?
+
+Ce dépôt contient le **code source Verilog et les bitstreams compilés** d'un firmware FPGA pour la carte **LibreSDR B220 Mini** — un clone chinois du célèbre USRP B210 d'Ettus Research. Le FPGA implémente l'intégralité du traitement numérique du signal (DSP) entre le transceiver RF AD9361 et l'interface USB 3.0 (via Cypress FX3).
+
+### 🤔 À quoi ça sert ?
+
+Ce firmware transforme la carte LibreSDR en une **radio logicielle (SDR)** compatible avec le framework [UHD (USRP Hardware Driver)](https://github.com/EttusResearch/uhd) d'Ettus Research. Concrètement, il permet de :
+
+| Fonctionnalité | Description |
+|:---|:---|
+| 📡 **Réception radio** | Recevoir des signaux RF de 70 MHz à 6 GHz avec une bande passante jusqu'à 56 MHz |
+| 📤 **Émission radio** | Émettre des signaux (tests, relais, etc.) |
+| 🛰️ **Réception satellite** | Intégration dans une station sol [SatNOGS](https://satnogs.org) pour décoder automatiquement les satellites LEO |
+| 🔬 **Analyse spectrale** | Utilisation avec GNU Radio, SDR++, GQRX, etc. |
+
+### 🛰️ Contexte d'utilisation — Station SatNOGS F4TNK
+
+Ce firmware est déployé en production sur la **station SatNOGS #3762** (F4TNK), qui :
+
+- 🔄 Fonctionne **24h/24, 7j/7** en mode automatique
+- 📡 Reçoit des signaux satellite LEO (orbite basse, 200–2000 km)
+- 📊 Décode FSK, GMSK, BPSK, AFSK à des débits de 1200 à 19200 baud
+- 🌐 Contribue les observations au réseau mondial SatNOGS
+- 🐳 Tourne dans un conteneur Docker ([satnogs-docker](https://gitlab.com/f4tnk-org/satnogs-docker))
+
+### 🆚 Pourquoi un fork ?
+
+Le firmware d'origine (V0) fonctionne, mais les optimisations F4TNK apportent des améliorations significatives pour la réception de signaux faibles :
+
+| Amélioration | Impact |
+|:---|:---|
+| 🎚️ Décimation max ×1024 → ×2048 | Fréquences d'échantillonnage plus basses (30 kSPS) |
+| 🎯 CORDIC 24 étages (vs 20) | +24 dB SFDR sur le NCO |
+| 🔇 Correction DC offset | Suppression du pic 0 Hz (conversion directe AD9361) |
+| ⚖️ Correction IQ balance | Compensation amplitude/phase du mélangeur |
+| 📐 Arrondi convergent partout | +6 dB SNR à **chaque** étage de troncation |
+| 🎲 Dither RPDF avant CIC | Élimination des idle tones |
+| 📉 Sigma-delta 2ème ordre | +8–12 dB plancher de bruit en bande |
+| 🔢 NCO 48 bits | Résolution fréquentielle 0,22 µHz (vs 14,3 mHz) |
+
+---
+
+## 🔧 Matériel cible
+
+| Composant | Référence | Rôle |
+|:---|:---|:---|
+| 🧮 **FPGA** | Xilinx Artix-7 **XC7A200T-FBG484-2** | Traitement DSP, contrôle |
+| 📻 **Transceiver RF** | Analog Devices **AD9361** | Conversion RF ↔ bande de base, 12 bits I/Q DDR CMOS |
+| 🔌 **Interface USB** | Cypress **FX3 (CYUSB3014)** | USB 3.0 SuperSpeed, protocole GPIF-II |
+| ⏱️ **Horloge radio** | ~61,44 MHz (via PLL AD9361) | Cadence du datapath DSP |
+
+> ⚠️ **Important :** Malgré le nom "B220", la carte utilise un XC7A**200**T (pas un Spartan-6 comme le vrai B210 d'Ettus). Le design utilise les primitives 7-Series : DSP48E1, BUFR, BUFGMUX, IDDR/ODDR, MMCM.
+
+---
+
+## ⚡ Quick Start
+
+### 1️⃣ Utiliser le firmware pré-compilé (recommandé)
+
+```bash
+# Copier le binaire V9b (production) vers le répertoire UHD images
+sudo cp usrp_b220_fpga.bin /usr/share/uhd/images/usrp_b220_fpga.bin
+
+# Configurer uhd.conf pour pointer vers le binaire
+sudo mkdir -p /etc/uhd
+sudo cp uhd.conf /etc/uhd/uhd.conf
+# ⚠️ Éditer le numéro de série dans uhd.conf !
+
+# Vérifier que le firmware se charge
+uhd_usrp_probe
+```
+
+### 2️⃣ Compiler depuis les sources
+
+```bash
+# Prérequis : Vivado 2025.2 installé
+source /tools/Xilinx/Vivado/2025.2/settings64.sh
+
+# Build complet (~20 min)
+vivado -mode batch -source build.tcl -log build_output/build.log -journal build_output/build.jou
+
+# Le binaire est généré dans build_output/libresdr_b220.bin
+cp build_output/libresdr_b220.bin usrp_b220_fpga.bin
+```
+
+### 3️⃣ Déploiement Docker (SatNOGS)
+
+```bash
+# Copier dans le conteneur
+docker cp usrp_b220_fpga.bin station-3762-satnogs_client-1:/usr/share/uhd/images/usrp_b220_fpga.bin
+
+# Redémarrer le conteneur
+docker restart station-3762-satnogs_client-1
+```
+
+---
+
+## 🏗️ Architecture DSP
+
+### 📥 Réception (RX — Digital Down Converter)
+
+Chaîne complète par canal, de l'antenne au logiciel hôte :
+
+```
+🏗️ CHAÎNE RX DDC — V9b (Production)
+═══════════════════════════════════════════════════════════════
+
+  📻 AD9361 I/Q (12 bits, DDR CMOS, ~61,44 MSPS)
+      │
+      ▼ [libresdr_b205_io.v] — Désérialisation DDR → 24 bits I/Q
+      │
+      ▼ [ddc_chain.v — MUX] — Sélection real/IQ/swap
+  rx_fe_i/q_mux (24 bits)
+      │
+      ▼ 🔇 [dc_offset_correct.v] ─── V1.1 ── fc ≈ 9 Hz, IIR HP ordre 1
+      │                                         Bypass via registre BASE+5
+      │
+      ▼ ⚖️ [iq_balance.v] ───────── V4 ──── Correction matricielle 2×2
+      │                                       24×18 DSP48E1 pleine précision
+      │                                       alpha (BASE+6), beta (BASE+7)
+      │
+      ▼ 🎲 [LFSR 16 bits] ─────── V3 ──── Dither RPDF ±1 LSB
+      │                                      Élimine les idle tones CIC
+      │
+      ▼ 🎯 [cordic_z24.v] ──────── V3 ──── NCO 48 bits, 24 étages CORDIC
+      │                                       Sortie arrondie (pas tronquée)
+  I/Q décalé en fréquence (24 bits)             phase_inc_hi (BASE+8)
+      │
+      ▼ 📐 [cic_decim.v] ─────── V1.1 ── CIC décimateur N=4, taux 1..256
+      ▼    [cic_dec_shifter.v] ── V3 ──── Arrondi convergent + protection overflow
+  I/Q décimé (24 bits)
+      │
+      ▼ 🔽 [hbdec1 — HB1] ──────── ×2 ── Demi-bande, extraction 47→24b arrondie (V4)
+      ▼ 🔽 [hbdec2 — HB2] ──────── ×2 ── Demi-bande, entrée arrondie (V4)
+      ▼ 🔽 [small_hb_dec — HB3] ── ×2 ── Optionnel (bit 10 de BASE+2)
+      │                                    Bypass mux externe combinatoire (V9)
+  I/Q (24 bits)
+      │
+      ▼ 📉 [MULT_MACRO + round_sd] V5 ── Mise à l'échelle + sigma-delta ordre 2
+      │                                    NTF = (1-z⁻¹)² → −12 dB/octave
+      │
+  🖥️ Sortie 16 bits I/Q → UHD host via USB 3.0
+
+  📊 Décimation totale max : HB1(×2) × HB2(×2) × HB3(×2) × CIC(×256) = ×2048
+  📊 Freq. échantillonnage min : 61,44 MSPS / 2048 ≈ 30 kSPS
+```
+
+### 📤 Émission (TX — Digital Up Converter)
+
+```
+🏗️ CHAÎNE TX DUC — V9b
+═══════════════════════════════════════════════════════════════
+
+  🖥️ UHD host 16 bits I/Q
+      │
+      ▼ [MULT_MACRO] ──────────── Mise à l'échelle logicielle
+      ▼ [small_hb_int — HB3] ──── Interpolateur ×2 optionnel
+      ▼ [hb47_int — HB1] ──────── Interpolateur ×2
+      ▼ [hb47_int — HB2] ──────── Interpolateur ×2
+      ▼ [cic_interp.v] ─────────── CIC interpolateur N=4, taux 1..256
+      ▼ [cic_int_shifter.v] ────── Arrondi convergent V3
+      ▼ [cordic_z24.v] ──────────── NCO 48 bits, 24 étages
+      ▼ clip 24 bits
+      │
+  📻 AD9361 I/Q (12 bits)
+```
+
+---
+
+## 📦 Fichiers du dépôt
+
+### 🗂️ Structure
+
+```
+LibreSDR_UHD_B220_Mini_FPGA/
+├── 📄 README.md                    ← Présentation rapide du projet
+├── 📄 OPTIMIZE-F4TNK.md            ← CE FICHIER — Documentation complète
+├── 📄 LICENSE
+├── ⚙️ uhd.conf                     ← Configuration UHD (numéro de série)
+│
+├── 🔨 build.tcl                    ← Script de compilation Vivado (batch)
+├── 🔨 build_and_monitor.sh         ← Monitoring du build en temps réel
+├── 🔨 gen_bin.tcl                  ← Génération du binaire post-build
+│
+├── 💾 usrp_b220_fpga.bin           ← ⭐ FIRMWARE PRODUCTION (V9b)
+├── 💾 usrp_b220_fpga_v9b.bin       ← Archive V9b (identique)
+├── 💾 usrp_b220_fpga_v0.bin        ← Firmware original (baseline)
+├── 💾 usrp_b220_fpga_v1.bin        ← Archive V1.1
+├── 💾 usrp_b220_fpga_v3.bin        ← Archive V3.1
+├── 💾 usrp_b220_fpga_v4.bin        ← Archive V4
+│
+├── 📁 src/                         ← Sources Vivado
+│   ├── libresdr_b210.xpr           ← Projet Vivado principal
+│   └── libresdr_b210.srcs/
+│       └── sources_1/imports/lib/
+│           ├── dsp/                ← ⭐ Modules DSP (31 fichiers Verilog)
+│           │   ├── ddc_chain.v     ← Chaîne DDC (réception)
+│           │   ├── duc_chain.v     ← Chaîne DUC (émission)
+│           │   ├── cordic_z24.v    ← NCO CORDIC 24 étages
+│           │   ├── cic_decim.v     ← CIC décimation
+│           │   ├── cic_interp.v    ← CIC interpolation
+│           │   ├── cic_dec_shifter.v  ← Compensation gain CIC RX
+│           │   ├── cic_int_shifter.v  ← Compensation gain CIC TX
+│           │   ├── dc_offset_correct.v ← 🆕 Correction DC offset
+│           │   ├── iq_balance.v    ← 🆕 Correction IQ balance
+│           │   ├── round_sd.v      ← Arrondi sigma-delta (ordre 1 & 2)
+│           │   ├── small_hb_dec.v  ← Halfband HB3 décimateur
+│           │   ├── hb_dec.v        ← Halfband HB1/HB2 décimateur
+│           │   └── ...             ← Autres modules (clip, round, acc, srl...)
+│           └── esdr_b210/top/
+│               ├── libresdr_b210.v ← Top-level FPGA
+│               └── b200_core.v     ← Cœur du design (bus ctrl, VITA49)
+│
+├── 📁 docs/                        ← Documentation constructeur (Quick Start)
+├── 📁 pics/                        ← Photos du hardware
+└── 📁 schematics/                  ← Schéma de la carte (PDF)
+```
+
+### 💾 Checksums du firmware production
+
+| Fichier | MD5 | Taille |
+|:---|:---|:---|
+| `usrp_b220_fpga.bin` (V9b) | `123ea33598e717ea16082f13b8d1c780` | 4 394 952 octets |
+| `usrp_b220_fpga_v9b.bin` | identique | identique |
+
+---
+
+## 🔨 Compilation (Build)
+
+### 📋 Prérequis
+
+| Outil | Version | Notes |
+|:---|:---|:---|
+| Vivado | **2025.2** | Synthèse + implémentation + bitstream |
+| OS | Ubuntu 24.04 LTS | Testé sur cette plateforme |
+| RAM | ≥ 16 Go | Recommandé pour l'implémentation Artix-7 200T |
+
+### 🔧 Script `build.tcl`
+
+Le script de build effectue les étapes suivantes :
+
+1. 📂 **Ouverture du projet** Vivado (`src/libresdr_b210.xpr`)
+2. 🔄 **Mise à jour des IPs** — Migration automatique si changement de version Vivado
+3. 🏭 **Synthèse** — Stratégie `{Vivado Synthesis Defaults}` (8 threads)
+4. 🧩 **Implémentation** — Stratégie `{Vivado Implementation Defaults}` (8 threads)
+5. 📊 **Rapports** — Timing, utilisation, DRC, puissance → `build_output/`
+6. 💾 **Génération binaire** — `.bin` avec compression activée
+
+> ⚠️ **CRITIQUE :** Le script utilise **uniquement les stratégies par défaut de Vivado**. Les stratégies agressives (RETIMING, Explore, Flow_PerfOptimized_high) **cassent l'initialisation UHD**. Voir [🚨 Règles absolues](#-règles-absolues).
+
+### ▶️ Lancement
+
+```bash
+# Compilation complète (~20 minutes)
+source /tools/Xilinx/Vivado/2025.2/settings64.sh
+vivado -mode batch -source build.tcl -log build_output/build.log -journal build_output/build.jou
+
+# Monitoring en temps réel (terminal séparé)
+./build_and_monitor.sh
+```
+
+### 📊 Résultats attendus (V9b)
+
+| Ressource | Utilisé | Disponible | Utilisation |
+|:---|:---:|:---:|:---:|
+| 🧮 Slice LUTs | ~35 000 | 134 600 | **~26 %** |
+| 📝 Slice Registers | ~38 000 | 269 200 | **~14 %** |
+| 🧱 Block RAM (RAMB36) | 115,5 | 365 | **31,6 %** |
+| ⚡ DSP48E1 | 112 | 740 | **15,1 %** |
+| ⏱️ **WNS** | — | — | **+0,497 ns ✅** |
+
+---
+
+## 🚀 Déploiement
+
+### 🐳 Déploiement Docker (station SatNOGS)
+
+```bash
+# 1. Copier le firmware dans le conteneur
+docker cp usrp_b220_fpga.bin station-3762-satnogs_client-1:/usr/share/uhd/images/usrp_b220_fpga.bin
+
+# 2. Redémarrer le conteneur
+docker restart station-3762-satnogs_client-1
+
+# 3. Vérifier les logs d'initialisation UHD
+docker logs -f station-3762-satnogs_client-1 2>&1 | grep -i "uhd\|fpga\|firmware"
+```
+
+### 🖥️ Déploiement local
+
+```bash
+# 1. Copier le firmware
+sudo cp usrp_b220_fpga.bin /usr/share/uhd/images/usrp_b220_fpga.bin
+
+# 2. Configurer uhd.conf (adapter le numéro de série !)
+sudo cp uhd.conf /etc/uhd/uhd.conf
+
+# 3. Vérifier
+uhd_usrp_probe
+```
+
+### ✅ Vérification post-déploiement
+
+Un firmware correctement chargé doit passer ces étapes :
+
+| Étape | Attendu | Temps |
+|:---|:---|:---|
+| 🔌 Détection USB | `Bus 00x Device 00x: ID 2500:0020` | immédiat |
+| 💾 Chargement firmware FX3 | `Loading firmware image` | ~2s |
+| 🧮 Chargement FPGA | `Loading FPGA image` | ~5s |
+| 🔄 Register loopback | `Register loopback test passed` | ~10s |
+| ✅ Initialisation complète | `uhd_usrp_probe` retourne les infos | ~70s |
+
+> ❌ Si `accum_timeout < _timeout` apparaît → le firmware est **incompatible**. Revenir à V9b ou V4.
+
+---
+
+## 📈 Historique des versions
+
+---
+
+### 🟢 Version 1.1 — CIC 256 + DC offset correct
+
+**📅** 13 mars 2026 | **📁** `usrp_b220_fpga_v1.bin` | **⏱️** WNS +0,515 ns | **✅ Fonctionnel**
+
+> 💡 Version conservatrice : DSP uniquement, aucune modification GPIF/USB/FIFO.
+>
+> ⚠️ La V1.0 incluait des augmentations de FIFO et SLEW FAST sur les sorties GPIF → **firmware cassé**. Retiré.
+
+#### 1️⃣ Extension CIC 128 → 256 (`cic_decim.v`, `cic_interp.v`)
+
+Les filtres CIC (ordre N=4) passent d'un taux max de 128 à **256** :
+- Décimation totale max : HB1(×2) × HB2(×2) × CIC(×256) = **×1024** (était ×512)
+- Permet des fréquences UHD très basses (60 kSPS à partir de 61,44 MSPS)
+
+```verilog
+// cic_decim.v / cic_interp.v
+parameter log2_of_max_rate = 8;   // 🔄 était 7 (max 128 → 256)
+```
+
+Tables de compensation étendues dans `cic_dec_shifter.v` (maxbitgain 28→32, shift [4:0]→[5:0]) et `cic_int_shifter.v` (maxbitgain 21→24).
+
+#### 2️⃣ Correction DC offset (`dc_offset_correct.v` — 🆕)
+
+Filtre passe-haut IIR du 1er ordre sur chaque voie I/Q, avant le CORDIC :
+
+```
+avg[n] = avg[n-1] + (x[n] - avg[n-1]) >> ALPHA
+y[n]   = x[n] - avg[n]
+fc ≈ 61,44e6 / (2π × 2²⁰) ≈ 9 Hz
+```
+
+- 📐 Accumulateur interne : 44 bits (24 + ALPHA=20)
+- 🔌 Bypass via registre UHD `BASE+5`
+- ⚡ Coût : 1 additionneur + 1 décaleur (0 DSP48E1)
+
+#### 📊 Utilisation FPGA V1.1
+
+| Ressource | Utilisé | Utilisation |
+|:---|:---:|:---:|
+| Slice LUTs | 30 708 | 22,81 % |
+| Slice Registers | 33 501 | 12,44 % |
+| Block RAM | 115,5 | 31,64 % |
+| DSP48E1 | 100 | 13,51 % |
+
+---
+
+### 🟢 Version 2 — IQ balance + HB3 + NCO 48 bits
+
+**📅** 13 mars 2026 | **⏱️** WNS +0,165 ns | **✅ Fonctionnel** (bug SID existant, corrigé en V3)
+
+#### 1️⃣ Correction IQ balance (`iq_balance.v` — 🆕)
+
+Matrice 2×2 avant le CORDIC pour compenser le déséquilibre amplitude/phase de l'AD9361 :
+
+```
+I_out = alpha × I_in       (alpha défaut = 0x10000 = 1.0 en Q2.16)
+Q_out = beta  × I_in + Q_in  (beta défaut = 0x00000 = 0.0)
+```
+
+- ⚡ 2× DSP48E1
+- 🔌 Registres UHD : `BASE+6` (alpha), `BASE+7` (beta)
+
+#### 2️⃣ 3ème filtre demi-bande HB3
+
+Ajout de `small_hb_dec` (RX) et `small_hb_int` (TX) → décimation max passe à **×2048**.
+Activation : bit 10 du registre `BASE+2` (jamais écrit par le driver UHD stock → HB3 bypassé par défaut).
+
+#### 3️⃣ NCO 48 bits
+
+Extension de l'accumulateur de phase CORDIC de 32 à 48 bits :
+
+| | 32 bits | 48 bits |
+|:---|:---:|:---:|
+| 📐 Résolution @ 61,44 MSPS | 14,3 mHz | **0,22 µHz** |
+| 🎯 Précision fréquentielle | ± 7 mHz | **± 0,11 µHz** |
+
+Registre `BASE+8` (`phase_inc_hi`, 16 MSBs). Compatible backward : si = 0, comportement 32 bits.
+
+---
+
+### 🟢 Version 3 — CORDIC 24 étages + rounding + fix HB bits
+
+**📅** 13 mars 2026 | **📁** `usrp_b220_fpga_v3.bin` | **⏱️** WNS +1,224 ns | **✅ Fonctionnel**
+
+> 💡 Le WNS est **7× plus large** qu'en V2 — meilleure robustesse thermique.
+
+#### 1️⃣ Arrondi convergent CIC (`cic_dec_shifter.v`, `cic_int_shifter.v`)
+
+Remplacement de la troncature pure par un arrondi convergent avec protection débordement :
+
+```verilog
+// ❌ Avant — troncature pure
+assign signal_out = signal_in[shift+bw-1 : shift];
+
+// ✅ Après — arrondi convergent + protection overflow
+wire would_overflow = ~trunc_out[bw-1] & (&trunc_out[bw-2:0]) & round_bit;
+assign signal_out = would_overflow ? trunc_out : (trunc_out + round_bit);
+```
+
+📈 **Impact :** ~6 dB de SNR récupéré par étage.
+
+#### 2️⃣ CORDIC 20 → 24 étages (`cordic_z24.v`)
+
+| | 20 étages | 24 étages |
+|:---|:---:|:---:|
+| 🎯 SFDR théorique | ~120 dB | **~144 dB** |
+| 📐 Bits de phase utilisés | 20/24 | **24/24** |
+| ⚡ LUT additionnels | — | ~200 |
+
+#### 3️⃣ Dither RPDF avant CIC (`ddc_chain.v`)
+
+LFSR 16 bits (polynôme x¹⁶+x¹⁴+x¹³+x¹¹+1, graine `0xACE1`) injectant ±1 LSB. Élimine les « idle tones » CIC sur signaux basse fréquence.
+
+#### 4️⃣ Arrondis HB1/HB2/HB3 → prescale (`ddc_chain.v`)
+
+Toutes les extractions de bits (47→24, 24→19) passent de troncature à arrondi. **+6 dB SNR par étage.**
+
+#### 5️⃣ 🐛 Fix critique — Ordre des bits enable HB (`ddc_chain.v`, `duc_chain.v`)
+
+**Bug V2 :** Les bits `enable_hb1/hb2/hb3` dans `sr_2` étaient dans le mauvais ordre par rapport au driver UHD (`hb0 << 9 | hb1 << 8`). Résultat : `enable_hb1` jamais activé → débit DSP incompatible → SID corrompus (`0x02AD9C33`) → paquets IQ sur le bus de contrôle.
+
+```verilog
+// ❌ V2 : .out({enable_hb1, enable_hb2, enable_hb3, cic_decim_rate})
+// ✅ V3 : .out({enable_hb3, enable_hb1, enable_hb2, cic_decim_rate})
+```
+
+---
+
+### 🟢 Version 3.1 — Fix dither overflow
+
+**📅** 13 mars 2026 | **⏱️** WNS +0,369 ns | **✅ Fonctionnel**
+
+#### 🐛 Bug dither min-négatif (`ddc_chain.v`)
+
+Si le signal arrondi = `0x800000` (−2²³) et `lfsr[0]=1`, alors −2²³ + (−1) **déborde** → inversion instantanée du signal.
+
+```verilog
+// ✅ V3.1 — Suppression du dither si signal = min négatif
+wire i_at_min = i_cord_rnd[WIDTH-1] & ~(|i_cord_rnd[WIDTH-2:0]);
+wire i_dither = lfsr[0] & ~i_at_min;
+```
+
+⚡ Coût : 2 LUTs, 0 registre, 0 cycle.
+
+---
+
+### 🟢 Version 4 — IQ pleine précision + HB overflow-safe
+
+**📅** 13 mars 2026 | **📁** `usrp_b220_fpga_v4.bin` | **⏱️** WNS +0,228 ns | **✅ Fonctionnel**
+
+#### 1️⃣ IQ Balance pleine résolution 24 bits (`iq_balance.v`)
+
+**Bug V2 :** L'entrée 24 bits était tronquée à 18 bits avant multiplication → perte de 36 dB.
+
+```verilog
+// ❌ V2 : MULT_MACRO WIDTH_A(18)  → 6 LSBs perdus
+// ✅ V4 : MULT_MACRO WIDTH_A(24)  → pleine précision, 0 perte
+```
+
+📈 **Impact :** +6 dB de plancher de bruit. Utilise le multiplieur natif 25×18 du DSP48E1.
+
+#### 2️⃣ Arrondi HB1→HB2 overflow-safe (`ddc_chain.v`)
+
+L'entrée de HB2 recevait une troncature. Remplacement par arrondi avec détection de débordement :
+
+```verilog
+wire i_hb1_ovf = ~i_hb1[41] & (&i_hb1[40:18]) & i_hb1[17];
+assign i_hb1_rnd = i_hb1_ovf ? i_hb1[41:18] : (i_hb1[41:18] + {23'b0, i_hb1[17]});
+```
+
+📈 **Impact :** +6 dB SNR + correction bug overflow.
+
+---
+
+### 🟢 Version 5 — Sigma-delta 2ème ordre
+
+**📅** 13 mars 2026 | **⏱️** WNS +0,325 ns | **✅ Fonctionnel**
+
+#### 📉 Module `round_sd.v` — Noise shaping SD ordre 2
+
+Ajout du paramètre `SD_ORDER` :
+
+| Ordre | NTF | Pente de bruit | SNR floor |
+|:---|:---|:---|:---|
+| 1 (original) | $(1-z^{-1})$ | −6 dB/octave | référence |
+| **2 (V5)** | $(1-z^{-1})^2$ | **−12 dB/octave** | **+8–12 dB** |
+
+Appliqué aux `round_sd` de sortie DDC (33→16 bits). Le bruit de quantification est sculpté et repoussé hors bande.
+
+⚡ Coût : 1 registre + 1 additionneur + 1 clip par instance (0 DSP).
+
+---
+
+### 🟡 Version 6 — Stratégies Vivado (obsolète)
+
+**📅** 13 mars 2026 | **⏱️** WNS +0,325 ns | **⚠️ Fonctionnel mais stratégie abandonnée**
+
+Activation de stratégies Vivado agressives (`Flow_PerfOptimized_high`, `RETIMING true`, directive `Explore` partout).
+
+> ⚠️ **Cette approche est abandonnée.** Le RETIMING corrompt le bus de contrôle UHD de manière non-déterministe. Voir [V9/V9b](#-version-9b--fix-pipeline--stratégies-par-défaut-production) et [🚨 Règles absolues](#-règles-absolues).
+
+---
+
+### 🔴 Version 7 — HB full-precision (échec)
+
+**📅** 13 mars 2026 | **⏱️** WNS +0,371 ns | **❌ accum_timeout**
+
+Suppression du `round_sd` d'entrée dans `small_hb_dec.v` et `hb_dec.v` pour passer au datapath 24 bits.
+
+> 💀 **Cause :** Le `round_sd` supprimé avait une latence de **2 cycles**. En le retirant, la chaîne DDC raccourcit de 4 cycles, cassant le flux isochrone UHD → `accum_timeout`.
+
+📝 **Leçon :** La latence pipeline doit être préservée **au cycle près**.
+
+---
+
+### 🔴 Version 8 — HB latency-safe (échec)
+
+**📅** 13 mars 2026 | **⏱️** WNS +0,211 ns | **❌ accum_timeout**
+
+Tentative de V7 corrigée : remplacement du `round_sd` d'entrée par un pipeline de 2 registres (latence préservée) + datapath 24 bits + SD_ORDER(2). LUTs passent à 35,56 %.
+
+> 💀 **Cause :** Toujours compilé avec les stratégies agressives V6 (RETIMING + Explore). C'est le **RETIMING** qui cassait le bus, pas les modifications DSP.
+
+---
+
+### 🟢 Version 9b — Fix pipeline + stratégies par défaut (PRODUCTION)
+
+**📅** 14 mars 2026 | **📁** `usrp_b220_fpga.bin` / `usrp_b220_fpga_v9b.bin` | **⏱️** WNS +0,497 ns | **✅ PRODUCTION**
+
+> ⭐ **Version déployée en production sur la station SatNOGS #3762.**
+
+#### 🔧 Deux corrections critiques
+
+**1️⃣ Bypass externe HB3 (`ddc_chain.v` — V9)**
+
+Quand HB3 est désactivé, le module `small_hb_dec` utilisait un registre bypass interne (+1 cycle de latence fantôme). Remplacé par un **mux combinatoire externe** dans `ddc_chain.v` :
+
+```verilog
+// ✅ V9 — Bypass externe, 0 cycle de latence quand HB3 off
+assign i_hb3_out = enable_hb3 ? i_hb3_dec_out : i_hb2_out;
+assign q_hb3_out = enable_hb3 ? q_hb3_dec_out : q_hb2_out;
+```
+
+**2️⃣ Registre unique prescale_ext (`ddc_chain.v` — V9)**
+
+Le chemin de sortie avait un double pipeline `prescale` + `prescale_ext` (+1 cycle vs V4). Réduit à un seul registre `prescale_ext` pour correspondre à la latence V4 (6 cycles total).
+
+**3️⃣ Stratégies Vivado par défaut (`build.tcl` — V9b)**
+
+```tcl
+# ✅ V9b — Stratégies par défaut UNIQUEMENT
+set_property strategy {Vivado Synthesis Defaults} [get_runs synth_1]
+set_property strategy {Vivado Implementation Defaults} [get_runs impl_1]
+# ❌ PAS de RETIMING, PAS de Explore, PAS de Flow_PerfOptimized_high
+```
+
+#### 📊 Résultats V9b
+
+| Métrique | Valeur |
+|:---|:---|
+| ⏱️ WNS | **+0,497 ns** ✅ |
+| 💾 Taille binaire | 4 394 952 octets |
+| 🔑 MD5 | `123ea335...` |
+| ⏱️ Init UHD | ~71,9 secondes |
+| ✅ Register loopback | **PASS** |
+
+---
+
+## 📊 Tableau récapitulatif des versions
+
+| Version | WNS | DSP | LUT | Status | Notes |
+|:---|:---:|:---:|:---:|:---:|:---|
+| V0 | — | ~100 | ~22 % | ✅ | Baseline originale |
+| V1.0 | — | ~100 | ~22 % | ❌ | GPIF/FIFO cassé |
+| **V1.1** | +0,515 | 100 | 22,8 % | ✅ | CIC 256, DC offset |
+| **V2** | +0,165 | 112 | 24,1 % | ✅ | IQ balance, HB3, NCO 48b |
+| **V3** | +1,224 | 112 | 25,5 % | ✅ | CORDIC 24 ét., rounding, fix HB bits |
+| **V3.1** | +0,369 | 112 | 25,5 % | ✅ | Fix dither overflow |
+| **V4** | +0,228 | 112 | 25,6 % | ✅ | IQ 24-bit, HB overflow-safe |
+| **V5** | +0,325 | 112 | ~26 % | ✅ | Sigma-delta ordre 2 |
+| V6 | +0,325 | 112 | ~26 % | ⚠️ | Vivado agressif (obsolète) |
+| V7 | +0,371 | 112 | ~35 % | ❌ | Latence HB cassée |
+| V8 | +0,211 | 112 | 35,6 % | ❌ | RETIMING casse le bus ctrl |
+| V9 | +0,507 | 112 | ~26 % | ❌ | Idem (RETIMING + Explore) |
+| ⭐ **V9b** | **+0,497** | **112** | **~26 %** | **✅** | **🏭 PRODUCTION — Stratégies défaut** |
+
+---
+
+## 🚨 Règles absolues
+
+> Ces règles sont issues de **semaines de debugging** et de tests hardware. Les enfreindre **garantit** un firmware non-fonctionnel.
+
+### 🔴 Règle 1 — Ne JAMAIS modifier les interfaces GPIF/USB
+
+Ne jamais modifier les tailles de FIFO dans `b200_core.v`/`libresdr_b210.v`, ni les contraintes SLEW dans `b210.xdc`.
+
+📝 *V1.0 → firmware inutilisable, impossible à charger.*
+
+### 🔴 Règle 2 — Préserver la latence pipeline au cycle près
+
+Lorsqu'on modifie un module dans la chaîne DDC/DUC, la latence totale doit être **exactement identique**. Le contrôleur UHD repose sur un flux isochrone à timestamps VITA49.
+
+📝 *V7 → suppression de 4 cycles de latence → `accum_timeout`.*
+
+### 🔴 Règle 3 — Tester **chaque** build sur le hardware
+
+Toujours exécuter `uhd_usrp_probe` / SoapySDR init après une modification avant de déclarer un build fonctionnel.
+
+📝 *Un WNS positif ne garantit PAS que le firmware fonctionne (V8 : WNS +0,211 ns → échec).*
+
+### 🔴 Règle 4 — Ne JAMAIS utiliser RETIMING
+
+L'option `STEPS.SYNTH_DESIGN.ARGS.RETIMING true` déplace les registres à travers la logique combinatoire. Cela **corrompt le bus de contrôle UHD** de manière non-déterministe → `accum_timeout`.
+
+📝 *V6→V9 : tous les builds avec RETIMING ont échoué.*
+
+### 🔴 Règle 5 — Stratégies Vivado par défaut UNIQUEMENT
+
+⛔ `Flow_PerfOptimized_high`, `Performance_ExplorePostRoutePhysOpt`, directives `Explore`
+
+✅ `{Vivado Synthesis Defaults}`, `{Vivado Implementation Defaults}`
+
+📝 *V9 avec Explore → `accum_timeout`. V9b sans → fonctionne.*
+
+### 🔴 Règle 6 — Bypass externe pour HB3
+
+Quand HB3 est désactivé, utiliser un mux combinatoire EXTERNE (dans `ddc_chain.v`) au lieu du registre bypass interne de `small_hb_dec`, qui ajoute 1 cycle fantôme.
+
+📝 *V9 fix dans `ddc_chain.v` — le registre bypass interne cassait la latence.*
+
+---
+
+## 📚 Ressources FPGA XC7A200T
 
 | Ressource | Disponible |
 |---|---|
