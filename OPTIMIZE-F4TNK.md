@@ -624,6 +624,44 @@ set_property strategy {Vivado Implementation Defaults} [get_runs impl_1]
 
 ---
 
+#### 🖥️ Écosystème logiciel — V9b (14 mars 2026)
+
+En parallèle du firmware FPGA, les dépôts logiciels ont été mis à jour dans le cadre de la release V9b.
+
+##### satnogs-client-librespace — `master-f4tnk-v2.1` (`ee95d44`)
+
+| # | Changement | Description |
+|:---:|:---|:---|
+| 1 | **Filtrage transmetteurs par fréquence** | `GrSat` reçoit maintenant `frequency=` (Hz). Les transmetteurs gr-satellites sont filtrés par baudrate **et** par fréquence d'observation (±500 kHz). Un satellite multi-bande (UHF + S-band) n'instancie que le bon flowgraph. |
+| 2 | **`_collect_sdr_hw()` réécrit** | Remplace les appels `subprocess SoapySDRUtil` par l'API Python SoapySDR directe. Retourne firmware, FPGA version, serial, gain/freq/bandwidth ranges, antennas, clock sources, `ref_locked`. |
+| 3 | **Élévation max dans le log de démarrage** | Calcul PyEphem sur 21 points de la passe — affiché comme `📐42.3°` avant le lancement du flowgraph. |
+| 4 | **Fix descrambling G3RUH** | `self.radio = flowgraph` ajouté après création du flowgraph pour que `parsed_descrambling` soit accessible dans les métadonnées post-observation. |
+| 5 | **Versions dépôts dans les métadonnées** | `_collect_software_versions()` charge `/usr/local/share/satnogs/repo_versions.json` (généré par le Dockerfile) pour exposer les 16 versions ARG dans `station['software']['repos']`. |
+
+##### gr-satellites — `master-f4tnk` (`fabfa332`)
+
+| # | Changement | Description |
+|:---:|:---|:---|
+| 1 | **`--downlink_freq` (Hz)** | Nouveau filtre dans le groupe `transmitter filtering`. Instancie uniquement les TX chains dont la fréquence SatYAML est à ±500 kHz de la fréquence d'observation. Combiné avec `--baudrate` et `--modulation` existants. Fallback automatique si aucun match. |
+
+##### satnogs-flowgraphs — `master-f4tnk-v2.2c` (`1c84a45`)
+
+| # | Changement | Description |
+|:---:|:---|:---|
+| 1 | **Déduplication logs UHD + icônes** | `UHD_LOG_PATTERN` regex intercepte les lignes `[INFO] [file.cpp:NNN] [Component] msg`. Déduplication inter-observations (`_uhd_dedup_cache`, max 50 entrées). Icônes contextuelles par composant (`🔍 [B200]`, `📡 [RFNoC]`, etc.). Suppression du double `[INFO] [INFO]` issu du logger Python. |
+
+##### satnogs-docker — `f4tnk` / `main` (`368f30f`)
+
+| # | Changement | Description |
+|:---:|:---|:---|
+| 1 | **`repo_versions.json` baked-in** | `RUN printf '{"volk":...}' > /usr/local/share/satnogs/repo_versions.json` : les 16 ARG versions compilées dans l'image au moment du build. |
+| 2 | **`gnuradio.conf` baked-in** | `COPY gnuradio/etc/gnuradio.conf → conf.d/98-gnuradio-default.conf` (`max_name_len=100`, `global_block_buffer_size=32768`) — supprime le bind-mount depuis l'hôte. |
+| 3 | **Suppression bind-mounts redondants** | `LibreSDR_UHD_B220_Mini_FPGA/` et `check-sdr.sh` étaient déjà intégrés dans l'image (Dockerfile L332-340, L640). Binds supprimés. |
+| 4 | **VOLK : bind → volume nommé** | `./.volk:/var/lib/satnogs-client/.volk` remplacé par le volume nommé `volk-profile`. Entrypoint gère la régénération automatique du profil si absent. |
+| 5 | **Fix `build.sh` tag push** | `sync_client_version()` effectuait `git push` sous root (sans credentials GitLab). Corrigé : `su f4tnk -c "git push ..."`. Le tag roulant `2.1.dev0+f4tnk` est maintenant mis à jour sur le remote à chaque build. |
+
+---
+
 ## 📊 Tableau récapitulatif des versions
 
 | Version | WNS | DSP | LUT | Status | Notes |
