@@ -80,23 +80,9 @@ module ddc_chain
      (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
       .in(set_data),.out(dc_offset_bypass),.changed());
 
-   // V2: IQ imbalance correction coefficients (host fallback values)
-   wire [17:0] iq_alpha_host;  // Host-side amplitude correction (Q2.16, 1.0 = 0x10000)
-   wire [17:0] iq_beta_host;   // Host-side phase correction     (Q2.16, 0.0 = 0x00000)
-
-   // V11: Blind IQ auto-calibration — always-on, overrides host coefficients
-   wire [17:0] iq_alpha_auto, iq_beta_auto;
-   wire        iq_auto_valid;
-   // Auto-cal coefficients are used once valid, otherwise fall back to host values
-   reg         iq_auto_ready;
-   always @(posedge clk)
-     if (rst)
-       iq_auto_ready <= 1'b0;
-     else if (iq_auto_valid)
-       iq_auto_ready <= 1'b1;
-
-   wire [17:0] iq_alpha = iq_auto_ready ? iq_alpha_auto : iq_alpha_host;
-   wire [17:0] iq_beta  = iq_auto_ready ? iq_beta_auto  : iq_beta_host;
+   // V2: IQ imbalance correction coefficients
+   wire [17:0] iq_alpha;  // Amplitude correction (Q2.16, 1.0 = 0x10000)
+   wire [17:0] iq_beta;   // Phase correction     (Q2.16, 0.0 = 0x00000)
 
    // V10: TPDF dither LFSR — eliminates CIC idle tones
    // TPDF (triangular PDF) ±2 LSB: sum of two independent RPDF ±1 LSB sources
@@ -113,10 +99,10 @@ module ddc_chain
      end
    setting_reg #(.my_addr(BASE+6), .width(18), .at_reset(18'h10000)) sr_iq_alpha
      (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
-      .in(set_data),.out(iq_alpha_host),.changed());
+      .in(set_data),.out(iq_alpha),.changed());
    setting_reg #(.my_addr(BASE+7), .width(18), .at_reset(18'h00000)) sr_iq_beta
      (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
-      .in(set_data),.out(iq_beta_host),.changed());
+      .in(set_data),.out(iq_beta),.changed());
 
    // V2: NCO 48-bit upper phase increment (default 0 = backward compatible 32-bit)
    setting_reg #(.my_addr(BASE+8), .width(16)) sr_phase_hi
@@ -155,20 +141,8 @@ module ddc_chain
    //   I_out = alpha * I_in
    //   Q_out = beta  * I_in + Q_in
    // Default: alpha=1.0 (0x10000), beta=0.0 → transparent
-   // V11: alpha/beta now come from blind auto-calibration (iq_auto_cal)
    wire [WIDTH-1:0] rx_fe_i_iq, rx_fe_q_iq;
    wire strobe_iq;
-
-   // V11: Blind IQ auto-calibration — always active, no bypass
-   // Operates on post-DC-offset signal to compute E[I²], E[Q²], E[I·Q]
-   // and derive optimal alpha/beta correction coefficients.
-   iq_auto_cal #(.WIDTH(WIDTH), .COEFF_WIDTH(18), .FRAC_BITS(16),
-                 .AVG_ALPHA(20), .UPDATE_SHIFT(16)) iq_autocal
-     (.clk(clk), .rst(rst),
-      .stb_in(1'b1),
-      .i_in(rx_fe_i_dc), .q_in(rx_fe_q_dc),
-      .alpha_out(iq_alpha_auto), .beta_out(iq_beta_auto),
-      .coeff_valid(iq_auto_valid));
 
    iq_balance #(.WIDTH(WIDTH), .DEVICE(DEVICE)) iq_bal
      (.clk(clk), .rst(rst),
@@ -408,32 +382,6 @@ module ddc_chain
 	 wire [WIDTH-1:0] q_to_mult = enable_hb3 ? q_hb3 : q_pre_hb3;
 	 wire             strobe_to_mult = enable_hb3 ? strobe_hb3 : strobe_pre_hb3;
 
-	 // V11: Impulse noise blanker — always active, no bypass
-	 // Blanks impulsive noise spikes > 4× running RMS estimate.
-	 // Placed after all decimation, before ALE, at lowest sample rate.
-	 wire [WIDTH-1:0] i_blanked, q_blanked;
-	 wire             strobe_blanked;
-
-	 impulse_blanker #(.WIDTH(WIDTH), .ALPHA(16), .THRESHOLD(4)) blanker_newhb
-	   (.clk(clk), .rst(rst),
-	    .stb_in(strobe_to_mult),
-	    .i_in(i_to_mult), .q_in(q_to_mult),
-	    .i_out(i_blanked), .q_out(q_blanked),
-	    .stb_out(strobe_blanked));
-
-	 // V11: Adaptive Line Enhancer (ALE) — always active, no bypass
-	 // Extracts predictable (correlated) signal components from noise.
-	 // NLMS adaptation, 32-tap complex FIR, decorrelation delay Δ=3.
-	 wire [WIDTH-1:0] i_ale, q_ale;
-	 wire             strobe_ale;
-
-	 ale_nlms #(.WIDTH(WIDTH), .NTAPS(32), .DELAY(3), .MU_SHIFT(12)) ale_newhb
-	   (.clk(clk), .rst(rst),
-	    .stb_in(strobe_blanked),
-	    .i_in(i_blanked), .q_in(q_blanked),
-	    .i_out(i_ale), .q_out(q_ale),
-	    .stb_out(strobe_ale));
-
 	 // V6/V9: Full 24-bit precision into prescale multiply
 	 // DSP48E1 natively supports 25×18 signed — no input truncation needed.
 	 // Single pipeline register (matches V4's clip_reg latency — keeps total
@@ -441,9 +389,9 @@ module ddc_chain
 	 reg [WIDTH:0]    i_prescale_ext, q_prescale_ext;
 	 reg              strobe_prescale_ext;
 	 always @(posedge clk) begin
-	    strobe_prescale_ext <= strobe_ale;
-	    i_prescale_ext <= {i_ale[WIDTH-1], i_ale};
-	    q_prescale_ext <= {q_ale[WIDTH-1], q_ale};
+	    strobe_prescale_ext <= strobe_to_mult;
+	    i_prescale_ext <= {i_to_mult[WIDTH-1], i_to_mult};
+	    q_prescale_ext <= {q_to_mult[WIDTH-1], q_to_mult};
 	 end
 
 	 // Apply scaling gain to compensate for CORDIC and CIC gain adjustments so that signal swing over network transport has
@@ -517,37 +465,15 @@ module ddc_chain
 	   (.clk(clk),.rst(rst),.bypass(~enable_hb2),.run(run),.cpi(cpi_hb),
 	    .stb_in(strobe_hb1),.data_in(q_hb1),.stb_out(),.data_out(q_hb2));
 
-	 // V11: Impulse noise blanker — always active (old_hb path)
-	 wire [WIDTH-1:0] i_blanked, q_blanked;
-	 wire             strobe_blanked;
-
-	 impulse_blanker #(.WIDTH(WIDTH), .ALPHA(16), .THRESHOLD(4)) blanker_oldhb
-	   (.clk(clk), .rst(rst),
-	    .stb_in(strobe_hb2),
-	    .i_in(i_hb2), .q_in(q_hb2),
-	    .i_out(i_blanked), .q_out(q_blanked),
-	    .stb_out(strobe_blanked));
-
-	 // V11: Adaptive Line Enhancer (ALE) — always active (old_hb path)
-	 wire [WIDTH-1:0] i_ale, q_ale;
-	 wire             strobe_ale;
-
-	 ale_nlms #(.WIDTH(WIDTH), .NTAPS(32), .DELAY(3), .MU_SHIFT(12)) ale_oldhb
-	   (.clk(clk), .rst(rst),
-	    .stb_in(strobe_blanked),
-	    .i_in(i_blanked), .q_in(q_blanked),
-	    .i_out(i_ale), .q_out(q_ale),
-	    .stb_out(strobe_ale));
-
 	 // V6: Full 24-bit precision into prescale multiply (old_hb path)
 	 // Was: truncate 24→19 MSBs → clip 19→18 → MULT 18×18 (lost 6 bits)
 	 // Now: full 24-bit → sign-extend 25 → MULT 25×18 (DSP48E1 native)
 	 reg [WIDTH:0]    i_prescale_ext, q_prescale_ext;
 	 reg              strobe_prescale_ext;
 	 always @(posedge clk) begin
-	    strobe_prescale_ext <= strobe_ale;
-	    i_prescale_ext <= {i_ale[WIDTH-1], i_ale};
-	    q_prescale_ext <= {q_ale[WIDTH-1], q_ale};
+	    strobe_prescale_ext <= strobe_hb2;
+	    i_prescale_ext <= {i_hb2[WIDTH-1], i_hb2};
+	    q_prescale_ext <= {q_hb2[WIDTH-1], q_hb2};
 	 end
 
 	 //scalar operation (gain of 6 bits)
