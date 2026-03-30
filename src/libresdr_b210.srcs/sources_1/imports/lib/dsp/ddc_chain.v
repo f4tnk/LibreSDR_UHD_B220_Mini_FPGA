@@ -84,13 +84,19 @@ module ddc_chain
    wire [17:0] iq_alpha;  // Amplitude correction (Q2.16, 1.0 = 0x10000)
    wire [17:0] iq_beta;   // Phase correction     (Q2.16, 0.0 = 0x00000)
 
-   // V3: RPDF dither LFSR — eliminates CIC idle tones (±1 LSB rectangular PDF)
-   reg [15:0] lfsr = 16'hACE1;
+   // V10: TPDF dither LFSR — eliminates CIC idle tones
+   // TPDF (triangular PDF) ±2 LSB: sum of two independent RPDF ±1 LSB sources
+   // Provides better spectral whitening than single RPDF at negligible SNR cost
+   reg [15:0] lfsr_a = 16'hACE1;
+   reg [15:0] lfsr_b = 16'h7B3F;
    always @(posedge clk)
-     if (rst)
-       lfsr <= 16'hACE1;
-     else
-       lfsr <= {lfsr[14:0], lfsr[15] ^ lfsr[13] ^ lfsr[12] ^ lfsr[10]};
+     if (rst) begin
+       lfsr_a <= 16'hACE1;
+       lfsr_b <= 16'h7B3F;
+     end else begin
+       lfsr_a <= {lfsr_a[14:0], lfsr_a[15] ^ lfsr_a[13] ^ lfsr_a[12] ^ lfsr_a[10]};
+       lfsr_b <= {lfsr_b[14:0], lfsr_b[15] ^ lfsr_b[14] ^ lfsr_b[12] ^ lfsr_b[3]};
+     end
    setting_reg #(.my_addr(BASE+6), .width(18), .at_reset(18'h10000)) sr_iq_alpha
      (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
       .in(set_data),.out(iq_alpha),.changed());
@@ -177,18 +183,27 @@ module ddc_chain
    wire i_cord_ovf = ~i_cordic[24] & (&i_cordic[23:1]) & i_cordic[0];
    wire q_cord_ovf = ~q_cordic[24] & (&q_cordic[23:1]) & q_cordic[0];
 
-   // V3: Safe dither injection — prevent wrap when signal is at min negative (-2^23)
+   // V10: TPDF dither injection — ±2 LSB triangular PDF
+   // dither_val = rpdf_a + rpdf_b - 1 ∈ {-1, 0, +1} with triangular probability
+   // Suppress dither when signal is at min/max to prevent wrap
    wire [WIDTH-1:0] i_cord_rnd = i_cord_ovf ? i_cordic[24:1] : i_cordic_rounded;
    wire [WIDTH-1:0] q_cord_rnd = q_cord_ovf ? q_cordic[24:1] : q_cordic_rounded;
-   // Dither is 0 or -1 (RPDF ±0.5 LSB). Suppress dither=-1 when signal is min negative to prevent wrap.
-   wire i_at_min = i_cord_rnd[WIDTH-1] & ~(|i_cord_rnd[WIDTH-2:0]);  // true if 0x800000
+   wire i_at_min = i_cord_rnd[WIDTH-1] & ~(|i_cord_rnd[WIDTH-2:0]);
    wire q_at_min = q_cord_rnd[WIDTH-1] & ~(|q_cord_rnd[WIDTH-2:0]);
-   wire i_dither = lfsr[0] & ~i_at_min;
-   wire q_dither = lfsr[8] & ~q_at_min;
+   wire i_at_max = ~i_cord_rnd[WIDTH-1] & (&i_cord_rnd[WIDTH-2:0]);
+   wire q_at_max = ~q_cord_rnd[WIDTH-1] & (&q_cord_rnd[WIDTH-2:0]);
+   // TPDF: sum of two independent bits → {0,1,2}, subtract 1 → {-1,0,+1}
+   wire signed [1:0] i_dith_val = {1'b0, lfsr_a[0]} + {1'b0, lfsr_b[0]} - 2'sd1;
+   wire signed [1:0] q_dith_val = {1'b0, lfsr_a[8]} + {1'b0, lfsr_b[8]} - 2'sd1;
+   // Clamp: suppress +1 at max, suppress -1 at min
+   wire signed [1:0] i_dith_safe = (i_at_max && i_dith_val > 0) ? 2'sd0 :
+                                   (i_at_min && i_dith_val < 0) ? 2'sd0 : i_dith_val;
+   wire signed [1:0] q_dith_safe = (q_at_max && q_dith_val > 0) ? 2'sd0 :
+                                   (q_at_min && q_dith_val < 0) ? 2'sd0 : q_dith_val;
 
    always @(posedge clk) begin
-      i_cordic_pipe <= i_cord_rnd + {{(WIDTH-1){i_dither}}, i_dither};
-      q_cordic_pipe <= q_cord_rnd + {{(WIDTH-1){q_dither}}, q_dither};
+      i_cordic_pipe <= i_cord_rnd + {{(WIDTH-2){i_dith_safe[1]}}, i_dith_safe};
+      q_cordic_pipe <= q_cord_rnd + {{(WIDTH-2){q_dith_safe[1]}}, q_dith_safe};
    end
 
 
@@ -208,6 +223,22 @@ module ddc_chain
      decim_q (.clock(clk),.reset(rst),.enable(run),
 	      .rate(cic_decim_rate),.strobe_in(1'b1),.strobe_out(strobe_cic),
 	      .signal_in(q_cordic_pipe),.signal_out(q_cic));
+
+   // V10: CIC droop compensator — 5-tap symmetric FIR
+   // Corrects sinc^4 passband attenuation (+3.9 dB at band edge)
+   // Always enabled (bypass=0). Operates at post-CIC decimated rate.
+   wire [WIDTH-1:0] i_cic_comp, q_cic_comp;
+   wire strobe_cic_comp;
+
+   cic_droop_comp #(.WIDTH(WIDTH)) droop_comp_i
+     (.clk(clk), .rst(rst), .bypass(1'b0),
+      .stb_in(strobe_cic), .data_in(i_cic),
+      .stb_out(strobe_cic_comp), .data_out(i_cic_comp));
+
+   cic_droop_comp #(.WIDTH(WIDTH)) droop_comp_q
+     (.clk(clk), .rst(rst), .bypass(1'b0),
+      .stb_in(strobe_cic), .data_in(q_cic),
+      .stb_out(), .data_out(q_cic_comp));
 
    //////////////////////////////////////////////////////////////////////////
    //
@@ -259,7 +290,8 @@ module ddc_chain
 	 assign strobe_hb1 = data_valid1;
 	 assign strobe_hb2 = data_valid2;
 
-	 assign nd1 = strobe_cic;
+	 // V10: Feed compensated CIC output to HB1
+	 assign nd1 = strobe_cic_comp;
 	 assign nd2 = strobe_hb1;
 
 	 // Default Coeffs have gain of ~1.0
@@ -272,8 +304,8 @@ module ddc_chain
 	    .coef_din(coef_din), // input [17 : 0] coef_din
 	    .rfd(rfd1), // output rfd
 	    .nd(nd1), // input nd
-	    .din_1(i_cic), // input [23 : 0] din_1
-	    .din_2(q_cic), // input [23 : 0] din_2
+	    .din_1(i_cic_comp), // input [23 : 0] din_1 — V10: droop-compensated
+	    .din_2(q_cic_comp), // input [23 : 0] din_2 — V10: droop-compensated
 	    .rdy(rdy1), // output rdy
 	    .data_valid(data_valid1), // output data_valid
 	    .dout_1(i_hb1), // output [46 : 0] dout_1
@@ -306,17 +338,18 @@ module ddc_chain
 	 reg [WIDTH-1:0]  i_pre_hb3, q_pre_hb3;
 	 reg              strobe_pre_hb3;
 
+	 // V10: HB3 now uses droop-compensated CIC output
 	 always @(posedge clk)
 	   case({enable_hb1,enable_hb2})
 	     2'd0 : begin
-		strobe_pre_hb3 <= strobe_cic;
-		i_pre_hb3 <= i_cic;
-		q_pre_hb3 <= q_cic;
+		strobe_pre_hb3 <= strobe_cic_comp;
+		i_pre_hb3 <= i_cic_comp;
+		q_pre_hb3 <= q_cic_comp;
 	     end
 	     2'd1 : begin
-		strobe_pre_hb3 <= strobe_cic;
-		i_pre_hb3 <= i_cic;
-		q_pre_hb3 <= q_cic;
+		strobe_pre_hb3 <= strobe_cic_comp;
+		i_pre_hb3 <= i_cic_comp;
+		q_pre_hb3 <= q_cic_comp;
 	     end
 	     2'd2 : begin
 		strobe_pre_hb3 <= strobe_hb1;
@@ -413,13 +446,14 @@ module ddc_chain
 	 wire [WIDTH-1:0] i_hb1, q_hb1;
 	 wire [WIDTH-1:0] i_hb2, q_hb2;
 	 // First (small) halfband  24 bit I/O
+	 // V10: uses droop-compensated CIC output
 	 small_hb_dec #(.WIDTH(WIDTH),.DEVICE(DEVICE)) small_hb_i
 	   (.clk(clk),.rst(rst),.bypass(~enable_hb1),.run(run),
-	    .stb_in(strobe_cic),.data_in(i_cic),.stb_out(strobe_hb1),.data_out(i_hb1));
+	    .stb_in(strobe_cic_comp),.data_in(i_cic_comp),.stb_out(strobe_hb1),.data_out(i_hb1));
 
 	 small_hb_dec #(.WIDTH(WIDTH),.DEVICE(DEVICE)) small_hb_q
 	   (.clk(clk),.rst(rst),.bypass(~enable_hb1),.run(run),
-	    .stb_in(strobe_cic),.data_in(q_cic),.stb_out(),.data_out(q_hb1));
+	    .stb_in(strobe_cic_comp),.data_in(q_cic_comp),.stb_out(),.data_out(q_hb1));
 
 	 // Second (large) halfband  24 bit I/O
 	 wire [8:0] 	  cpi_hb = enable_hb1 ? {cic_decim_rate,1'b0} : {1'b0,cic_decim_rate};

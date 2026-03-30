@@ -12,9 +12,13 @@
 //
 // These taps designed by halfgen4 from ldoolittle:
 //   2 * 131072 * halfgen4(.75/8,2)
+//
+// V10: INTWIDTH raised from 17 to WIDTH (24) to exploit DSP48E1 25×18 native
+//      signed multiply. Eliminates early 7-bit truncation that was destroying
+//      weak-signal LSBs. Input round_sd stage is now bypassed (WIDTH→WIDTH).
 module small_hb_dec
   #(parameter WIDTH=18,
-    parameter DEVICE = "SPARTAN6")
+    parameter DEVICE = "7SERIES")
     (input clk,
      input rst,
      input bypass,
@@ -24,13 +28,15 @@ module small_hb_dec
      output reg stb_out,
      output reg [WIDTH-1:0] data_out);
 
-   // Round off inputs to 17 bits because of 18 bit multipliers
-   localparam INTWIDTH = 17;
+   // V10: Use full WIDTH internally — DSP48E1 supports 25×18 signed multiply
+   localparam INTWIDTH = WIDTH;
    wire [INTWIDTH-1:0] 	data_rnd;
    wire 		stb_rnd;
 
-   round_sd #(.WIDTH_IN(WIDTH),.WIDTH_OUT(INTWIDTH)) round_in
-     (.clk(clk),.reset(rst),.in(data_in),.strobe_in(stb_in),.out(data_rnd),.strobe_out(stb_rnd));
+   // V10: INTWIDTH==WIDTH, so round_sd would be identity but round.v doesn't support
+   // bits_in==bits_out. Direct wire-through instead.
+   assign data_rnd = data_in;
+   assign stb_rnd = stb_in;
 
 
    reg 			stb_rnd_d1;
@@ -77,14 +83,14 @@ module small_hb_dec
 	  d6 <= d5;
        end
 
-   reg [17:0] sum_a, sum_b, middle, middle_d1;
+   // V10: sum and middle widths = INTWIDTH+1 to hold sign-extended addition
+   reg [INTWIDTH:0] sum_a, sum_b, middle, middle_d1;
 
    always @(posedge clk)
      if(go)
        begin
 	  sum_a <= {data_rnd_d1[INTWIDTH-1],data_rnd_d1} + {d6[INTWIDTH-1],d6};
 	  sum_b <= {d2[INTWIDTH-1],d2} + {d4[INTWIDTH-1],d4};
-	  //middle <= {d3[INTWIDTH-1],d3};
 	  middle <= {d3,1'b0};
        end
 
@@ -92,31 +98,45 @@ module small_hb_dec
      if(go_d1)
        middle_d1 <= middle;
 
-   wire [17:0] sum = go_d1 ? sum_b : sum_a;
+   // V10: DSP48E1 25×18 signed multiply — full INTWIDTH+1 input width
+   wire [INTWIDTH:0] sum = go_d1 ? sum_b : sum_a;
    wire [17:0] coeff = go_d1 ? coeff_b : coeff_a;
-   wire [35:0] 	 prod;
+   wire [INTWIDTH+18:0] prod;
 
-    MULT_MACRO #(.DEVICE(DEVICE),  // Target Device: "VIRTEX5", "VIRTEX6", "SPARTAN6","7SERIES"
-		.LATENCY(1),         // Desired clock cycle latency, 0-4
-		.WIDTH_A(18),        // Multiplier A-input bus width, 1-25
-		.WIDTH_B(18))        // Multiplier B-input bus width, 1-18
-      mult (.P(prod),     // Multiplier output bus, width determined by WIDTH_P parameter
-	       .A(coeff),     // Multiplier input A bus, width determined by WIDTH_A parameter
-	       .B(sum),                    // Multiplier input B bus, width determined by WIDTH_B parameter
-	       .CE(go_d1 | go_d2),   // 1-bit active high input clock enable
-	       .CLK(clk),              // 1-bit positive edge clock input
-	       .RST(rst));             // 1-bit input active high reset
+    MULT_MACRO #(.DEVICE(DEVICE),
+		.LATENCY(1),
+		.WIDTH_A(INTWIDTH+1),  // V10: 25 bits (was 18) — fits DSP48E1 A-port natively
+		.WIDTH_B(18))
+      mult (.P(prod),
+	       .A(sum),
+	       .B(coeff),
+	       .CE(go_d1 | go_d2),
+	       .CLK(clk),
+	       .RST(rst));
 
-   localparam ACCWIDTH = 30;
+   // V10: Accumulator width = product width + 1 for safe accumulation of 2 products + middle
+   localparam ACCWIDTH = INTWIDTH + 18 + 2;  // 24+18+2=44 bits
    reg [ACCWIDTH-1:0] 	 accum;
 
+   // V10: Accumulator alignment for wider product
+   // Product is (INTWIDTH+1+18)-bit = 43-bit signed.
+   // Middle is (INTWIDTH+1)-bit = 25-bit, represents tap 0.5 via d3<<1.
+   // Alignment: middle needs 16 zero-pad bits at bottom (matching Q1.17 coeff scaling)
+   // and sign-extension at top to fill ACCWIDTH.
+   // zeros = 16 + ACCWIDTH - (INTWIDTH+1+18) = 16 + 44 - 43 = 17
+   // sign  = ACCWIDTH - (INTWIDTH+1) - zeros = 44 - 25 - 17 = 2
+   localparam PROD_WIDTH = INTWIDTH + 1 + 18;  // 43 bits
+   localparam MID_ZEROS = 16 + ACCWIDTH - PROD_WIDTH;  // 17
+   localparam MID_SIGN  = ACCWIDTH - (INTWIDTH+1) - MID_ZEROS;  // 2
+   
    always @(posedge clk)
      if(rst)
        accum <= 0;
      else if(go_d2)
-       accum <= {middle_d1[17],middle_d1[17],middle_d1,{(16+ACCWIDTH-36){1'b0}}} + {prod[35:36-ACCWIDTH]};
+       accum <= {{MID_SIGN{middle_d1[INTWIDTH]}}, middle_d1, {MID_ZEROS{1'b0}}}
+              + {{(ACCWIDTH-PROD_WIDTH){prod[PROD_WIDTH-1]}}, prod};
      else if(go_d3)
-       accum <= accum + {prod[35:36-ACCWIDTH]};
+       accum <= accum + {{(ACCWIDTH-PROD_WIDTH){prod[PROD_WIDTH-1]}}, prod};
 
    wire [WIDTH:0] 	 accum_rnd;
    wire [WIDTH-1:0] 	 accum_rnd_clip;

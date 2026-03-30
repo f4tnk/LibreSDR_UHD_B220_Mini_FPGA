@@ -12,7 +12,9 @@
 
 // NOTE   This only works for N=4, max decim rate of 256
 // NOTE   signal "rate" is EQUAL TO the actual rate, no more -1 BS
-// V3: Added convergent rounding of discarded LSBs for improved SNR
+// V10: Convergent (round-to-even / banker's) rounding of discarded LSBs.
+//      Eliminates +0.5 LSB DC bias present in V3's round-to-nearest.
+//      On tie cases (round_bit=1, all lower guard bits=0), rounds to even LSB.
 
 module cic_dec_shifter(rate,signal_in,signal_out);
    parameter bw = 16;
@@ -65,51 +67,64 @@ module cic_dec_shifter(rate,signal_in,signal_out);
    
    wire [5:0] 	  shift = bitgain(rate);
    
-   // V3: Extract bw-bit window with rounding of the MSB of discarded bits.
-   // round_bit = signal_in[shift-1] when shift>0, else 0.
-   // signal_out = signal_in[shift+bw-1:shift] + round_bit
-   // This recovers ~6 dB of SNR vs pure truncation.
+   // V10: Extract bw-bit window with convergent (round-to-even) rounding.
+   // round_bit = MSB of discarded bits (signal_in[shift-1] when shift>0).
+   // guard_nz  = OR of all bits below round_bit (signal_in[shift-2:0]).
+   // Convergent rule:
+   //   if round_bit=0 → truncate (no round)
+   //   if round_bit=1 AND guard_nz=1 → round up (not a tie)
+   //   if round_bit=1 AND guard_nz=0 → round to even: only round up if trunc_out[0]=1
+   // This eliminates DC bias from systematic rounding direction.
 
    reg [bw-1:0] trunc_out;
    reg          round_bit;
+   reg          guard_nz;   // V10: any guard bit below round_bit is nonzero
    
    always @*
      case(shift)
-       6'd0  : begin trunc_out = signal_in[0+bw-1:0];   round_bit = 1'b0; end
-       6'd4  : begin trunc_out = signal_in[4+bw-1:4];   round_bit = signal_in[3]; end
-       6'd7  : begin trunc_out = signal_in[7+bw-1:7];   round_bit = signal_in[6]; end
-       6'd8  : begin trunc_out = signal_in[8+bw-1:8];   round_bit = signal_in[7]; end
-       6'd10 : begin trunc_out = signal_in[10+bw-1:10]; round_bit = signal_in[9]; end
-       6'd11 : begin trunc_out = signal_in[11+bw-1:11]; round_bit = signal_in[10]; end
-       6'd12 : begin trunc_out = signal_in[12+bw-1:12]; round_bit = signal_in[11]; end
-       6'd13 : begin trunc_out = signal_in[13+bw-1:13]; round_bit = signal_in[12]; end
-       6'd14 : begin trunc_out = signal_in[14+bw-1:14]; round_bit = signal_in[13]; end
-       6'd15 : begin trunc_out = signal_in[15+bw-1:15]; round_bit = signal_in[14]; end
-       6'd16 : begin trunc_out = signal_in[16+bw-1:16]; round_bit = signal_in[15]; end
-       6'd17 : begin trunc_out = signal_in[17+bw-1:17]; round_bit = signal_in[16]; end
-       6'd18 : begin trunc_out = signal_in[18+bw-1:18]; round_bit = signal_in[17]; end
-       6'd19 : begin trunc_out = signal_in[19+bw-1:19]; round_bit = signal_in[18]; end
-       6'd20 : begin trunc_out = signal_in[20+bw-1:20]; round_bit = signal_in[19]; end
-       6'd21 : begin trunc_out = signal_in[21+bw-1:21]; round_bit = signal_in[20]; end
-       6'd22 : begin trunc_out = signal_in[22+bw-1:22]; round_bit = signal_in[21]; end
-       6'd23 : begin trunc_out = signal_in[23+bw-1:23]; round_bit = signal_in[22]; end
-       6'd24 : begin trunc_out = signal_in[24+bw-1:24]; round_bit = signal_in[23]; end
-       6'd25 : begin trunc_out = signal_in[25+bw-1:25]; round_bit = signal_in[24]; end
-       6'd26 : begin trunc_out = signal_in[26+bw-1:26]; round_bit = signal_in[25]; end
-       6'd27 : begin trunc_out = signal_in[27+bw-1:27]; round_bit = signal_in[26]; end
-       6'd28 : begin trunc_out = signal_in[28+bw-1:28]; round_bit = signal_in[27]; end
-       6'd29 : begin trunc_out = signal_in[29+bw-1:29]; round_bit = signal_in[28]; end
-       6'd30 : begin trunc_out = signal_in[30+bw-1:30]; round_bit = signal_in[29]; end
-       6'd31 : begin trunc_out = signal_in[31+bw-1:31]; round_bit = signal_in[30]; end
-       6'd32 : begin trunc_out = signal_in[32+bw-1:32]; round_bit = signal_in[31]; end
+       6'd0  : begin trunc_out = signal_in[0+bw-1:0];   round_bit = 1'b0; guard_nz = 1'b0; end
+       6'd4  : begin trunc_out = signal_in[4+bw-1:4];   round_bit = signal_in[3]; guard_nz = |signal_in[2:0]; end
+       6'd7  : begin trunc_out = signal_in[7+bw-1:7];   round_bit = signal_in[6]; guard_nz = |signal_in[5:0]; end
+       6'd8  : begin trunc_out = signal_in[8+bw-1:8];   round_bit = signal_in[7]; guard_nz = |signal_in[6:0]; end
+       6'd10 : begin trunc_out = signal_in[10+bw-1:10]; round_bit = signal_in[9]; guard_nz = |signal_in[8:0]; end
+       6'd11 : begin trunc_out = signal_in[11+bw-1:11]; round_bit = signal_in[10]; guard_nz = |signal_in[9:0]; end
+       6'd12 : begin trunc_out = signal_in[12+bw-1:12]; round_bit = signal_in[11]; guard_nz = |signal_in[10:0]; end
+       6'd13 : begin trunc_out = signal_in[13+bw-1:13]; round_bit = signal_in[12]; guard_nz = |signal_in[11:0]; end
+       6'd14 : begin trunc_out = signal_in[14+bw-1:14]; round_bit = signal_in[13]; guard_nz = |signal_in[12:0]; end
+       6'd15 : begin trunc_out = signal_in[15+bw-1:15]; round_bit = signal_in[14]; guard_nz = |signal_in[13:0]; end
+       6'd16 : begin trunc_out = signal_in[16+bw-1:16]; round_bit = signal_in[15]; guard_nz = |signal_in[14:0]; end
+       6'd17 : begin trunc_out = signal_in[17+bw-1:17]; round_bit = signal_in[16]; guard_nz = |signal_in[15:0]; end
+       6'd18 : begin trunc_out = signal_in[18+bw-1:18]; round_bit = signal_in[17]; guard_nz = |signal_in[16:0]; end
+       6'd19 : begin trunc_out = signal_in[19+bw-1:19]; round_bit = signal_in[18]; guard_nz = |signal_in[17:0]; end
+       6'd20 : begin trunc_out = signal_in[20+bw-1:20]; round_bit = signal_in[19]; guard_nz = |signal_in[18:0]; end
+       6'd21 : begin trunc_out = signal_in[21+bw-1:21]; round_bit = signal_in[20]; guard_nz = |signal_in[19:0]; end
+       6'd22 : begin trunc_out = signal_in[22+bw-1:22]; round_bit = signal_in[21]; guard_nz = |signal_in[20:0]; end
+       6'd23 : begin trunc_out = signal_in[23+bw-1:23]; round_bit = signal_in[22]; guard_nz = |signal_in[21:0]; end
+       6'd24 : begin trunc_out = signal_in[24+bw-1:24]; round_bit = signal_in[23]; guard_nz = |signal_in[22:0]; end
+       6'd25 : begin trunc_out = signal_in[25+bw-1:25]; round_bit = signal_in[24]; guard_nz = |signal_in[23:0]; end
+       6'd26 : begin trunc_out = signal_in[26+bw-1:26]; round_bit = signal_in[25]; guard_nz = |signal_in[24:0]; end
+       6'd27 : begin trunc_out = signal_in[27+bw-1:27]; round_bit = signal_in[26]; guard_nz = |signal_in[25:0]; end
+       6'd28 : begin trunc_out = signal_in[28+bw-1:28]; round_bit = signal_in[27]; guard_nz = |signal_in[26:0]; end
+       6'd29 : begin trunc_out = signal_in[29+bw-1:29]; round_bit = signal_in[28]; guard_nz = |signal_in[27:0]; end
+       6'd30 : begin trunc_out = signal_in[30+bw-1:30]; round_bit = signal_in[29]; guard_nz = |signal_in[28:0]; end
+       6'd31 : begin trunc_out = signal_in[31+bw-1:31]; round_bit = signal_in[30]; guard_nz = |signal_in[29:0]; end
+       6'd32 : begin trunc_out = signal_in[32+bw-1:32]; round_bit = signal_in[31]; guard_nz = |signal_in[30:0]; end
        
-       default : begin trunc_out = signal_in[32+bw-1:32]; round_bit = signal_in[31]; end
+       default : begin trunc_out = signal_in[32+bw-1:32]; round_bit = signal_in[31]; guard_nz = |signal_in[30:0]; end
      endcase // case(shift)
 
-   // Safe round-to-nearest: detect positive saturation case to prevent overflow wrap
-   wire would_overflow = ~trunc_out[bw-1] & (&trunc_out[bw-2:0]) & round_bit;
+   // V10: Convergent rounding (round-to-even)
+   // do_round = round_bit AND (guard_nz OR trunc_out[0])
+   //   - If round_bit=0: no round (truncate)
+   //   - If round_bit=1 and guard_nz=1: always round up (not a tie)
+   //   - If round_bit=1 and guard_nz=0 and trunc_out[0]=1: round up to make even
+   //   - If round_bit=1 and guard_nz=0 and trunc_out[0]=0: don't round (already even)
+   wire do_round = round_bit & (guard_nz | trunc_out[0]);
+   
+   // Overflow protection: don't round if result would wrap from max positive
+   wire would_overflow = ~trunc_out[bw-1] & (&trunc_out[bw-2:0]) & do_round;
    always @*
-     signal_out = would_overflow ? trunc_out : (trunc_out + {{(bw-1){1'b0}}, round_bit});
+     signal_out = would_overflow ? trunc_out : (trunc_out + {{(bw-1){1'b0}}, do_round});
 
 endmodule // cic_dec_shifter
 

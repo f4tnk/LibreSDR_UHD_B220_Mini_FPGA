@@ -17,6 +17,17 @@ proc log {msg} {
 log "Opening project: $project_file"
 open_project $project_file
 
+# V10: Ensure new cic_droop_comp.v is in the project sources
+set droop_src "$script_dir/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/cic_droop_comp.v"
+if {[file exists $droop_src]} {
+    set existing [get_files -quiet *cic_droop_comp.v]
+    if {$existing eq ""} {
+        log "Adding cic_droop_comp.v to project..."
+        add_files -norecurse $droop_src
+        set_property file_type {Verilog} [get_files $droop_src]
+    }
+}
+
 # ── Upgrade locked IPs (handles Vivado version upgrade 2025.1 → 2025.2) ─────
 log "Checking IP status..."
 set locked_ips [get_ips -filter {IS_LOCKED == 1}]

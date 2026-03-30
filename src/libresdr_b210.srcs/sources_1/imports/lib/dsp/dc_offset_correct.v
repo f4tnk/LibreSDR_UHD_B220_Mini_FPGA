@@ -1,11 +1,13 @@
 //
-// DC Offset Correction Filter for LibreSDR B220 (XC7A200T)
+// DC Offset Correction Filter for LibreSDR B220 (XC7A200T) — V10
 //
 // Single-pole IIR high-pass filter: y[n] = x[n] - avg[n]
 // where avg[n] = avg[n-1] + (x[n] - avg[n-1]) >> alpha
 //
-// Alpha controls the cutoff frequency: fc ≈ fs / (2*pi*2^alpha)
-// Default alpha=20: at 61.44 MSPS, fc ≈ 9.3 Hz (removes DC, preserves signal)
+// V10: Dual-alpha strategy for fast acquisition + precise tracking:
+//   - ALPHA_FAST (14): used for first 2^20 samples (~17ms @61.44M) → fc≈600Hz
+//   - ALPHA_SLOW (20): steady-state tracking → fc≈9.3Hz
+// This ensures fast DC removal on startup/retune without steady-state bias.
 //
 // Fully bypassable via setting register.
 // SPDX-License-Identifier: LGPL-3.0-or-later
@@ -14,7 +16,8 @@
 module dc_offset_correct
   #(
     parameter WIDTH = 24,
-    parameter ALPHA = 20  // Shift amount for IIR averaging (higher = lower cutoff)
+    parameter ALPHA = 20,       // Slow (tracking) shift amount
+    parameter ALPHA_FAST = 14   // Fast (acquisition) shift amount
   )
   (
    input                  clk,
@@ -45,22 +48,36 @@ module dc_offset_correct
                            corrected[WIDTH-1:0] :
                            (corrected[WIDTH] ? {1'b1, {(WIDTH-1){1'b0}}} : {1'b0, {(WIDTH-1){1'b1}}});
 
+   // V10: Dual-alpha with convergence counter
+   reg [20:0] settle_cnt;
+   wire settled = settle_cnt[20];   // 2^20 = ~1M samples ≈ 17ms @61.44M
+   wire [4:0] alpha_sel = settled ? ALPHA[4:0] : ALPHA_FAST[4:0];
+
+   // Compute update term: (in_ext - avg_i) >>> alpha_sel
+   wire signed [ACC_WIDTH-1:0] err_full = in_ext - avg_i;
+
+   // Arithmetic right shift by alpha_sel
+   // Use two pre-computed shifts and mux based on settled flag
+   wire signed [ACC_WIDTH-1:0] update_fast = (err_full >>> ALPHA_FAST);
+   wire signed [ACC_WIDTH-1:0] update_slow = (err_full >>> ALPHA);
+   wire signed [ACC_WIDTH-1:0] update = settled ? update_slow : update_fast;
+
    always @(posedge clk) begin
       if (rst) begin
          avg_i      <= {ACC_WIDTH{1'b0}};
          out        <= {WIDTH{1'b0}};
          strobe_out <= 1'b0;
+         settle_cnt <= 21'd0;
       end else begin
          strobe_out <= strobe_in;
          if (strobe_in) begin
             if (bypass) begin
                out <= in;
             end else begin
-               // Update average: avg += (input - avg) >> ALPHA
-               // This is equivalent to: avg = avg + (in_ext - avg_i) >>> ALPHA
-               // Simplified: avg += error >> ALPHA where error = in_ext - avg_i
-               avg_i <= avg_i + ((in_ext - avg_i) >>> ALPHA);
+               avg_i <= avg_i + update;
                out   <= corrected_clip;
+               if (!settled)
+                 settle_cnt <= settle_cnt + 21'd1;
             end
          end
       end
