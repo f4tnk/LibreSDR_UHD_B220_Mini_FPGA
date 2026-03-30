@@ -58,13 +58,27 @@ module cic_droop_comp
   wire signed [WIDTH:0] sym1 = {d1[WIDTH-1], d1} + {d3[WIDTH-1], d3};
   wire signed [WIDTH-1:0] mid = d2;
 
-  // Products: (WIDTH+1) × 18 = WIDTH+19 bits max
-  wire signed [WIDTH+18:0] p0 = sym0 * C0;
-  wire signed [WIDTH+18:0] p1 = sym1 * C1;
-  wire signed [WIDTH+17:0] p2 = mid  * C2;  // WIDTH × 18
+  // V13: Pipeline stage between multiply and sum — enables DSP48E1 internal
+  // register usage and halves combinatorial path delay.
+  // Stage 1: registered products (Vivado infers DSP48E1 MREG)
+  reg signed [WIDTH+18:0] p0_r, p1_r;
+  reg signed [WIDTH+17:0] p2_r;
+  reg stb_d2;
 
-  // Sum with proper sign extension
-  wire signed [WIDTH+19:0] sum = {p0[WIDTH+18], p0} + {p1[WIDTH+18], p1} + {{2{p2[WIDTH+17]}}, p2};
+  always @(posedge clk) begin
+    if (rst) begin
+      p0_r <= 0; p1_r <= 0; p2_r <= 0;
+      stb_d2 <= 0;
+    end else begin
+      p0_r <= sym0 * C0;
+      p1_r <= sym1 * C1;
+      p2_r <= mid  * C2;
+      stb_d2 <= stb_d1;
+    end
+  end
+
+  // Stage 2: sum (combinatorial, registered at output)
+  wire signed [WIDTH+19:0] sum = {p0_r[WIDTH+18], p0_r} + {p1_r[WIDTH+18], p1_r} + {{2{p2_r[WIDTH+17]}}, p2_r};
 
   // Normalize (÷2^17) with rounding
   wire signed [WIDTH+2:0] sum_scaled = sum[WIDTH+19:17] + {{(WIDTH+2){1'b0}}, sum[16]};
@@ -73,14 +87,20 @@ module cic_droop_comp
   wire signed [WIDTH-1:0] clipped;
   clip #(.bits_in(WIDTH+3), .bits_out(WIDTH)) clip_out (.in(sum_scaled), .out(clipped));
 
+  // V13: bypass uses d2 delayed by one extra cycle to match pipeline
+  reg [WIDTH-1:0] d2_r;
+  always @(posedge clk)
+    if (rst) d2_r <= 0;
+    else     d2_r <= d2;
+
   always @(posedge clk) begin
     if (rst) begin
       data_out <= 0;
       stb_out  <= 0;
     end else begin
-      stb_out <= stb_d1;
-      if (stb_d1)
-        data_out <= bypass ? d2 : clipped;
+      stb_out <= stb_d2;
+      if (stb_d2)
+        data_out <= bypass ? d2_r : clipped;
     end
   end
 

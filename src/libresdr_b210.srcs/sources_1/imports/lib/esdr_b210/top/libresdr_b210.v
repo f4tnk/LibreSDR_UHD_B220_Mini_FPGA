@@ -254,9 +254,17 @@ encpy encpy_i(
  // Clock in ports
   .clk_in1_10M  ( clk10M_w     )
     );
+
+    // V13: CDC synchronizer for is10meg — PLL locked output is asynchronous
+    // to sync_200M domain. 2-stage DFF eliminates metastability risk.
+    reg is10meg_meta, is10meg_sync;
+    always @(posedge sync_200M) begin
+        is10meg_meta <= is10meg;
+        is10meg_sync <= is10meg_meta;
+    end
  
 always@(posedge sync_200M) begin
-    if (is10meg==0) begin
+    if (is10meg_sync==0) begin
         counter_10M <= 8'd0;
         sync_10M    <= 1'b0;
     end else begin
@@ -269,7 +277,7 @@ always@(posedge sync_200M) begin
     end
     
 end
-    assign ext_ref = is10meg?sync_10M:PPS_IN_EXT;  //ref_sel high select 10MHz low select 1pps
+    assign ext_ref = is10meg_sync?sync_10M:PPS_IN_EXT;  //ref_sel high select 10MHz low select 1pps
  
     assign REF_CLK_REQ = 1'b1;
     assign PPS_LED = lpps;
