@@ -28,6 +28,19 @@ if {[file exists $droop_src]} {
     }
 }
 
+# V11: Ensure new DSP modules are in the project sources
+foreach v11_file {ale_nlms.v impulse_blanker.v iq_auto_cal.v} {
+    set v11_src "$script_dir/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/$v11_file"
+    if {[file exists $v11_src]} {
+        set existing [get_files -quiet *$v11_file]
+        if {$existing eq ""} {
+            log "Adding $v11_file to project..."
+            add_files -norecurse $v11_src
+            set_property file_type {Verilog} [get_files $v11_src]
+        }
+    }
+}
+
 # ── Upgrade locked IPs (handles Vivado version upgrade 2025.1 → 2025.2) ─────
 log "Checking IP status..."
 set locked_ips [get_ips -filter {IS_LOCKED == 1}]
