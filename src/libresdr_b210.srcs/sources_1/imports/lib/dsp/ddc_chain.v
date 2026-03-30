@@ -56,9 +56,12 @@ module ddc_chain
    wire        invert_i;
    wire        invert_q;
 
+   // V12: Capture NCO frequency changes to reset DC offset acquisition
+   wire phase_inc_changed;
+
    setting_reg #(.my_addr(BASE+0)) sr_0
      (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
-      .in(set_data),.out(phase_inc),.changed());
+      .in(set_data),.out(phase_inc),.changed(phase_inc_changed));
 
    setting_reg #(.my_addr(BASE+1), .width(18)) sr_1
      (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
@@ -105,9 +108,13 @@ module ddc_chain
       .in(set_data),.out(iq_beta),.changed());
 
    // V2: NCO 48-bit upper phase increment (default 0 = backward compatible 32-bit)
+   wire phase_inc_hi_changed;
    setting_reg #(.my_addr(BASE+8), .width(16)) sr_phase_hi
      (.clk(clk),.rst(rst),.strobe(set_stb),.addr(set_addr),
-      .in(set_data),.out(phase_inc_hi),.changed());
+      .in(set_data),.out(phase_inc_hi),.changed(phase_inc_hi_changed));
+
+   // V12: phase_changed pulses when either NCO register is written
+   wire phase_changed = phase_inc_changed | phase_inc_hi_changed;
 
    // MUX so we can do realmode signals on either input
 
@@ -131,10 +138,12 @@ module ddc_chain
 
    dc_offset_correct #(.WIDTH(WIDTH), .ALPHA(20)) dc_correct_i
      (.clk(clk), .rst(rst), .bypass(dc_offset_bypass),
+      .phase_changed(phase_changed),
       .strobe_in(1'b1), .in(rx_fe_i_mux), .out(rx_fe_i_dc), .strobe_out(strobe_dc_i));
 
    dc_offset_correct #(.WIDTH(WIDTH), .ALPHA(20)) dc_correct_q
      (.clk(clk), .rst(rst), .bypass(dc_offset_bypass),
+      .phase_changed(phase_changed),
       .strobe_in(1'b1), .in(rx_fe_q_mux), .out(rx_fe_q_dc), .strobe_out(strobe_dc_q));
 
    // V2: IQ imbalance correction — after DC offset, before CORDIC

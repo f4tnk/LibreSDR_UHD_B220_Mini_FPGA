@@ -11,7 +11,7 @@
 
 module cordic_z24(clock, reset, enable, xi, yi, zi, xo, yo, zo );
    parameter bitwidth = 16;
-   parameter stages = 24; // V3: updated from 19 to 24 stages
+   parameter stages = 23; // V12: 23 stages (was 24, stage 23 had c23=0 → no-op)
    localparam zwidth = 24;
    
    input clock;
@@ -27,10 +27,11 @@ module cordic_z24(clock, reset, enable, xi, yi, zi, xo, yo, zo );
    wire [bitwidth+1:0] 	 x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14,x15,x16,x17,x18,x19,x20;
    wire [bitwidth+1:0] 	 y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,y11,y12,y13,y14,y15,y16,y17,y18,y19,y20;
    wire [zwidth-2:0] 	 z1,z2,z3,z4,z5,z6,z7,z8,z9,z10,z11,z12,z13,z14,z15,z16,z17,z18,z19,z20;
-   // V3: stages 21-24 for full 24-bit phase convergence (+24 dB SFDR)
-   wire [bitwidth+1:0]  x21,x22,x23,x24;
-   wire [bitwidth+1:0]  y21,y22,y23,y24;
-   wire [zwidth-2:0]    z21,z22,z23,z24;
+   // V3: stages 21-23 for full 24-bit phase convergence (+24 dB SFDR)
+   // V12: removed stage 23 (c23=0 → no rotation, wasted 50 FF + 30 LUT + 1 cycle)
+   wire [bitwidth+1:0]  x21,x22,x23;
+   wire [bitwidth+1:0]  y21,y22,y23;
+   wire [zwidth-2:0]    z21,z22,z23;
    
    wire [bitwidth+1:0] xi_ext = {{2{xi[bitwidth-1]}},xi};
    wire [bitwidth+1:0] yi_ext = {{2{yi[bitwidth-1]}},yi};
@@ -62,7 +63,7 @@ module cordic_z24(clock, reset, enable, xi, yi, zi, xo, yo, zo );
    localparam 	       c20 = 23'd3;
    localparam 	       c21 = 23'd1;
    localparam 	       c22 = 23'd1;
-   localparam 	       c23 = 23'd0;
+   // V12: c23 removed (was 23'd0 → stage did zero rotation)
 
    always @(posedge clock)
      if(reset)
@@ -110,16 +111,19 @@ module cordic_z24(clock, reset, enable, xi, yi, zi, xo, yo, zo );
    cordic_stage #(bitwidth+2,zwidth-1,18) cordic_stage18 (clock,reset,enable,x18,y18,z18,c18,x19,y19,z19);
    cordic_stage #(bitwidth+2,zwidth-1,19) cordic_stage19 (clock,reset,enable,x19,y19,z19,c19,x20,y20,z20);
 
-   // V3: stages 20-23 for full 24-bit phase convergence
+   // V3: stages 20-22 for full 24-bit phase convergence
+   // V12: removed stage 23 (c23=0 → no-op). Final output from stage 22.
    cordic_stage #(bitwidth+2,zwidth-1,20) cordic_stage20 (clock,reset,enable,x20,y20,z20,c20,x21,y21,z21);
    cordic_stage #(bitwidth+2,zwidth-1,21) cordic_stage21 (clock,reset,enable,x21,y21,z21,c21,x22,y22,z22);
    cordic_stage #(bitwidth+2,zwidth-1,22) cordic_stage22 (clock,reset,enable,x22,y22,z22,c22,x23,y23,z23);
-   cordic_stage #(bitwidth+2,zwidth-1,23) cordic_stage23 (clock,reset,enable,x23,y23,z23,c23,x24,y24,z24);
 
-   // V3: Output from stage 24 with rounding (was truncation at stage 20)
-   assign xo = x24[bitwidth:1] + {{(bitwidth-1){1'b0}}, x24[0]};
-   assign yo = y24[bitwidth:1] + {{(bitwidth-1){1'b0}}, y24[0]};
-   assign zo = z24;		  
+   // V12: Overflow-safe rounding 25→24 bit (was naive +LSB that could wrap max positive)
+   // Same pattern as ddc_chain HB1/HB2 overflow protection.
+   wire x_ovf = ~x23[bitwidth] & (&x23[bitwidth-1:1]) & x23[0];
+   wire y_ovf = ~y23[bitwidth] & (&y23[bitwidth-1:1]) & y23[0];
+   assign xo = x_ovf ? x23[bitwidth:1] : (x23[bitwidth:1] + {{(bitwidth-1){1'b0}}, x23[0]});
+   assign yo = y_ovf ? y23[bitwidth:1] : (y23[bitwidth:1] + {{(bitwidth-1){1'b0}}, y23[0]});
+   assign zo = z23;		  
 
 endmodule // cordic
 

@@ -23,6 +23,7 @@ module dc_offset_correct
    input                  clk,
    input                  rst,
    input                  bypass,
+   input                  phase_changed,  // V12: reset settle_cnt on retune
    input                  strobe_in,
    input  [WIDTH-1:0]     in,
    output reg [WIDTH-1:0] out,
@@ -69,6 +70,9 @@ module dc_offset_correct
          strobe_out <= 1'b0;
          settle_cnt <= 21'd0;
       end else begin
+         // V12: Reset settle_cnt on retune → fast re-acquisition (~17ms vs ~110ms)
+         if (phase_changed)
+            settle_cnt <= 21'd0;
          strobe_out <= strobe_in;
          if (strobe_in) begin
             if (bypass) begin
