@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="gen_clks_synth_1" LaunchPart="xc7a200tfbg484-2" LaunchTime="1774868981">
+  <File Type="RDS-DCP" Name="gen_clks.dcp"/>
+  <File Type="RDS-RDS" Name="gen_clks.vds"/>
+  <File Type="REPORTS-TCL" Name="gen_clks_reports.tcl"/>
+  <File Type="PA-TCL" Name="gen_clks.tcl"/>
+  <File Type="RDS-UTIL" Name="gen_clks_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="gen_clks_utilization_synth.pb"/>
+  <FileSet Name="sources" Type="BlockSrcs" RelSrcDir="$PSRCDIR/gen_clks" RelGenDir="$PGENDIR/gen_clks">
+    <File Path="$PSRCDIR/gen_clks/ip/gen_clks/gen_clks.xci">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../../workspace/SDR/usrp/myusrp/b210/libresdr_b210/ip/gen_clks/gen_clks.xci"/>
+        <Attr Name="ImportTime" Val="1718424005"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="TopModule" Val="gen_clks"/>
+      <Option Name="UseBlackboxStub" Val="1"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="BlockSrcs" RelSrcDir="$PSRCDIR/gen_clks" RelGenDir="$PGENDIR/gen_clks">
+    <File Path="$PSRCDIR/gen_clks/ip/gen_clks/gen_clks.xci">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../../workspace/SDR/usrp/myusrp/b210/libresdr_b210/ip/gen_clks/gen_clks.xci"/>
+        <Attr Name="ImportTime" Val="1718424005"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="TopModule" Val="gen_clks"/>
+      <Option Name="UseBlackboxStub" Val="1"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="utils" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">
+    <Filter Type="Utils"/>
+    <Config>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025"/>
+    <Step Id="synth_design"/>
+  </Strategy>
+</GenRun>

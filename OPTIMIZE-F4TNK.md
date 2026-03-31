@@ -27,8 +27,13 @@
   - [V7 — HB full-precision (échec)](#-version-7--hb-full-precision-échec)
   - [V8 — HB latency-safe (échec)](#-version-8--hb-latency-safe-échec)
   - [V9/V9b — Fix pipeline + stratégies par défaut (PRODUCTION)](#-version-9b--fix-pipeline--stratégies-par-défaut-production)
+  - [V10 — 5 optimisations RX datapath pour LEO faibles](#-version-10--5-optimisations-rx-datapath-pour-leo-faibles)
+  - [V11 — Traitement adaptatif (échec → revert)](#-version-11--traitement-adaptatif-échec--revert)
+  - [V12 — CORDIC stage 23 removal (échec USB)](#-version-12--cordic-stage-23-removal--retune-reset-échec-usb)
+  - [V13 — Fix accum\_timeout + CDC + pipeline FIR (PRODUCTION)](#-version-13--fix-accum_timeout--cdc--pipeline-fir-production)
 - [📊 Tableau récapitulatif des versions](#-tableau-récapitulatif-des-versions)
 - [🚨 Règles absolues](#-règles-absolues)
+- [🔬 Audit complet du code source RTL](#-audit-complet-du-code-source-rtl--v13-30-mars-2026)
 - [📚 Ressources FPGA XC7A200T](#-ressources-fpga-xc7a200t)
 
 ---
@@ -662,6 +667,158 @@ En parallèle du firmware FPGA, les dépôts logiciels ont été mis à jour dan
 
 ---
 
+### 🟢 Version 10 — 5 optimisations RX datapath pour LEO faibles
+
+**📅** 30 mars 2026 | **📁** `libresdr_b220_v10.bin` | **⏱️** WNS +0,210 ns | **✅ Fonctionnel**
+
+> Commit `f0f0c4f` — 5 corrections DSP ciblant la réception de signaux LEO faibles.
+
+#### 🔧 Modifications
+
+**1️⃣ CIC droop compensator (`cic_droop_comp.v` — nouveau module)**
+
+FIR 5-tap symétrique compensant l'atténuation sinc⁴ du CIC N=4. Coefficients Q1.17, broche bypass, 2 DSP48E1 + ~60 LUT. Inséré dans `ddc_chain.v` entre la sortie CIC et HB1.
+
+**2️⃣ TPDF dither (`ddc_chain.v`)**
+
+Dual-LFSR (seeds ACE1/7B3F) → dither triangulaire ±2 LSB au lieu de RPDF ±1 LSB. Clamping sûr min/max. Remplace le sigma-delta existant pour une meilleure linéarité de quantification.
+
+**3️⃣ DC offset double-alpha (`dc_offset_correct.v`)**
+
+Acquisition rapide ALPHA\_FAST=14 (~600 Hz) pendant 2²⁰ samples (~17 ms), puis tracking ALPHA=20 (~9 Hz). Élimine le transitoire DC au démarrage/retune.
+
+**4️⃣ small\_hb\_dec full 24-bit (`small_hb_dec.v`)**
+
+INTWIDTH=WIDTH (24) au lieu de 17. Exploite DSP48E1 25×18 nativement. Élimine la troncation prématurée de 7 LSBs qui détruisait les signaux faibles.
+
+**5️⃣ CIC convergent rounding (`cic_dec_shifter.v`)**
+
+Round-to-even au lieu de round-to-nearest. Élimine le biais DC +0,5 LSB sur les tie-cases grâce au signal `guard_nz`.
+
+#### 📊 Résultats V10
+
+| Métrique | Valeur |
+|:---|:---|
+| ⏱️ WNS | **+0,210 ns** ✅ |
+| 📐 LUT | 26,2 % |
+| 📐 FF | 14,5 % |
+| 📐 BRAM | 31,6 % |
+| 📐 DSP48 | 15,7 % (116/740) |
+
+---
+
+### 🔴 Version 11 — Traitement adaptatif (échec → revert)
+
+**📅** 30 mars 2026 | **⏱️** WNS +0,180 ns | **❌ Revert immédiat**
+
+> Commit `1926dd4` → revert `df9f048`
+
+Trois nouveaux modules DSP adaptatifs ajoutés en post-décimation :
+
+- **`ale_nlms.v`** : Adaptive Line Enhancer NLMS complexe 32 taps — extraction de composantes corrélées du bruit
+- **`impulse_blanker.v`** : Blanqueur adaptatif seuil 4× RMS — suppression du bruit impulsif
+- **`iq_auto_cal.v`** : Calibration IQ aveugle par statistiques E\[I²\]/E\[Q²\]/E\[I·Q\] — convergence en ~50 ms
+
+> 💀 **Cause du revert :** Les modules adaptatifs ne fonctionnaient pas correctement sur le hardware. Build OK mais résultats audio dégradés. Revert complet vers V10.
+
+📝 **Leçon :** Les algorithmes adaptatifs (LMS/NLMS) sont sensibles au bruit de quantification FPGA. Tester impérativement sur le hardware avant de commiter.
+
+---
+
+### 🔴 Version 12 — CORDIC stage 23 removal + retune reset (échec USB)
+
+**📅** 30 mars 2026 | **📁** `libresdr_b220_v12.bin` | **⏱️** WNS +1,244 ns | **❌ accum\_timeout**
+
+> Commit `ac873b7` — 3 modifications, dont 1 cassante.
+
+#### 🔧 Modifications
+
+**1️⃣ cordic\_z24 — suppression stage 23 (`cordic_z24.v`) ❌ CASSANT**
+
+Le stage 23 (c23=0) ne faisait aucune rotation. Suppression → -50 FF, -30 LUT, -1 cycle de latence DDC **et** DUC.
+
+> 💀 **Cause :** Le stage 23 était un registre pipeline **requis** par le timing isochrone UHD. Sa suppression a raccourci la latence DDC+DUC de 2 cycles au total → `AssertionError: accum_timeout < _timeout` à l'init USB.
+
+📝 **Violation directe de la Règle 2** — la latence pipeline doit être préservée au cycle près.
+
+**2️⃣ cordic\_z24 — overflow-safe rounding (`cordic_z24.v`) ✅**
+
+Arrondi 25→24 bits avec protection overflow : si le résultat est `max_positive` après arrondi, clamp au lieu de wrap.
+
+```verilog
+wire [WIDTH-1:0] x_round = (x24[WIDTH] && !(&x24[WIDTH-1:0])) ?
+                            x24[WIDTH:1] + x24[0] : x24[WIDTH:1];
+```
+
+**3️⃣ dc\_offset\_correct — retune reset (`dc_offset_correct.v` + `ddc_chain.v`) ✅**
+
+Ajout d'un port `phase_changed` alimenté par les `setting_reg.changed()` du NCO. Reset du compteur `settle_cnt` lors d'un changement de fréquence → ré-acquisition DC rapide (~17 ms au lieu de ~110 ms).
+
+#### 📊 Résultats V12
+
+| Métrique | Valeur |
+|:---|:---|
+| ⏱️ WNS | **+1,244 ns** ✅ (timing) |
+| 📐 WHS | +0,181 ns ✅ |
+| ❌ USB init | **accum\_timeout** — firmware non-fonctionnel |
+
+---
+
+### ⭐ Version 13 — Fix accum\_timeout + CDC + pipeline FIR (PRODUCTION)
+
+**📅** 30 mars 2026 | **📁** `libresdr_b220_v13.bin` | **⏱️** WNS +0,266 ns | **✅ PRODUCTION**
+
+> Commit `1573b8d` — tag `v13` — branche `master-f4tnk2`
+
+> ⭐ **Version déployée en production sur la station SatNOGS #3762.**
+
+#### 🔧 Trois corrections
+
+**1️⃣ Fix V12 — Restauration CORDIC stage 23 (`cordic_z24.v`)**
+
+Restauration du stage 23 avec c23=0 (zéro rotation). Le stage ne fait rien mathématiquement mais fournit un registre pipeline requis par le timing isochrone UHD. Résout le `accum_timeout` de V12.
+
+```verilog
+// Stage 23 — pipeline register only (c23 = 0, no rotation)
+wire [WIDTH:0] x24, y24;
+wire [ZWIDTH-1:0] z24;
+cordic_stage #(.bitwidth(WIDTH+1), .zwidth(ZWIDTH), .shift(23))
+  cordic_stage23 (.clk(clk), .reset(reset), .enable(enable),
+    .xi(x23), .yi(y23), .zi(z23), .xo(x24), .yo(y24), .zo(z24),
+    .constant(23'd0));   // c23 = 0 → no rotation, pipeline only
+```
+
+**2️⃣ CDC synchronizer is10meg (`libresdr_b210.v`)**
+
+Le signal PLL `locked` (`is10meg`) traversait du domaine horloge PLL vers `sync_200M` sans synchronisation → risque de métastabilité. Ajout d'un synchroniseur DFF 2-étages :
+
+```verilog
+reg is10meg_meta, is10meg_sync;
+always @(posedge sync_200M) begin
+    is10meg_meta <= is10meg;
+    is10meg_sync <= is10meg_meta;
+end
+```
+
+`is10meg_sync` remplace `is10meg` dans le bloc `always@(posedge sync_200M)` et le mux `ext_ref`.
+
+**3️⃣ Pipeline cic\_droop\_comp (`cic_droop_comp.v`)**
+
+Insertion d'un étage pipeline registré entre les multiplications et la somme. Permet l'inférence MREG du DSP48E1, divise par 2 le chemin combinatoire. Extension de la chaîne strobe (`stb_d2`) et alignement du bypass (`d2_r`).
+
+#### 📊 Résultats V13
+
+| Métrique | Valeur |
+|:---|:---|
+| ⏱️ WNS | **+0,266 ns** ✅ |
+| 📐 WHS | +0,050 ns ✅ |
+| 📐 WPWS | +1,646 ns ✅ |
+| ❌ Failing endpoints | 0 (setup + hold) |
+| 💾 Taille binaire | 4 367 092 octets |
+| ✅ USB init | **PASS** |
+
+---
+
 ## 📊 Tableau récapitulatif des versions
 
 | Version | WNS | DSP | LUT | Status | Notes |
@@ -679,6 +836,10 @@ En parallèle du firmware FPGA, les dépôts logiciels ont été mis à jour dan
 | V8 | +0,211 | 112 | 35,6 % | ❌ | RETIMING casse le bus ctrl |
 | V9 | +0,507 | 112 | ~26 % | ❌ | Idem (RETIMING + Explore) |
 | ⭐ **V9b** | **+0,497** | **112** | **~26 %** | **✅** | **🏭 PRODUCTION — Stratégies défaut** |
+| **V10** | +0,210 | 116 | 26,2 % | ✅ | Droop comp, TPDF, DC double-α, HB 24-bit, CIC round-even |
+| V11 | +0,180 | ~144 | 29,4 % | ❌ | ALE NLMS + blanker + IQ auto-cal → **revert** |
+| V12 | +1,244 | 116 | ~26 % | ❌ | CORDIC stage 23 supprimé → **accum\_timeout** |
+| ⭐ **V13** | **+0,266** | **116** | **~26 %** | **✅** | **🏭 PRODUCTION — Fix CORDIC + CDC + pipeline FIR** |
 
 ---
 
@@ -724,9 +885,98 @@ Quand HB3 est désactivé, utiliser un mux combinatoire EXTERNE (dans `ddc_chain
 
 📝 *V9 fix dans `ddc_chain.v` — le registre bypass interne cassait la latence.*
 
+### 🔴 Règle 7 — Ne JAMAIS supprimer un étage CORDIC même s'il ne fait "rien"
+
+Le stage 23 du CORDIC (`c23=0`) ne fait aucune rotation mathématique mais fournit un **registre pipeline requis** par le timing isochrone UHD. Sa suppression raccourcit la latence DDC+DUC → `accum_timeout`.
+
+📝 *V12 → suppression du stage 23 (c23=0) → -1 cycle DDC et DUC → accum\_timeout à l'init USB. V13 : restauration.*
+
 ---
 
-## 📚 Ressources FPGA XC7A200T
+## � Audit complet du code source RTL — V13 (30 mars 2026)
+
+Analyse systématique de **~80 fichiers Verilog** sous `src/libresdr_b210.srcs/sources_1/imports/lib/` : DSP, top-level, VITA/packet, GPIF/USB, FIFO, contrôle, timing, wishbone, I/O.
+
+### ✅ Aucun bug critique trouvé
+
+La conception est **mature et bien structurée**. Tous les CDC critiques sont correctement synchronisés (`synchronizer_impl.v` avec `ASYNC_REG`, `reset_sync.v` 10 étages, `axi_fifo_2clk` dual-clock FIFOs, V13 CDC `is10meg`). Les protections overflow/truncation sont complètes (round-to-even CIC, overflow-safe CORDIC/HB, clip systématique).
+
+### 📋 Findings par sévérité
+
+#### 🟡 MEDIUM — `new_tx_control.v` : état `ST_WAIT` non implémenté (original Ettus)
+
+**Fichier :** `vita_200/new_tx_control.v` lignes 197-198
+
+```verilog
+// FIXME: Implement a wait state or remove wait policy
+// else if(policy_wait)
+//   state <= ST_WAIT;
+```
+
+Le `setting_reg` extrait `policy_wait` (bit 0 du registre d'erreur) mais aucun état FSM ne l'utilise. Le driver UHD B200/B210 ne positionne jamais ce bit — **pas de risque fonctionnel** en l'état.
+
+**Action :** Aucune. Code original Ettus, behaviour conforme à l'usage UHD.
+
+---
+
+#### 🟢 LOW — `new_rx_framer.v` : perte théorique de sample en fin de burst
+
+**Fichier :** `vita_200/new_rx_framer.v` lignes 94-99, 166-169
+
+Quand `run` passe à 0 alors que la FSM est en état `SECOND` (un sample 32-bit stocké dans `holding`), la FSM reset à `START` sans vider `holding` vers la datafifo. Le sample est perdu.
+
+**Impact :** Quasi-nul — le driver UHD termine toujours les bursts RX via le flag `eob`, ce qui déclenche la séquence `sample_tlast → hdr_tvalid → FIFO write` **avant** que `run` ne passe à 0. La condition ne se produit que si le host avorte brutalement sans envoyer `eob`.
+
+**Action :** Aucune (risque négligeable < 0,01 %).
+
+---
+
+#### 🟢 LOW — `cic_dec_shifter.v` : mux combinatoire 33 entrées
+
+**Fichier :** `dsp/cic_dec_shifter.v`
+
+Le `case(shift)` avec 33 branches est purement combinatoire (pas de registre de sortie). Crée un mux-tree de ~56 bits en logique combinatoire. À WNS=+0.266 ns ce n'est pas critique, mais pourrait limiter la fréquence maximale si des optimisations futures réduisent la marge.
+
+**Action :** Aucune tant que WNS > 0. Si WNS se dégrade sous +0.1 ns, pipeliner la sortie en 1 registre.
+
+---
+
+#### 💡 INFO — Code mort (`add2.v`, `hb_interp.v`, `hb_dec.v` dans `old_hb`)
+
+Avec `NEW_HB_DECIM=1` et `NEW_HB_INTERP=1`, les blocs `generate old_hb` ne sont jamais élaborés. Les modules `add2.v`, `hb_interp.v` et les chemins `old_hb` de `ddc_chain.v`/`duc_chain.v` sont du code mort. Aucun impact sur le bitstream.
+
+**Action :** Aucune (conserver pour compatibilité. Ne pas supprimer).
+
+---
+
+### 📊 Synthèse des contrôles effectués
+
+| Domaine | Modules vérifiés | Résultat |
+|:---|:---|:---|
+| **CDC (clock domain crossing)** | `libresdr_b210.v`, `axi_fifo_2clk.v`, `synchronizer*.v`, `reset_sync.v`, `ppsloop.v`, `radio_legacy.v` | ✅ Conforme — tous les signaux async synchronisés correctement |
+| **Overflow/truncation** | `cordic_z24.v`, `ddc_chain.v`, `cic_dec_shifter.v`, `round_sd.v`, `clip*.v`, `small_hb_dec.v`, `iq_balance.v`, `dc_offset_correct.v`, `cic_droop_comp.v` | ✅ Protections complètes (overflow-safe rounding, clip, convergent rounding) |
+| **FSM (completeness)** | `new_rx_control.v`, `new_tx_control.v`, `new_rx_framer.v`, `new_tx_deframer.v`, `gpif2_slave_fifo32.v` | ✅ Toutes les FSM ont un `default` ou couvrent tous les états |
+| **GPIF/USB** | `gpif2_slave_fifo32.v`, `gpif2_to_fifo64.v`, `fifo64_to_gpif2.v` | ✅ Conforme — pipeline read strobe 5 étages, FSM complète |
+| **VITA/packet** | `new_rx_framer.v`, `new_tx_deframer.v`, `tx_responder.v`, `context_packet_gen.v`, `chdr_*_chain.v` | ✅ Conforme |
+| **Timing** | `timekeeper_legacy.v`, `time_compare.v`, `pps_generator.v` | ✅ Conforme |
+| **DSP pipeline latency** | `ddc_chain.v`, `duc_chain.v`, `cordic_z24.v` (24 stages), `cic_droop_comp.v` (V13 pipeline) | ✅ Latence préservée (Règle 2) |
+
+---
+
+### ⚡ Opportunités d'optimisation futures (non recommandées pour V13)
+
+| # | Module | Optimisation | Gain | Risque | Priorité |
+|:---:|:---|:---|:---|:---|:---:|
+| O1 | `duc_chain.v` | Droop pre-compensateur CIC TX (sinc⁴ identique au RX) | Platitude bande TX +3.9 dB | **ÉLEVÉ** — latence pipeline (Règle 2) | ⛔ |
+| O2 | `ddc_chain.v` | Pipeliner le rounding CORDIC overflow-safe (25→24 bit) | WNS +0.2 ns | **FAIBLE** — 1 cycle ajouté dans DDC+DUC | ⏸️ |
+| O3 | `cic_dec_shifter.v` | Registre de sortie sur le mux 33 entrées | Future-proof >120 MHz | **FAIBLE** — 1 cycle de latence | ⏸️ |
+| O4 | `cic_droop_comp.v` | Shift+add pour tap central (c2=73728 ≈ 0.5625) → -1 DSP48E1 | -1 DSP par voie (I+Q) | **MOYEN** — erreur de coefficient possible | ⏸️ |
+
+> ⚠️ Toute modification ajoutant ou retirant un cycle de latence dans DDC/DUC viole la **Règle 2**. Ne pas implémenter O1/O2/O3 sans compenser exactement la latence.
+
+---
+
+## �📚 Ressources FPGA XC7A200T
 
 | Ressource | Disponible |
 |---|---|

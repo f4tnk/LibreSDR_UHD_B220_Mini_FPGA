@@ -1,0 +1,760 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (lin64) Build 6299465 Fri Nov 14 12:34:56 MST 2025
+| Date         : Mon Mar 30 22:40:45 2026
+| Host         : DESKTOP-8FU7G31 running 64-bit Debian GNU/Linux 13 (trixie)
+| Command      : report_drc -file libresdr_b210_drc_routed.rpt -pb libresdr_b210_drc_routed.pb -rpx libresdr_b210_drc_routed.rpx
+| Design       : libresdr_b210
+| Device       : xc7a200tfbg484-2
+| Speed File   : -2
+| Design State : Fully Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Report DRC
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: netlist
+          Floorplan: checkpoint_libresdr_b210
+      Design limits: <entire design considered>
+           Ruledeck: default
+             Max checks: <unlimited>
+             Checks found: 138
++-----------+----------+-------------------------------------------------------------------+--------+
+| Rule      | Severity | Description                                                       | Checks |
++-----------+----------+-------------------------------------------------------------------+--------+
+| CFGBVS-1  | Warning  | Missing CFGBVS and CONFIG_VOLTAGE Design Properties               | 1      |
+| CHECK-3   | Warning  | Report rule limit reached                                         | 1      |
+| DPIP-1    | Warning  | Input pipelining                                                  | 40     |
+| DPOP-1    | Warning  | PREG Output pipelining                                            | 20     |
+| DPOP-2    | Warning  | MREG Output pipelining                                            | 4      |
+| PDRC-61   | Warning  | SLICEM_5lutO5_C5                                                  | 2      |
+| PDRC-62   | Warning  | SLICEM_5lutO5_B5                                                  | 3      |
+| REQP-1839 | Warning  | RAMB36 async control check                                        | 20     |
+| RTSTAT-10 | Warning  | No routable loads                                                 | 1      |
+| AVAL-4    | Advisory | enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND | 28     |
+| REQP-31   | Advisory | enum_PREG_0_connects_CEP_GND                                      | 16     |
+| REQP-181  | Advisory | writefirst                                                        | 2      |
++-----------+----------+-------------------------------------------------------------------+--------+
+
+2. REPORT DETAILS
+-----------------
+CFGBVS-1#1 Warning
+Missing CFGBVS and CONFIG_VOLTAGE Design Properties  
+Neither the CFGBVS nor CONFIG_VOLTAGE voltage property is set in the current_design.  Configuration bank voltage select (CFGBVS) must be set to VCCO or GND, and CONFIG_VOLTAGE must be set to the correct configuration voltage, in order to determine the I/O voltage support for the pins in bank 0.  It is suggested to specify these either using the 'Edit Device Properties' function in the GUI or directly in the XDC file using the following syntax:
+
+ set_property CFGBVS value1 [current_design]
+ #where value1 is either VCCO or GND
+
+ set_property CONFIG_VOLTAGE value2 [current_design]
+ #where value2 is the voltage provided to configuration bank 0
+
+Refer to the device configuration user guide for more information.
+Related violations: <none>
+
+CHECK-3#1 Warning
+Report rule limit reached  
+REQP-1839 rule limit reached: 20 violations have been found.
+Related violations: <none>
+
+DPIP-1#1 Warning
+Input pipelining  
+DSP b200_core/radio_0/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL input b200_core/radio_0/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#2 Warning
+Input pipelining  
+DSP b200_core/radio_0/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL input b200_core/radio_0/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#3 Warning
+Input pipelining  
+DSP b200_core/radio_0/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL input b200_core/radio_0/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#4 Warning
+Input pipelining  
+DSP b200_core/radio_0/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL input b200_core/radio_0/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#5 Warning
+Input pipelining  
+DSP b200_core/radio_0/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL input b200_core/radio_0/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#6 Warning
+Input pipelining  
+DSP b200_core/radio_0/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL input b200_core/radio_0/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#7 Warning
+Input pipelining  
+DSP b200_core/radio_0/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL input b200_core/radio_0/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#8 Warning
+Input pipelining  
+DSP b200_core/radio_0/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL input b200_core/radio_0/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#9 Warning
+Input pipelining  
+DSP b200_core/radio_0/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL input b200_core/radio_0/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#10 Warning
+Input pipelining  
+DSP b200_core/radio_0/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL input b200_core/radio_0/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#11 Warning
+Input pipelining  
+DSP b200_core/radio_0/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL input b200_core/radio_0/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#12 Warning
+Input pipelining  
+DSP b200_core/radio_0/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL input b200_core/radio_0/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#13 Warning
+Input pipelining  
+DSP b200_core/radio_0/duc_chain/mult_i/dsp_bl.DSP48_BL input b200_core/radio_0/duc_chain/mult_i/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#14 Warning
+Input pipelining  
+DSP b200_core/radio_0/duc_chain/mult_i/dsp_bl.DSP48_BL input b200_core/radio_0/duc_chain/mult_i/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#15 Warning
+Input pipelining  
+DSP b200_core/radio_0/duc_chain/mult_q/dsp_bl.DSP48_BL input b200_core/radio_0/duc_chain/mult_q/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#16 Warning
+Input pipelining  
+DSP b200_core/radio_0/duc_chain/mult_q/dsp_bl.DSP48_BL input b200_core/radio_0/duc_chain/mult_q/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#17 Warning
+Input pipelining  
+DSP b200_core/radio_0/duc_chain/new_hb.hb3_i0/mult input b200_core/radio_0/duc_chain/new_hb.hb3_i0/mult/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#18 Warning
+Input pipelining  
+DSP b200_core/radio_0/duc_chain/new_hb.hb3_i0/mult input b200_core/radio_0/duc_chain/new_hb.hb3_i0/mult/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#19 Warning
+Input pipelining  
+DSP b200_core/radio_0/duc_chain/new_hb.hb3_q0/mult input b200_core/radio_0/duc_chain/new_hb.hb3_q0/mult/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#20 Warning
+Input pipelining  
+DSP b200_core/radio_0/duc_chain/new_hb.hb3_q0/mult input b200_core/radio_0/duc_chain/new_hb.hb3_q0/mult/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#21 Warning
+Input pipelining  
+DSP b200_core/radio_1/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL input b200_core/radio_1/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#22 Warning
+Input pipelining  
+DSP b200_core/radio_1/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL input b200_core/radio_1/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#23 Warning
+Input pipelining  
+DSP b200_core/radio_1/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL input b200_core/radio_1/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#24 Warning
+Input pipelining  
+DSP b200_core/radio_1/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL input b200_core/radio_1/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#25 Warning
+Input pipelining  
+DSP b200_core/radio_1/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL input b200_core/radio_1/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#26 Warning
+Input pipelining  
+DSP b200_core/radio_1/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL input b200_core/radio_1/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#27 Warning
+Input pipelining  
+DSP b200_core/radio_1/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL input b200_core/radio_1/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#28 Warning
+Input pipelining  
+DSP b200_core/radio_1/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL input b200_core/radio_1/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#29 Warning
+Input pipelining  
+DSP b200_core/radio_1/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL input b200_core/radio_1/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#30 Warning
+Input pipelining  
+DSP b200_core/radio_1/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL input b200_core/radio_1/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#31 Warning
+Input pipelining  
+DSP b200_core/radio_1/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL input b200_core/radio_1/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#32 Warning
+Input pipelining  
+DSP b200_core/radio_1/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL input b200_core/radio_1/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#33 Warning
+Input pipelining  
+DSP b200_core/radio_1/duc_chain/mult_i/dsp_bl.DSP48_BL input b200_core/radio_1/duc_chain/mult_i/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#34 Warning
+Input pipelining  
+DSP b200_core/radio_1/duc_chain/mult_i/dsp_bl.DSP48_BL input b200_core/radio_1/duc_chain/mult_i/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#35 Warning
+Input pipelining  
+DSP b200_core/radio_1/duc_chain/mult_q/dsp_bl.DSP48_BL input b200_core/radio_1/duc_chain/mult_q/dsp_bl.DSP48_BL/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#36 Warning
+Input pipelining  
+DSP b200_core/radio_1/duc_chain/mult_q/dsp_bl.DSP48_BL input b200_core/radio_1/duc_chain/mult_q/dsp_bl.DSP48_BL/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#37 Warning
+Input pipelining  
+DSP b200_core/radio_1/duc_chain/new_hb.hb3_i0/mult input b200_core/radio_1/duc_chain/new_hb.hb3_i0/mult/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#38 Warning
+Input pipelining  
+DSP b200_core/radio_1/duc_chain/new_hb.hb3_i0/mult input b200_core/radio_1/duc_chain/new_hb.hb3_i0/mult/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#39 Warning
+Input pipelining  
+DSP b200_core/radio_1/duc_chain/new_hb.hb3_q0/mult input b200_core/radio_1/duc_chain/new_hb.hb3_q0/mult/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#40 Warning
+Input pipelining  
+DSP b200_core/radio_1/duc_chain/new_hb.hb3_q0/mult input b200_core/radio_1/duc_chain/new_hb.hb3_q0/mult/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPOP-1#1 Warning
+PREG Output pipelining  
+DSP b200_core/radio_0/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL output b200_core/radio_0/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#2 Warning
+PREG Output pipelining  
+DSP b200_core/radio_0/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL output b200_core/radio_0/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#3 Warning
+PREG Output pipelining  
+DSP b200_core/radio_0/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL output b200_core/radio_0/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#4 Warning
+PREG Output pipelining  
+DSP b200_core/radio_0/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL output b200_core/radio_0/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#5 Warning
+PREG Output pipelining  
+DSP b200_core/radio_0/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL output b200_core/radio_0/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#6 Warning
+PREG Output pipelining  
+DSP b200_core/radio_0/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL output b200_core/radio_0/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#7 Warning
+PREG Output pipelining  
+DSP b200_core/radio_0/duc_chain/mult_i/dsp_bl.DSP48_BL output b200_core/radio_0/duc_chain/mult_i/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#8 Warning
+PREG Output pipelining  
+DSP b200_core/radio_0/duc_chain/mult_q/dsp_bl.DSP48_BL output b200_core/radio_0/duc_chain/mult_q/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#9 Warning
+PREG Output pipelining  
+DSP b200_core/radio_0/duc_chain/new_hb.hb3_i0/mult output b200_core/radio_0/duc_chain/new_hb.hb3_i0/mult/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#10 Warning
+PREG Output pipelining  
+DSP b200_core/radio_0/duc_chain/new_hb.hb3_q0/mult output b200_core/radio_0/duc_chain/new_hb.hb3_q0/mult/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#11 Warning
+PREG Output pipelining  
+DSP b200_core/radio_1/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL output b200_core/radio_1/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#12 Warning
+PREG Output pipelining  
+DSP b200_core/radio_1/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL output b200_core/radio_1/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#13 Warning
+PREG Output pipelining  
+DSP b200_core/radio_1/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL output b200_core/radio_1/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#14 Warning
+PREG Output pipelining  
+DSP b200_core/radio_1/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL output b200_core/radio_1/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#15 Warning
+PREG Output pipelining  
+DSP b200_core/radio_1/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL output b200_core/radio_1/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#16 Warning
+PREG Output pipelining  
+DSP b200_core/radio_1/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL output b200_core/radio_1/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#17 Warning
+PREG Output pipelining  
+DSP b200_core/radio_1/duc_chain/mult_i/dsp_bl.DSP48_BL output b200_core/radio_1/duc_chain/mult_i/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#18 Warning
+PREG Output pipelining  
+DSP b200_core/radio_1/duc_chain/mult_q/dsp_bl.DSP48_BL output b200_core/radio_1/duc_chain/mult_q/dsp_bl.DSP48_BL/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#19 Warning
+PREG Output pipelining  
+DSP b200_core/radio_1/duc_chain/new_hb.hb3_i0/mult output b200_core/radio_1/duc_chain/new_hb.hb3_i0/mult/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#20 Warning
+PREG Output pipelining  
+DSP b200_core/radio_1/duc_chain/new_hb.hb3_q0/mult output b200_core/radio_1/duc_chain/new_hb.hb3_q0/mult/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-2#1 Warning
+MREG Output pipelining  
+DSP b200_core/radio_0/ddc_chain/droop_comp_i/p2_r_reg multiplier stage b200_core/radio_0/ddc_chain/droop_comp_i/p2_r_reg/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-2#2 Warning
+MREG Output pipelining  
+DSP b200_core/radio_0/ddc_chain/droop_comp_q/p2_r_reg multiplier stage b200_core/radio_0/ddc_chain/droop_comp_q/p2_r_reg/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-2#3 Warning
+MREG Output pipelining  
+DSP b200_core/radio_1/ddc_chain/droop_comp_i/p2_r_reg multiplier stage b200_core/radio_1/ddc_chain/droop_comp_i/p2_r_reg/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-2#4 Warning
+MREG Output pipelining  
+DSP b200_core/radio_1/ddc_chain/droop_comp_q/p2_r_reg multiplier stage b200_core/radio_1/ddc_chain/droop_comp_q/p2_r_reg/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+PDRC-61#1 Warning
+SLICEM_5lutO5_C5  
+Dangling output pin O5 on site SLICE_X120Y122:C5LUT. For this programming the O5 output pin should have a signal.
+Related violations: <none>
+
+PDRC-61#2 Warning
+SLICEM_5lutO5_C5  
+Dangling output pin O5 on site SLICE_X66Y190:C5LUT. For this programming the O5 output pin should have a signal.
+Related violations: <none>
+
+PDRC-62#1 Warning
+SLICEM_5lutO5_B5  
+Dangling output pin O5 on site SLICE_X120Y118:B5LUT. For this programming the O5 output pin should have a signal.
+Related violations: <none>
+
+PDRC-62#2 Warning
+SLICEM_5lutO5_B5  
+Dangling output pin O5 on site SLICE_X120Y122:B5LUT. For this programming the O5 output pin should have a signal.
+Related violations: <none>
+
+PDRC-62#3 Warning
+SLICEM_5lutO5_B5  
+Dangling output pin O5 on site SLICE_X124Y186:B5LUT. For this programming the O5 output pin should have a signal.
+Related violations: <none>
+
+REQP-1839#1 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/fifo64_to_gpif2_resp/buffer_whole_pkt/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/fifo64_to_gpif2_resp/buffer_whole_pkt/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/fifo64_to_gpif2_resp/buffer_whole_pkt/ram_i/impl/ram_reg_0_0) which is driven by a register (slave_fifo32/fifo64_to_gpif2_resp/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/empty_fwft_i_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#2 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/fifo64_to_gpif2_resp/buffer_whole_pkt/ram_i/impl/ram_reg_1 has an input control pin slave_fifo32/fifo64_to_gpif2_resp/buffer_whole_pkt/ram_i/impl/ram_reg_1/ENARDEN (net: slave_fifo32/fifo64_to_gpif2_resp/buffer_whole_pkt/ram_i/impl/ram_reg_0_0) which is driven by a register (slave_fifo32/fifo64_to_gpif2_resp/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/empty_fwft_i_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#3 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/fifo64_to_gpif2_resp/buffer_whole_pkt/ram_i/impl/ram_reg_2 has an input control pin slave_fifo32/fifo64_to_gpif2_resp/buffer_whole_pkt/ram_i/impl/ram_reg_2/ENARDEN (net: slave_fifo32/fifo64_to_gpif2_resp/buffer_whole_pkt/ram_i/impl/ram_reg_0_0) which is driven by a register (slave_fifo32/fifo64_to_gpif2_resp/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/empty_fwft_i_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#4 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/fifo64_to_gpif2_resp/buffer_whole_pkt/ram_i/impl/ram_reg_3 has an input control pin slave_fifo32/fifo64_to_gpif2_resp/buffer_whole_pkt/ram_i/impl/ram_reg_3/ENARDEN (net: slave_fifo32/fifo64_to_gpif2_resp/buffer_whole_pkt/ram_i/impl/ram_reg_0_0) which is driven by a register (slave_fifo32/fifo64_to_gpif2_resp/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/empty_fwft_i_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#5 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#6 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[10]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#7 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[11]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#8 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[12]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#9 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[13]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#10 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[14]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#11 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[15]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#12 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[1]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#13 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[2]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#14 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[3]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#15 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[4]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#16 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[5]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#17 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[6]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#18 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[7]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#19 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[8]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#20 Warning
+RAMB36 async control check  
+The RAMB36E1 slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0 has an input control pin slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg_0/ENARDEN (net: slave_fifo32/gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/wea) which is driven by a register (slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/goreg_dm.dout_i_reg[9]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+RTSTAT-10#1 Warning
+No routable loads  
+112 net(s) have no routable loads. The problem bus(es) and/or net(s) are b200_core/radio_0/ctrl_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+b200_core/radio_0/resp_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+b200_core/radio_0/rx_fifo/fifo_section[0].impl_bram_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+b200_core/radio_0/tx_fifo/fifo_section[0].impl_bram_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+b200_core/radio_0/vita_time_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+b200_core/radio_1/ctrl_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+b200_core/radio_1/resp_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+b200_core/radio_1/rx_fifo/fifo_section[0].impl_bram_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+b200_core/radio_1/tx_fifo/fifo_section[0].impl_bram_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+b200_core/radio_1/vita_time_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+slave_fifo32/fifo64_to_gpif2_resp/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+slave_fifo32/fifo64_to_gpif2_rx/cross_clock_fifo/fifo_section[0].impl_bram_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.rd_rst_reg[2:0],
+slave_fifo32/gpif2_to_fifo64_tx/cross_clock_fifo/fifo_section[0].impl_bram_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i
+ (the first 15 of 56 listed).
+Related violations: <none>
+
+AVAL-4#1 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#2 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#3 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#4 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#5 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/ddc_chain/new_hb.hbdec1/blk00000003/blk00000015: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#6 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/ddc_chain/new_hb.hbdec1/blk00000003/blk00000016: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#7 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/ddc_chain/new_hb.hbdec2/blk00000003/blk00000010: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#8 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/ddc_chain/new_hb.hbdec2/blk00000003/blk00000011: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#9 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#10 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#11 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/duc_chain/mult_i/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#12 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/duc_chain/mult_q/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#13 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/duc_chain/new_hb.hb3_i0/mult: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#14 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_0/duc_chain/new_hb.hb3_q0/mult: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#15 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#16 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#17 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#18 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#19 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/ddc_chain/new_hb.hbdec1/blk00000003/blk00000015: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#20 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/ddc_chain/new_hb.hbdec1/blk00000003/blk00000016: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#21 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/ddc_chain/new_hb.hbdec2/blk00000003/blk00000010: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#22 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/ddc_chain/new_hb.hbdec2/blk00000003/blk00000011: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#23 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#24 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#25 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/duc_chain/mult_i/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#26 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/duc_chain/mult_q/dsp_bl.DSP48_BL: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#27 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/duc_chain/new_hb.hb3_i0/mult: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#28 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+b200_core/radio_1/duc_chain/new_hb.hb3_q0/mult: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+REQP-31#1 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_0/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#2 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_0/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#3 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_0/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#4 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_0/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#5 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_0/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#6 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_0/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#7 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_0/duc_chain/mult_i/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#8 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_0/duc_chain/mult_q/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#9 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_1/ddc_chain/iq_bal/mult_alpha/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#10 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_1/ddc_chain/iq_bal/mult_beta/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#11 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_1/ddc_chain/new_hb.hb3_i/mult/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#12 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_1/ddc_chain/new_hb.hb3_q/mult/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#13 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_1/ddc_chain/new_hb.mult_i/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#14 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_1/ddc_chain/new_hb.mult_q/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#15 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_1/duc_chain/mult_i/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-31#16 Advisory
+enum_PREG_0_connects_CEP_GND  
+b200_core/radio_1/duc_chain/mult_q/dsp_bl.DSP48_BL: When the DSP48E1 PREG attribute is set to 0, the CEP input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-181#1 Advisory
+writefirst  
+Synchronous clocking is detected for BRAM (slave_fifo32/fifo64_to_gpif2_rx/cross_clock_fifo/fifo_section[0].impl_bram_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/gbm.gbmg.gbmga.ngecc.bmg/inst_blk_mem_gen/gnbram.gnativebmg.native_blk_mem_gen/valid.cstr/ramloop[0].ram.r/prim_noinit.ram/DEVICE_7SERIES.NO_BMM_INFO.SDP.WIDE_PRIM36_NO_ECC.ram) in SDP mode with WRITE_FIRST write-mode. This is the preferred mode for best power characteristics, however it may exhibit address collisions if the same address appears on both read and write ports resulting in unknown or corrupted read data. It is suggested to confirm via simulation that an address collision never occurs and if so it is suggested to try and avoid this situation. If address collisions cannot be avoided, the write-mode may be set to READ_FIRST which guarantees that the read data is the prior contents of the memory at the cost of additional power in the design. See the FPGA Memory Resources User Guide for additional information.
+Related violations: <none>
+
+REQP-181#2 Advisory
+writefirst  
+Synchronous clocking is detected for BRAM (slave_fifo32/gpif2_to_fifo64_tx/cross_clock_fifo/fifo_section[0].impl_bram_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.mem/gbm.gbmg.gbmga.ngecc.bmg/inst_blk_mem_gen/gnbram.gnativebmg.native_blk_mem_gen/valid.cstr/ramloop[0].ram.r/prim_noinit.ram/DEVICE_7SERIES.NO_BMM_INFO.SDP.WIDE_PRIM36_NO_ECC.ram) in SDP mode with WRITE_FIRST write-mode. This is the preferred mode for best power characteristics, however it may exhibit address collisions if the same address appears on both read and write ports resulting in unknown or corrupted read data. It is suggested to confirm via simulation that an address collision never occurs and if so it is suggested to try and avoid this situation. If address collisions cannot be avoided, the write-mode may be set to READ_FIRST which guarantees that the read data is the prior contents of the memory at the cost of additional power in the design. See the FPGA Memory Resources User Guide for additional information.
+Related violations: <none>
+
+

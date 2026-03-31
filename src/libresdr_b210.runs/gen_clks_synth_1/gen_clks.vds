@@ -1,0 +1,260 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 12:34:56 MST 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Mon Mar 30 13:09:46 2026
+# Process ID         : 15223
+# Current directory  : /home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/gen_clks_synth_1
+# Command line       : vivado -log gen_clks.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source gen_clks.tcl
+# Log file           : /home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/gen_clks_synth_1/gen_clks.vds
+# Journal file       : /home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/gen_clks_synth_1/vivado.jou
+# Running On         : DESKTOP-8FU7G31
+# Platform           : Debian
+# Operating System   : Debian GNU/Linux 13 (trixie)
+# Processor Detail   : Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz
+# CPU Frequency      : 3407.999 MHz
+# CPU Physical cores : 4
+# CPU Logical cores  : 8
+# Host memory        : 24887 MB
+# Swap memory        : 6442 MB
+# Total Virtual      : 31329 MB
+# Available Virtual  : 25374 MB
+#-----------------------------------------------------------
+source gen_clks.tcl -notrace
+create_project: Time (s): cpu = 00:00:18 ; elapsed = 00:00:13 . Memory (MB): peak = 1608.293 ; gain = 64.055 ; free physical = 12920 ; free virtual = 22609
+Command: synth_design -top gen_clks -part xc7a200tfbg484-2 -incremental_mode off -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a200t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a200t'
+INFO: [Device 21-403] Loading part xc7a200tfbg484-2
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 7 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 15444
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:10 ; elapsed = 00:00:15 . Memory (MB): peak = 2233.348 ; gain = 480.875 ; free physical = 9535 ; free virtual = 19232
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'gen_clks' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.gen/gen_clks/ip/gen_clks/gen_clks.v:67]
+INFO: [Synth 8-6157] synthesizing module 'gen_clks_clk_wiz' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.gen/gen_clks/ip/gen_clks/gen_clks_clk_wiz.v:67]
+INFO: [Synth 8-6157] synthesizing module 'IBUF' [/usr/local/vivado/2025.2/Vivado/scripts/rt/data/unisim_comp.v:82804]
+INFO: [Synth 8-6155] done synthesizing module 'IBUF' (0#1) [/usr/local/vivado/2025.2/Vivado/scripts/rt/data/unisim_comp.v:82804]
+INFO: [Synth 8-6157] synthesizing module 'MMCME2_ADV' [/usr/local/vivado/2025.2/Vivado/scripts/rt/data/unisim_comp.v:95844]
+	Parameter BANDWIDTH bound to: OPTIMIZED - type: string 
+	Parameter CLKFBOUT_MULT_F bound to: 2.500000e+01 - type: double 
+	Parameter CLKFBOUT_PHASE bound to: 0.000000e+00 - type: double 
+	Parameter CLKFBOUT_USE_FINE_PS bound to: FALSE - type: string 
+	Parameter CLKIN1_PERIOD bound to: 2.500000e+01 - type: double 
+	Parameter CLKOUT0_DIVIDE_F bound to: 2.500000e+01 - type: double 
+	Parameter CLKOUT0_DUTY_CYCLE bound to: 5.000000e-01 - type: double 
+	Parameter CLKOUT0_PHASE bound to: 0.000000e+00 - type: double 
+	Parameter CLKOUT0_USE_FINE_PS bound to: FALSE - type: string 
+	Parameter CLKOUT1_DIVIDE bound to: 10 - type: integer 
+	Parameter CLKOUT1_DUTY_CYCLE bound to: 5.000000e-01 - type: double 
+	Parameter CLKOUT1_PHASE bound to: 0.000000e+00 - type: double 
+	Parameter CLKOUT1_USE_FINE_PS bound to: FALSE - type: string 
+	Parameter CLKOUT2_DIVIDE bound to: 5 - type: integer 
+	Parameter CLKOUT2_DUTY_CYCLE bound to: 5.000000e-01 - type: double 
+	Parameter CLKOUT2_PHASE bound to: 0.000000e+00 - type: double 
+	Parameter CLKOUT2_USE_FINE_PS bound to: FALSE - type: string 
+	Parameter CLKOUT4_CASCADE bound to: FALSE - type: string 
+	Parameter COMPENSATION bound to: ZHOLD - type: string 
+	Parameter DIVCLK_DIVIDE bound to: 1 - type: integer 
+	Parameter STARTUP_WAIT bound to: FALSE - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'MMCME2_ADV' (0#1) [/usr/local/vivado/2025.2/Vivado/scripts/rt/data/unisim_comp.v:95844]
+INFO: [Synth 8-6157] synthesizing module 'BUFG' [/usr/local/vivado/2025.2/Vivado/scripts/rt/data/unisim_comp.v:2678]
+INFO: [Synth 8-6155] done synthesizing module 'BUFG' (0#1) [/usr/local/vivado/2025.2/Vivado/scripts/rt/data/unisim_comp.v:2678]
+INFO: [Synth 8-6155] done synthesizing module 'gen_clks_clk_wiz' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.gen/gen_clks/ip/gen_clks/gen_clks_clk_wiz.v:67]
+INFO: [Synth 8-6155] done synthesizing module 'gen_clks' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.gen/gen_clks/ip/gen_clks/gen_clks.v:67]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:14 ; elapsed = 00:00:20 . Memory (MB): peak = 2322.316 ; gain = 569.844 ; free physical = 9282 ; free virtual = 18982
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:14 ; elapsed = 00:00:20 . Memory (MB): peak = 2337.160 ; gain = 584.688 ; free physical = 9266 ; free virtual = 18967
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:14 ; elapsed = 00:00:20 . Memory (MB): peak = 2337.160 ; gain = 584.688 ; free physical = 9266 ; free virtual = 18966
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2343.098 ; gain = 0.000 ; free physical = 9251 ; free virtual = 18953
+INFO: [Netlist 29-17] Analyzing 1 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.gen/gen_clks/ip/gen_clks/gen_clks_ooc.xdc] for cell 'inst'
+Finished Parsing XDC File [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.gen/gen_clks/ip/gen_clks/gen_clks_ooc.xdc] for cell 'inst'
+Parsing XDC File [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.gen/gen_clks/ip/gen_clks/gen_clks_board.xdc] for cell 'inst'
+Finished Parsing XDC File [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.gen/gen_clks/ip/gen_clks/gen_clks_board.xdc] for cell 'inst'
+Parsing XDC File [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.gen/gen_clks/ip/gen_clks/gen_clks.xdc] for cell 'inst'
+Finished Parsing XDC File [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.gen/gen_clks/ip/gen_clks/gen_clks.xdc] for cell 'inst'
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.gen/gen_clks/ip/gen_clks/gen_clks.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/gen_clks_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/gen_clks_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+INFO: [Timing 38-2] Deriving generated clocks
+Parsing XDC File [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/gen_clks_synth_1/dont_touch.xdc]
+Finished Parsing XDC File [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/gen_clks_synth_1/dont_touch.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2386.086 ; gain = 0.000 ; free physical = 9042 ; free virtual = 18745
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 2386.121 ; gain = 0.000 ; free physical = 9040 ; free virtual = 18743
+INFO: [Designutils 20-5008] Incremental synthesis strategy off
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:30 ; elapsed = 00:00:39 . Memory (MB): peak = 2386.121 ; gain = 633.648 ; free physical = 8791 ; free virtual = 18502
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a200tfbg484-2
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:30 ; elapsed = 00:00:39 . Memory (MB): peak = 2394.090 ; gain = 641.617 ; free physical = 8791 ; free virtual = 18502
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:30 ; elapsed = 00:00:39 . Memory (MB): peak = 2394.090 ; gain = 641.617 ; free physical = 8791 ; free virtual = 18502
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:30 ; elapsed = 00:00:39 . Memory (MB): peak = 2394.090 ; gain = 641.617 ; free physical = 8790 ; free virtual = 18502
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 740 (col length:100)
+BRAMs: 730 (col length: RAMB18 100 RAMB36 50)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:34 ; elapsed = 00:00:43 . Memory (MB): peak = 2394.090 ; gain = 641.617 ; free physical = 8782 ; free virtual = 18495
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:45 ; elapsed = 00:00:57 . Memory (MB): peak = 2482.090 ; gain = 729.617 ; free physical = 8551 ; free virtual = 18270
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:45 ; elapsed = 00:00:57 . Memory (MB): peak = 2482.090 ; gain = 729.617 ; free physical = 8551 ; free virtual = 18270
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:45 ; elapsed = 00:00:57 . Memory (MB): peak = 2491.105 ; gain = 738.633 ; free physical = 8542 ; free virtual = 18261
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:53 ; elapsed = 00:01:06 . Memory (MB): peak = 2677.918 ; gain = 925.445 ; free physical = 8199 ; free virtual = 17922
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:53 ; elapsed = 00:01:06 . Memory (MB): peak = 2677.918 ; gain = 925.445 ; free physical = 8199 ; free virtual = 17922
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:53 ; elapsed = 00:01:06 . Memory (MB): peak = 2677.918 ; gain = 925.445 ; free physical = 8199 ; free virtual = 17922
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:53 ; elapsed = 00:01:06 . Memory (MB): peak = 2677.918 ; gain = 925.445 ; free physical = 8199 ; free virtual = 17922
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:53 ; elapsed = 00:01:06 . Memory (MB): peak = 2677.918 ; gain = 925.445 ; free physical = 8199 ; free virtual = 17922
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:53 ; elapsed = 00:01:06 . Memory (MB): peak = 2677.918 ; gain = 925.445 ; free physical = 8199 ; free virtual = 17922
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-----------+------+
+|      |Cell       |Count |
++------+-----------+------+
+|1     |BUFG       |     4|
+|2     |MMCME2_ADV |     1|
+|3     |IBUF       |     1|
++------+-----------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:53 ; elapsed = 00:01:06 . Memory (MB): peak = 2677.918 ; gain = 925.445 ; free physical = 8199 ; free virtual = 17922
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:48 ; elapsed = 00:01:00 . Memory (MB): peak = 2677.918 ; gain = 876.484 ; free physical = 8198 ; free virtual = 17921
+Synthesis Optimization Complete : Time (s): cpu = 00:00:53 ; elapsed = 00:01:06 . Memory (MB): peak = 2677.926 ; gain = 925.445 ; free physical = 8198 ; free virtual = 17921
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2677.926 ; gain = 0.000 ; free physical = 8198 ; free virtual = 17921
+INFO: [Netlist 29-17] Analyzing 1 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2677.926 ; gain = 0.000 ; free physical = 8482 ; free virtual = 18208
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete | Checksum: 1ceef95
+INFO: [Common 17-83] Releasing license: Synthesis
+29 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:01:06 ; elapsed = 00:01:15 . Memory (MB): peak = 2677.953 ; gain = 1069.660 ; free physical = 8476 ; free virtual = 18202
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 1720.115; main = 1616.052; forked = 206.002
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 3553.020; main = 2677.918; forked = 986.914
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2701.930 ; gain = 0.000 ; free physical = 8477 ; free virtual = 18202
+INFO: [Common 17-1381] The checkpoint '/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/gen_clks_synth_1/gen_clks.dcp' has been generated.
+INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP gen_clks, cache-ID = 4fdb5077c4919298
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2701.930 ; gain = 0.000 ; free physical = 8478 ; free virtual = 18204
+INFO: [Common 17-1381] The checkpoint '/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/gen_clks_synth_1/gen_clks.dcp' has been generated.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file gen_clks_utilization_synth.rpt -pb gen_clks_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Mon Mar 30 13:11:22 2026...
