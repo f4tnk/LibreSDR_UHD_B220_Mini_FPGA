@@ -1,7 +1,7 @@
 # LibreSDR B220 Mini — FPGA Firmware Technical Reference
 
 <p align="center">
-  <strong>F4TNK Optimized Firmware — Production Release V13</strong><br/>
+  <strong>F4TNK Optimized Firmware — Production Release V14</strong><br/>
   <em>Station SatNOGS #3762 · March 2026</em>
 </p>
 
@@ -623,8 +623,23 @@ flowchart LR
 | V11 | Mar 2026 | +0.180 | ~144 | 29.4 | ❌ | Adaptive ALE/NLMS — reverted (HW failure) |
 | V12 | Mar 2026 | +1.244 | 116 | ~26 | ❌ | CORDIC stage 23 removed → accum_timeout |
 | ⭐ **V13** | Mar 2026 | +0.266 | 116 | ~26 | **✅ PROD** | Restore CORDIC s23 + CDC is10meg + pipeline droop |
+| ⭐ **V14** | Mar 2026 | TBD | 116 | ~26 | **🔧 BUILD** | GPIF USB 2.0 boundary fix (512B) + UHD send_buff 0.5s timeout |
 
-### 8.2 DSP Improvement Accumulation
+### 8.2 V14 Engineering Detail
+
+**Problem:** Intermittent `RuntimeError: fifo ctrl timed out getting a send buffer` during UHD init on USB 2.0 (480 Mbps) via usbipd-win/WSL2. Occurs ~1/7 startups.
+
+**Root cause — FPGA side (`gpif2_slave_fifo32.v`):**
+The GPIF-II state machine uses `transfer_size` to detect USB packet boundaries. The original code checks `transfer_size[7:0]==0` (256 words = 1024 bytes), which only matches USB 3.0 maxpacket size. On USB 2.0, maxpacket is 512 bytes (128 words), causing the FSM to miss packet boundaries and stall.
+
+**Fix:** `transfer_size[7:0]==0` → `transfer_size[6:0]==0` in both `STATE_THINK` (line ~228) and `STATE_WRITE` (line ~342). This detects 128-word (512B) boundaries for USB 2.0 while remaining compatible with USB 3.0 (128 words divides 256 words).
+
+**Root cause — Host side (`b200_radio_ctrl_core.cpp`):**
+`send_pkt()` calls `get_send_buff(0.0)` — zero timeout. USB-over-IP via usbipd-win adds 1-5 ms latency per transfer, making zero timeout intolerant of the virtual USB-over-IP stack.
+
+**Fix (in f4tnk/uhd fork):** `get_send_buff(0.0)` → `get_send_buff(0.5)` (500 ms timeout). Commit `734fa0e6a` on `master-f4tnk`.
+
+### 8.3 DSP Improvement Accumulation
 
 ```mermaid
 flowchart TB
@@ -694,6 +709,7 @@ flowchart TD
 | 5 | Test every build on hardware before declaring success | V8 | WNS positive ≠ functional firmware |
 | 6 | HB3 bypass must be external combinatorial mux | V9 | +1 phantom cycle breaks isochronous timing |
 | 7 | Never remove a CORDIC stage even if `cₙ = 0` | V12 | −1 DDC cycle + −1 DUC cycle → `accum_timeout` |
+| 8 | GPIF packet boundary check must match USB speed (512B for USB 2.0) | V14 | FSM stall → fifo ctrl timeout on USB 2.0 hosts |
 
 ---
 
@@ -922,7 +938,7 @@ flowchart TD
 | `round_sd.v` | `round_sd` | V5 | Sigma-delta noise shaping, order 1 or 2 |
 | `libresdr_b210.v` | `libresdr_b210` | V13 | FPGA top-level, CDC is10meg fix |
 | `b200_core.v` | `b200_core` | V0 | Control plane, DO NOT MODIFY |
-| `gpif2_slave_fifo32.v` | `gpif2_slave_fifo32` | V0 | GPIF-II USB interface, DO NOT MODIFY |
+| `gpif2_slave_fifo32.v` | `gpif2_slave_fifo32` | V14 | GPIF-II USB interface — V14: 512B boundary fix for USB 2.0 |
 
 ---
 
