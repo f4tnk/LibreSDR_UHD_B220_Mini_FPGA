@@ -623,7 +623,7 @@ flowchart LR
 | V11 | Mar 2026 | +0.180 | ~144 | 29.4 | ❌ | Adaptive ALE/NLMS — reverted (HW failure) |
 | V12 | Mar 2026 | +1.244 | 116 | ~26 | ❌ | CORDIC stage 23 removed → accum_timeout |
 | ⭐ **V13** | Mar 2026 | +0.266 | 116 | ~26 | **✅ PROD** | Restore CORDIC s23 + CDC is10meg + pipeline droop |
-| ⭐ **V14** | Mar 2026 | TBD | 116 | ~26 | **🔧 BUILD** | GPIF USB 2.0 boundary fix (512B) + UHD send_buff 0.5s timeout |
+| ⭐ **V14** | Mar 2026 | +0.494 | 116 | ~26 | **✅ PROD** | GPIF USB 2.0 boundary fix (512B) + UHD send_buff 0.5s timeout |
 
 ### 8.2 V14 Engineering Detail
 
