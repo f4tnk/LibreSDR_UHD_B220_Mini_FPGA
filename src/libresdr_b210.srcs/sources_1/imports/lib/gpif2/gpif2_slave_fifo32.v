@@ -225,7 +225,12 @@ module gpif2_slave_fifo32
             state <= STATE_READ_SINGLE;
             slrd <= 0;
             sloe <= 0; // FX3 drives the data bus.
-          end else if (fx3_ready1 && write_ready_go && wr_fifo_eop && (transfer_size[6:0] == 0)) begin // remember that write_ready_go shows 1 cycle old status.
+          end else if (fx3_ready1 && write_ready_go && wr_fifo_eop && (transfer_size[6:0] == 0) && (fifoadr == ADDR_DATA_RX)) begin // remember that write_ready_go shows 1 cycle old status.
+            // V15-F4TNK: Added (fifoadr == ADDR_DATA_RX) guard — padding only for data
+            // streaming endpoint. CTRL_RX packets are small and must never be padded,
+            // because transfer_size is shared across all endpoints and can accumulate
+            // stale counts from DATA_RX bursts, causing false padding on CTRL_RX
+            // → USB packet desync → packet_count assertion failure in UHD radio ctrl.
             // V14-F4TNK: [6:0] detects 128-word (512B) boundary for USB 2.0 compatibility.
             // Previously [7:0] only detected 256-word (1024B = USB 3.0) boundary,
             // causing packets to get stuck in FX3 on USB 2.0 (usbipd-win / WSL2).
@@ -339,8 +344,9 @@ module gpif2_slave_fifo32
       // Otherwise at EOP just send a short packet.
       // If local FIFO goes empty then we terminatethe burst without asserting pktend.
       STATE_WRITE: begin
-        if (wr_fifo_eop && wr_fifo_xfer && (transfer_size[6:0] == 0)) begin
+        if (wr_fifo_eop && wr_fifo_xfer && (transfer_size[6:0] == 0) && (fifoadr == ADDR_DATA_RX)) begin
 
+          // V15-F4TNK: Added (fifoadr == ADDR_DATA_RX) guard — see STATE_THINK comment.
           // V14-F4TNK: [6:0] detects 512B boundary — see STATE_THINK comment.
           // If an exact multiple of the native USB packet size (1K USB3, 512B USB2) has been transfered
           // and TLAST is asserted (but the transfer is less than a full FX3 DMA buffer - this is

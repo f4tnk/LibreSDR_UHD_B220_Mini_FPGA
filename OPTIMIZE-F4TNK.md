@@ -1,8 +1,8 @@
 # LibreSDR B220 Mini — FPGA Firmware Technical Reference
 
 <p align="center">
-  <strong>F4TNK Optimized Firmware — Production Release V14</strong><br/>
-  <em>Station SatNOGS #3762 · March 2026</em>
+  <strong>F4TNK Optimized Firmware — Production Release V15</strong><br/>
+  <em>Station SatNOGS #3762 · April 2026</em>
 </p>
 
 ---
@@ -144,9 +144,9 @@ flowchart LR
 | **Bit width reduction** | 24-bit internal | 16-bit USB | 33% |
 | **Effective data rate** | 1,474 Mbps raw | **~1 Mbps** to USB | **1000×** |
 
-### 2.2 The Firmware V13 Specifically
+### 2.2 The Firmware V15 Specifically
 
-Version 13 is the **current production release**, incorporating 13 generations of iterative DSP refinement targeting **weak-signal LEO satellite reception** on the SatNOGS #3762 station. Each version added precision, fixed quantization errors, or resolved hardware initialization bugs.
+Version 15 is the **current production release**, incorporating 15 generations of iterative DSP refinement and USB transport fixes targeting **weak-signal LEO satellite reception** on the SatNOGS #3762 station. V15 fixes a critical GPIF padding bug introduced in V14 that caused CTRL channel packet desynchronization on USB 2.0.
 
 ```mermaid
 timeline
@@ -175,6 +175,9 @@ timeline
         V11 Mar 2026 : Adaptive processing — REVERTED
         V12 Mar 2026 : CORDIC stage removal — accum_timeout
         V13 Mar 2026 : PRODUCTION — CDC fix + pipeline FIR
+    section USB 2.0 Fix (V14-V15)
+        V14 Mar 2026 : GPIF 512B boundary — CTRL desync
+        V15 Apr 2026 : PRODUCTION — DATA_RX-only padding guard
 ```
 
 ---
@@ -623,7 +626,8 @@ flowchart LR
 | V11 | Mar 2026 | +0.180 | ~144 | 29.4 | ❌ | Adaptive ALE/NLMS — reverted (HW failure) |
 | V12 | Mar 2026 | +1.244 | 116 | ~26 | ❌ | CORDIC stage 23 removed → accum_timeout |
 | ⭐ **V13** | Mar 2026 | +0.266 | 116 | ~26 | **✅ PROD** | Restore CORDIC s23 + CDC is10meg + pipeline droop |
-| ⭐ **V14** | Mar 2026 | +0.494 | 116 | ~26 | **✅ PROD** | GPIF USB 2.0 boundary fix (512B) + UHD send_buff 0.5s timeout |
+| **V14** | Mar 2026 | +0.494 | 116 | ~26 | ❌ | GPIF USB 2.0 boundary fix (512B) — packet_count assertion on CTRL |
+| ⭐ **V15** | Apr 2026 | +0.879 | 116 | ~26 | **✅ PROD** | GPIF padding guard: DATA_RX only — fixes CTRL_RX desync |
 
 ### 8.2 V14 Engineering Detail
 
@@ -639,7 +643,22 @@ The GPIF-II state machine uses `transfer_size` to detect USB packet boundaries. 
 
 **Fix (in f4tnk/uhd fork):** `get_send_buff(0.0)` → `get_send_buff(0.5)` (500 ms timeout). Commit `734fa0e6a` on `master-f4tnk`.
 
-### 8.3 DSP Improvement Accumulation
+### 8.3 V15 Engineering Detail
+
+**Problem:** V14 FPGA causes `AssertionError: packet_info.packet_count == (seq_to_ack & 0xfff)` during UHD radio ctrl initialization. Occurs on every startup attempt (3/3 retries fail).
+
+**Root cause (`gpif2_slave_fifo32.v`):**
+The V14 change (`transfer_size[6:0]==0` for 512B USB 2.0 boundary detection) affected **all FIFO endpoints** equally. The `transfer_size` counter is shared across DATA_RX, DATA_TX, CTRL_RX, and CTRL_TX — it is NOT reset when the state machine switches endpoints (STATE_IDLE → STATE_WAIT → STATE_THINK). When a DATA_RX burst ends without `pktend` (e.g., FX3 full → STATE_WRITE_FLUSH without counter reset), the stale counter value persists. When CTRL_RX then sends a small response packet (~4 words), `transfer_size` can cross the 128-word boundary (`[6:0]==0`), triggering a false padding cycle. This extra padding byte desynchronizes the USB packet framing, causing UHD's radio ctrl to see a mismatched sequence number.
+
+**Fix:** Add `(fifoadr == ADDR_DATA_RX)` guard to both padding conditions:
+- `STATE_THINK` (line ~230): `... && (transfer_size[6:0] == 0) && (fifoadr == ADDR_DATA_RX)`
+- `STATE_WRITE` (line ~349): `... && (transfer_size[6:0] == 0) && (fifoadr == ADDR_DATA_RX)`
+
+This ensures 512B boundary padding only triggers for the data streaming endpoint, where long bursts genuinely need it. CTRL_RX packets are always small (<32 words) and must never be padded — their termination is handled solely by `pktend`.
+
+**Build results:** WNS +0.879 ns (best of all versions), 0 failing endpoints, 4,519,920 bytes.
+
+### 8.4 DSP Improvement Accumulation
 
 ```mermaid
 flowchart TB
@@ -661,7 +680,7 @@ flowchart TB
 
 ## 9. Absolute Design Rules
 
-These rules are derived from hardware failures across 13 firmware versions. **Violating any rule guarantees a non-functional firmware.**
+These rules are derived from hardware failures across 15 firmware versions. **Violating any rule guarantees a non-functional firmware.**
 
 ```mermaid
 flowchart TD
@@ -710,6 +729,7 @@ flowchart TD
 | 6 | HB3 bypass must be external combinatorial mux | V9 | +1 phantom cycle breaks isochronous timing |
 | 7 | Never remove a CORDIC stage even if `cₙ = 0` | V12 | −1 DDC cycle + −1 DUC cycle → `accum_timeout` |
 | 8 | GPIF packet boundary check must match USB speed (512B for USB 2.0) | V14 | FSM stall → fifo ctrl timeout on USB 2.0 hosts |
+| 9 | GPIF padding must be guarded by endpoint address (DATA_RX only) | V14→V15 | Unguarded padding contaminates CTRL_RX → packet_count assertion |
 
 ---
 
@@ -938,7 +958,7 @@ flowchart TD
 | `round_sd.v` | `round_sd` | V5 | Sigma-delta noise shaping, order 1 or 2 |
 | `libresdr_b210.v` | `libresdr_b210` | V13 | FPGA top-level, CDC is10meg fix |
 | `b200_core.v` | `b200_core` | V0 | Control plane, DO NOT MODIFY |
-| `gpif2_slave_fifo32.v` | `gpif2_slave_fifo32` | V14 | GPIF-II USB interface — V14: 512B boundary fix for USB 2.0 |
+| `gpif2_slave_fifo32.v` | `gpif2_slave_fifo32` | V15 | GPIF-II USB interface — V14: 512B boundary + V15: DATA_RX-only padding guard |
 
 ---
 
