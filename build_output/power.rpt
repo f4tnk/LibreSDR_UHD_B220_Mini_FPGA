@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2025.2 (lin64) Build 6299465 Fri Nov 14 12:34:56 MST 2025
-| Date             : Wed Apr  1 15:35:22 2026
+| Date             : Thu Apr  2 11:02:29 2026
 | Host             : DESKTOP-8FU7G31 running 64-bit Debian GNU/Linux 13 (trixie)
 | Command          : report_power -file /home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/build_output/power.rpt
 | Design           : libresdr_b210
@@ -30,11 +30,11 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.571        |
+| Total On-Chip Power (W)  | 0.574        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.417        |
-| Device Static (W)        | 0.154        |
+| Dynamic (W)              | 0.418        |
+| Device Static (W)        | 0.156        |
 | Effective TJA (C/W)      | 2.5          |
 | Max Ambient (C)          | 83.6         |
 | Junction Temperature (C) | 26.4         |
@@ -52,23 +52,23 @@ Table of Contents
 +--------------------------+-----------+----------+-----------+-----------------+
 | On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
 +--------------------------+-----------+----------+-----------+-----------------+
-| Clocks                   |     0.106 |        9 |       --- |             --- |
-| Slice Logic              |     0.027 |    88478 |       --- |             --- |
-|   LUT as Logic           |     0.021 |    30161 |    134600 |           22.41 |
-|   CARRY4                 |     0.005 |     5024 |     33650 |           14.93 |
-|   Register               |     0.001 |    39113 |    269200 |           14.53 |
+| Clocks                   |     0.109 |        9 |       --- |             --- |
+| Slice Logic              |     0.027 |    88564 |       --- |             --- |
+|   LUT as Logic           |     0.020 |    30183 |    134600 |           22.42 |
+|   CARRY4                 |     0.005 |     5034 |     33650 |           14.96 |
+|   Register               |     0.001 |    39137 |    269200 |           14.54 |
 |   LUT as Distributed RAM |    <0.001 |      812 |     46200 |            1.76 |
 |   LUT as Shift Register  |    <0.001 |     4345 |     46200 |            9.40 |
 |   BUFG                   |    <0.001 |        4 |        32 |           12.50 |
-|   F7/F8 Muxes            |    <0.001 |      223 |    134600 |            0.17 |
+|   F7/F8 Muxes            |    <0.001 |      226 |    134600 |            0.17 |
 |   Others                 |     0.000 |     1733 |       --- |             --- |
-| Signals                  |     0.033 |    67110 |       --- |             --- |
-| Block RAM                |     0.014 |    115.5 |       365 |           31.64 |
+| Signals                  |     0.032 |    67204 |       --- |             --- |
+| Block RAM                |     0.013 |      150 |       365 |           41.10 |
 | MMCM                     |     0.212 |        2 |        10 |           20.00 |
 | DSPs                     |    <0.001 |      116 |       740 |           15.68 |
 | I/O                      |     0.025 |      131 |       285 |           45.96 |
-| Static Power             |     0.154 |          |           |                 |
-| Total                    |     0.571 |          |           |                 |
+| Static Power             |     0.156 |          |           |                 |
+| Total                    |     0.574 |          |           |                 |
 +--------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -78,7 +78,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.216 |       0.181 |      0.034 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.218 |       0.183 |      0.035 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.149 |       0.118 |      0.031 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.009 |       0.004 |      0.005 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -153,22 +153,22 @@ Table of Contents
 +----------------------------+-----------+
 | Name                       | Power (W) |
 +----------------------------+-----------+
-| libresdr_b210              |     0.417 |
+| libresdr_b210              |     0.418 |
 |   b200_core                |     0.135 |
 |     demux_for_tx           |     0.002 |
 |       axi_fifo_flop2       |     0.002 |
-|     extra_rx_buff          |     0.001 |
-|       fifo_bram            |     0.001 |
+|     mux_for_resp           |     0.001 |
+|       axi_fifo_flop2       |     0.001 |
 |     radio_0                |     0.064 |
-|       convert_xxxx_to_16sc |     0.013 |
+|       convert_xxxx_to_16sc |     0.012 |
 |       ctrl_fifo            |     0.001 |
 |       ddc_chain            |     0.027 |
-|       duc_chain            |     0.012 |
+|       duc_chain            |     0.013 |
 |       new_rx_framer        |     0.001 |
 |       resp_fifo            |     0.001 |
 |       rx_fifo              |     0.002 |
 |       tx_fifo              |     0.001 |
-|     radio_1                |     0.063 |
+|     radio_1                |     0.064 |
 |       convert_16sc_to_xxxx |     0.004 |
 |       convert_xxxx_to_16sc |     0.010 |
 |       ctrl_fifo            |     0.001 |
@@ -181,16 +181,16 @@ Table of Contents
 |   clk_wiz_0_10M_detect     |     0.106 |
 |     inst                   |     0.106 |
 |   encpy_i                  |     0.019 |
-|     aes_cipher_top_i       |     0.018 |
+|     aes_cipher_top_i       |     0.017 |
 |       u0                   |     0.008 |
 |   nolabel_line290          |     0.008 |
-|   slave_fifo32             |     0.015 |
+|   slave_fifo32             |     0.016 |
 |     fifo64_to_gpif2_resp   |     0.007 |
 |       buffer_whole_pkt     |     0.005 |
 |       cross_clock_fifo     |     0.001 |
-|     fifo64_to_gpif2_rx     |     0.002 |
+|     fifo64_to_gpif2_rx     |     0.003 |
 |       cross_clock_fifo     |     0.002 |
-|     gpif2_to_fifo64_ctrl   |     0.002 |
+|     gpif2_to_fifo64_ctrl   |     0.003 |
 |       cross_clock_fifo     |     0.001 |
 |     gpif2_to_fifo64_tx     |     0.003 |
 |       cross_clock_fifo     |     0.002 |

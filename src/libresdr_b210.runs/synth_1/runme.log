@@ -7,7 +7,7 @@
   **** SW Build 6299465 on Fri Nov 14 12:34:56 MST 2025
   **** IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
   **** SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
-  **** Start of session at: Mon Mar 30 22:23:18 2026
+  **** Start of session at: Thu Apr  2 10:39:17 2026
     ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
     ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 
@@ -23,9 +23,9 @@ INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a200
 INFO: [Device 21-403] Loading part xc7a200tfbg484-2
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 7 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 62198
+INFO: [Synth 8-7075] Helper process launched with PID 52742
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2238.039 ; gain = 480.594 ; free physical = 842 ; free virtual = 19062
+Starting RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 2237.855 ; gain = 481.875 ; free physical = 2744 ; free virtual = 18701
 ---------------------------------------------------------------------------------
 WARNING: [Synth 8-10929] literal value 'hff truncated to fit in 7 bits [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/add_then_mac.v:45]
 WARNING: [Synth 8-10929] literal value 'hff truncated to fit in 7 bits [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/add_then_mac.v:46]
@@ -35,8 +35,8 @@ WARNING: [Synth 8-10929] literal value 'h8000 truncated to fit in 15 bits [/home
 WARNING: [Synth 8-6901] identifier 'slrd2' is used before its declaration [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/gpif2/gpif2_slave_fifo32.v:79]
 INFO: [Synth 8-11241] undeclared symbol 'strobe_tx', assumed default net type 'wire' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/radio_200/radio_legacy.v:387]
 INFO: [Synth 8-6157] synthesizing module 'libresdr_b210' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/libresdr_b210.v:2]
-INFO: [Synth 8-6157] synthesizing module 'gen_clks' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-61967-DESKTOP-8FU7G31/realtime/gen_clks_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'gen_clks' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-61967-DESKTOP-8FU7G31/realtime/gen_clks_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'gen_clks' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/gen_clks_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'gen_clks' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/gen_clks_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'reset_sync' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/reset_sync.v:11]
 INFO: [Synth 8-6157] synthesizing module 'synchronizer' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/synchronizer.v:46]
 	Parameter STAGES bound to: 10 - type: integer 
@@ -75,8 +75,8 @@ INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/d
 INFO: [Synth 8-6155] done synthesizing module 'iic' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/HDL/Verilog_i2c_eeprom/iic.v:8]
 INFO: [Synth 8-6155] done synthesizing module 'eeprom' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/HDL/Verilog_i2c_eeprom/eeprom.v:8]
 INFO: [Synth 8-6155] done synthesizing module 'encpy' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/new/encpy.v:23]
-INFO: [Synth 8-6157] synthesizing module 'clk_wiz_0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-61967-DESKTOP-8FU7G31/realtime/clk_wiz_0_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'clk_wiz_0' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-61967-DESKTOP-8FU7G31/realtime/clk_wiz_0_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'clk_wiz_0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/clk_wiz_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'clk_wiz_0' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/clk_wiz_0_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'b205_ref_pll' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b205_ref_pll.v:7]
 INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b205_ref_pll.v:234]
 INFO: [Synth 8-6157] synthesizing module 'DACx311_auto_spi' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/DACx311_auto_spi.v:13]
@@ -118,7 +118,7 @@ INFO: [Synth 8-6157] synthesizing module 'BUFGMUX' [/usr/local/vivado/2025.2/Viv
 INFO: [Synth 8-6155] done synthesizing module 'BUFGMUX' (0#1) [/usr/local/vivado/2025.2/Vivado/scripts/rt/data/unisim_comp.v:2779]
 INFO: [Synth 8-6155] done synthesizing module 'libresdr_b205_io' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/cat_io/libresdr_b205_io.v:8]
 INFO: [Synth 8-6157] synthesizing module 'b200_core' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:12]
-	Parameter EXTRA_BUFF_SIZE bound to: 12 - type: integer 
+	Parameter EXTRA_BUFF_SIZE bound to: 13 - type: integer 
 INFO: [Synth 8-6157] synthesizing module 'pps_generator' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/timing/pps_generator.v:8]
 	Parameter CLK_FREQ bound to: 100000000 - type: integer 
 INFO: [Synth 8-6155] done synthesizing module 'pps_generator' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/timing/pps_generator.v:8]
@@ -222,16 +222,16 @@ WARNING: [Synth 8-7023] instance 'misc_spi' of module 'simple_spi_core' has 13 c
 INFO: [Synth 8-226] default block is never used [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:236]
 INFO: [Synth 8-6157] synthesizing module 'axi_fifo__parameterized1' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo.v:17]
 	Parameter WIDTH bound to: 65 - type: integer 
-	Parameter SIZE bound to: 12 - type: integer 
+	Parameter SIZE bound to: 13 - type: integer 
 INFO: [Synth 8-6157] synthesizing module 'axi_fifo_bram__parameterized0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_bram.v:13]
 	Parameter WIDTH bound to: 65 - type: integer 
-	Parameter SIZE bound to: 12 - type: integer 
+	Parameter SIZE bound to: 13 - type: integer 
 INFO: [Synth 8-6157] synthesizing module 'ram_2port__parameterized0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/ram_2port.v:54]
 	Parameter DWIDTH bound to: 65 - type: integer 
-	Parameter AWIDTH bound to: 12 - type: integer 
+	Parameter AWIDTH bound to: 13 - type: integer 
 INFO: [Synth 8-6157] synthesizing module 'ram_2port_impl_auto__parameterized0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/ram_2port_impl.vh:10]
 	Parameter DWIDTH bound to: 65 - type: integer 
-	Parameter AWIDTH bound to: 12 - type: integer 
+	Parameter AWIDTH bound to: 13 - type: integer 
 	Parameter RW_MODE bound to: READ-FIRST - type: string 
 	Parameter OUT_REG bound to: 0 - type: integer 
 	Parameter INIT_FILE bound to: (null) - type: string 
@@ -294,8 +294,8 @@ INFO: [Synth 8-6155] done synthesizing module 'gpio_atr' (0#1) [/home/f4tnk/dev/
 INFO: [Synth 8-6157] synthesizing module 'axi_fifo_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:24]
 	Parameter WIDTH bound to: 65 - type: integer 
 	Parameter SIZE bound to: 0 - type: integer 
-INFO: [Synth 8-6157] synthesizing module 'fifo_short_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-61967-DESKTOP-8FU7G31/realtime/fifo_short_2clk_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'fifo_short_2clk' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-61967-DESKTOP-8FU7G31/realtime/fifo_short_2clk_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'fifo_short_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/fifo_short_2clk_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'fifo_short_2clk' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/fifo_short_2clk_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'synchronizer__parameterized2' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/synchronizer.v:46]
 	Parameter INITIAL_VAL bound to: 1'b1 
 INFO: [Synth 8-6157] synthesizing module 'synchronizer_impl__parameterized2' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/synchronizer_impl.v:8]
@@ -308,8 +308,8 @@ INFO: [Synth 8-6155] done synthesizing module 'axi_fifo_2clk' (0#1) [/home/f4tnk
 INFO: [Synth 8-6157] synthesizing module 'axi_fifo_2clk__parameterized0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:24]
 	Parameter WIDTH bound to: 65 - type: integer 
 	Parameter SIZE bound to: 11 - type: integer 
-INFO: [Synth 8-6157] synthesizing module 'fifo_4k_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-61967-DESKTOP-8FU7G31/realtime/fifo_4k_2clk_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'fifo_4k_2clk' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-61967-DESKTOP-8FU7G31/realtime/fifo_4k_2clk_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'fifo_4k_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/fifo_4k_2clk_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'fifo_4k_2clk' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/fifo_4k_2clk_stub.v:6]
 WARNING: [Synth 8-7071] port 'wr_rst_busy' of module 'fifo_4k_2clk' is unconnected for instance 'impl_bram_i' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:135]
 WARNING: [Synth 8-7071] port 'rd_rst_busy' of module 'fifo_4k_2clk' is unconnected for instance 'impl_bram_i' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:135]
 WARNING: [Synth 8-7023] instance 'impl_bram_i' of module 'fifo_4k_2clk' has 13 connections declared, but only 11 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:135]
@@ -884,7 +884,7 @@ INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/d
 	Parameter INIT_FILE bound to: (null) - type: string 
 INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_bram.v:85]
 	Parameter WIDTH bound to: 10 - type: integer 
-	Parameter DATA_RX_FIFO_SIZE bound to: 14 - type: integer 
+	Parameter DATA_RX_FIFO_SIZE bound to: 15 - type: integer 
 	Parameter DATA_TX_FIFO_SIZE bound to: 14 - type: integer 
 	Parameter FIFO_SIZE bound to: 14 - type: integer 
 	Parameter WIDTH bound to: 33 - type: integer 
@@ -934,7 +934,22 @@ INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/d
 	Parameter SIZE bound to: 1 - type: integer 
 	Parameter WIDTH bound to: 12 - type: integer 
 INFO: [Synth 8-226] default block is never used [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo32_to_fifo64.v:23]
-	Parameter FIFO_SIZE bound to: 14 - type: integer 
+	Parameter FIFO_SIZE bound to: 15 - type: integer 
+	Parameter WIDTH bound to: 33 - type: integer 
+	Parameter SIZE bound to: 15 - type: integer 
+WARNING: [Synth 8-7071] port 'wr_rst_busy' of module 'fifo_4k_2clk' is unconnected for instance 'impl_bram_i' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:135]
+WARNING: [Synth 8-7071] port 'rd_rst_busy' of module 'fifo_4k_2clk' is unconnected for instance 'impl_bram_i' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:135]
+WARNING: [Synth 8-7023] instance 'impl_bram_i' of module 'fifo_4k_2clk' has 13 connections declared, but only 11 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:135]
+	Parameter WIDTH bound to: 33 - type: integer 
+	Parameter SIZE bound to: 15 - type: integer 
+	Parameter DWIDTH bound to: 33 - type: integer 
+	Parameter AWIDTH bound to: 15 - type: integer 
+	Parameter DWIDTH bound to: 33 - type: integer 
+	Parameter AWIDTH bound to: 15 - type: integer 
+	Parameter RW_MODE bound to: READ-FIRST - type: string 
+	Parameter OUT_REG bound to: 0 - type: integer 
+	Parameter INIT_FILE bound to: (null) - type: string 
+INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_bram.v:85]
 	Parameter WIDTH bound to: 33 - type: integer 
 	Parameter SIZE bound to: 1 - type: integer 
 	Parameter FIFO_SIZE bound to: 5 - type: integer 
@@ -1091,18 +1106,18 @@ WARNING: [Synth 8-7129] Port debug[30] in module chdr_16sc_to_32f is either unco
 WARNING: [Synth 8-7129] Port debug[29] in module chdr_16sc_to_32f is either unconnected or has no load
 INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:18 ; elapsed = 00:00:22 . Memory (MB): peak = 2499.273 ; gain = 741.828 ; free physical = 631 ; free virtual = 18861
+Finished RTL Elaboration : Time (s): cpu = 00:00:17 ; elapsed = 00:00:19 . Memory (MB): peak = 2551.777 ; gain = 795.797 ; free physical = 2529 ; free virtual = 18492
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:18 ; elapsed = 00:00:23 . Memory (MB): peak = 2499.273 ; gain = 741.828 ; free physical = 630 ; free virtual = 18860
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 2551.777 ; gain = 795.797 ; free physical = 2526 ; free virtual = 18490
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:18 ; elapsed = 00:00:23 . Memory (MB): peak = 2499.273 ; gain = 741.828 ; free physical = 630 ; free virtual = 18860
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 2551.777 ; gain = 795.797 ; free physical = 2526 ; free virtual = 18490
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00.97 ; elapsed = 00:00:01 . Memory (MB): peak = 2499.273 ; gain = 0.000 ; free physical = 628 ; free virtual = 18860
+Netlist sorting complete. Time (s): cpu = 00:00:00.69 ; elapsed = 00:00:00.69 . Memory (MB): peak = 2551.777 ; gain = 0.000 ; free physical = 2520 ; free virtual = 18484
 INFO: [Netlist 29-17] Analyzing 99 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
@@ -1153,28 +1168,28 @@ INFO: [Project 1-236] Implementation specific constraints were found while readi
 Resolution: To avoid this warning, move constraints listed in [.Xil/libresdr_b210_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 2640.949 ; gain = 0.000 ; free physical = 578 ; free virtual = 18812
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2667.547 ; gain = 0.000 ; free physical = 2470 ; free virtual = 18451
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 5 instances were transformed.
   BUFGMUX => BUFGCTRL (inverted pins: CE0): 1 instance 
   MULT18X18S => DSP48E1: 4 instances
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00.24 ; elapsed = 00:00:00.28 . Memory (MB): peak = 2640.984 ; gain = 0.000 ; free physical = 576 ; free virtual = 18811
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.18 ; elapsed = 00:00:00.17 . Memory (MB): peak = 2667.582 ; gain = 0.000 ; free physical = 2469 ; free virtual = 18450
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:43 ; elapsed = 00:00:47 . Memory (MB): peak = 2640.984 ; gain = 883.539 ; free physical = 568 ; free virtual = 18807
+Finished Constraint Validation : Time (s): cpu = 00:00:40 ; elapsed = 00:00:39 . Memory (MB): peak = 2667.582 ; gain = 911.602 ; free physical = 2462 ; free virtual = 18444
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a200tfbg484-2
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:43 ; elapsed = 00:00:47 . Memory (MB): peak = 2648.953 ; gain = 891.508 ; free physical = 568 ; free virtual = 18807
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:40 ; elapsed = 00:00:39 . Memory (MB): peak = 2675.551 ; gain = 919.570 ; free physical = 2462 ; free virtual = 18443
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:44 ; elapsed = 00:00:47 . Memory (MB): peak = 2648.953 ; gain = 891.508 ; free physical = 568 ; free virtual = 18806
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:41 ; elapsed = 00:00:39 . Memory (MB): peak = 2675.551 ; gain = 919.570 ; free physical = 2459 ; free virtual = 18441
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'b205_ref_pll'
 INFO: [Synth 8-802] inferred FSM for state register 'mx_state_reg' in module 'axi_mux4'
@@ -1207,6 +1222,7 @@ INFO: [Synth 8-802] inferred FSM for state register 'read_state_reg' in module '
 INFO: [Synth 8-802] inferred FSM for state register 'read_state_reg' in module 'axi_fifo_legacy'
 INFO: [Synth 8-802] inferred FSM for state register 'read_state_reg' in module 'axi_fifo_bram__parameterized3'
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'gpif2_error_checker'
+INFO: [Synth 8-802] inferred FSM for state register 'read_state_reg' in module 'axi_fifo_bram__parameterized4'
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'gpif2_slave_fifo32'
 ---------------------------------------------------------------------------------------------------
                    State |                     New Encoding |                Previous Encoding 
@@ -1507,6 +1523,15 @@ INFO: [Synth 8-3971] The signal "ram_2port_impl_auto__parameterized6:/ram_reg" w
               STATE_WAIT |                               11 |                               11
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'gpif2_error_checker'
+INFO: [Synth 8-3971] The signal "ram_2port_impl_auto__parameterized7:/ram_reg" was recognized as a true dual port RAM template.
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                ST_EMPTY |                              001 |                               00
+                PRE_READ |                              010 |                               01
+                 READING |                              100 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'read_state_reg' using encoding 'one-hot' in module 'axi_fifo_bram__parameterized4'
 ---------------------------------------------------------------------------------------------------
                    State |                     New Encoding |                Previous Encoding 
 ---------------------------------------------------------------------------------------------------
@@ -1521,7 +1546,7 @@ INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'gpif2_slave_fifo32'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:54 ; elapsed = 00:00:59 . Memory (MB): peak = 2648.953 ; gain = 891.508 ; free physical = 446 ; free virtual = 18694
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:51 ; elapsed = 00:00:50 . Memory (MB): peak = 2675.551 ; gain = 919.570 ; free physical = 2317 ; free virtual = 18304
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-223] decloning instance 'bus_sync' (reset_sync) to 'gpif_sync'
 ---------------------------------------------------------------------------------
@@ -1561,9 +1586,10 @@ Detailed RTL Component Info :
 	   2 Input   17 Bit       Adders := 8     
 	   2 Input   16 Bit       Adders := 44    
 	   3 Input   16 Bit       Adders := 12    
-	   2 Input   14 Bit       Adders := 2     
-	   2 Input   13 Bit       Adders := 6     
-	   2 Input   12 Bit       Adders := 18    
+	   2 Input   15 Bit       Adders := 1     
+	   2 Input   14 Bit       Adders := 1     
+	   2 Input   13 Bit       Adders := 8     
+	   2 Input   12 Bit       Adders := 16    
 	   2 Input   11 Bit       Adders := 28    
 	   3 Input    9 Bit       Adders := 16    
 	   2 Input    9 Bit       Adders := 1     
@@ -1620,8 +1646,9 @@ Detailed RTL Component Info :
 	                2 Bit    Registers := 24    
 	                1 Bit    Registers := 906   
 +---RAMs : 
-	             528K Bit	(16384 X 33 bit)          RAMs := 2     
-	             260K Bit	(4096 X 65 bit)          RAMs := 2     
+	            1056K Bit	(32768 X 33 bit)          RAMs := 1     
+	             528K Bit	(16384 X 33 bit)          RAMs := 1     
+	             520K Bit	(8192 X 65 bit)          RAMs := 2     
 	             132K Bit	(4096 X 33 bit)          RAMs := 6     
 	             130K Bit	(2048 X 65 bit)          RAMs := 8     
 	               2K Bit	(256 X 8 bit)          RAMs := 1     
@@ -1971,7 +1998,7 @@ INFO: [Synth 8-4652] Swapped enable and write-enable on 17 RAM instances of RAM 
 WARNING: [Synth 8-6014] Unused sequential element gpif2_to_fifo64_tx/checker/gate_xfer/ram_i/impl/ram_reg was removed. 
 INFO: [Synth 8-4652] Swapped enable and write-enable on 4 RAM instances of RAM gpif2_to_fifo64_tx/checker/gate_xfer/ram_i/impl/ram_reg to conserve power
 WARNING: [Synth 8-6014] Unused sequential element fifo64_to_gpif2_rx/cross_clock_fifo/ext_fifo_i/ram/impl/ram_reg was removed. 
-INFO: [Synth 8-4652] Swapped enable and write-enable on 17 RAM instances of RAM fifo64_to_gpif2_rx/cross_clock_fifo/ext_fifo_i/ram/impl/ram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 33 RAM instances of RAM fifo64_to_gpif2_rx/cross_clock_fifo/ext_fifo_i/ram/impl/ram_reg to conserve power
 WARNING: [Synth 8-6014] Unused sequential element fifo64_to_gpif2_rx/buffer_whole_pkt/ram_i/impl/ram_reg was removed. 
 INFO: [Synth 8-4652] Swapped enable and write-enable on 4 RAM instances of RAM fifo64_to_gpif2_rx/buffer_whole_pkt/ram_i/impl/ram_reg to conserve power
 WARNING: [Synth 8-6014] Unused sequential element gpif2_to_fifo64_ctrl/min_read_buff/ram/impl/ram_reg was removed. 
@@ -1984,7 +2011,7 @@ INFO: [Synth 8-3333] propagating constant 0 across sequential element (nolabel_l
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (encpy_i/\aes_cipher_top_i/u0/r0/out_reg[2] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (encpy_i/\aes_cipher_top_i/text_in_r_reg[39] )
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:01:45 ; elapsed = 00:02:32 . Memory (MB): peak = 2676.887 ; gain = 919.441 ; free physical = 205 ; free virtual = 13912
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:01:43 ; elapsed = 00:02:11 . Memory (MB): peak = 2703.484 ; gain = 947.504 ; free physical = 285 ; free virtual = 12955
 ---------------------------------------------------------------------------------
  Sort Area is ddc_chain__GBM1 p2_r_reg_0 : 0 0 : 641 641 : Used 2 time 0
  Sort Area is ddc_chain__GBM1 p2_r_reg_2 : 0 0 : 641 641 : Used 2 time 0
@@ -2014,12 +2041,12 @@ Block RAM: Preliminary Mapping Report (see note below)
 |buffer_whole_pkt | ram_i/impl/ram_reg                                              | 2 K x 65(READ_FIRST)   | W |   | 2 K x 65(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
 |new_rx_framer    | datafifo/fifo_bram/ram/impl/ram_reg                             | 2 K x 65(READ_FIRST)   | W |   | 2 K x 65(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
 |libresdr_b210    | uart/simple_uart_rx/fifo/fifo_bram/ram/impl/ram_reg             | 128 x 8(READ_FIRST)    | W |   | 128 x 8(WRITE_FIRST)   |   | R | Port A and B     | 1      | 0      | 
-|libresdr_b210    | extra_rx_buff/fifo_bram/ram/impl/ram_reg                        | 4 K x 65(READ_FIRST)   | W |   | 4 K x 65(WRITE_FIRST)  |   | R | Port A and B     | 1      | 7      | 
-|libresdr_b210    | extra_tx_buff/fifo_bram/ram/impl/ram_reg                        | 4 K x 65(READ_FIRST)   | W |   | 4 K x 65(WRITE_FIRST)  |   | R | Port A and B     | 1      | 7      | 
+|libresdr_b210    | extra_rx_buff/fifo_bram/ram/impl/ram_reg                        | 8 K x 65(READ_FIRST)   | W |   | 8 K x 65(WRITE_FIRST)  |   | R | Port A and B     | 1      | 16     | 
+|libresdr_b210    | extra_tx_buff/fifo_bram/ram/impl/ram_reg                        | 8 K x 65(READ_FIRST)   | W |   | 8 K x 65(WRITE_FIRST)  |   | R | Port A and B     | 1      | 16     | 
 |slave_fifo32     | gpif2_to_fifo64_tx/min_read_buff/ram/impl/ram_reg               | 4 K x 33(READ_FIRST)   | W |   | 4 K x 33(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
 |slave_fifo32     | gpif2_to_fifo64_tx/cross_clock_fifo/ext_fifo_i/ram/impl/ram_reg | 16 K x 33(READ_FIRST)  | W |   | 16 K x 33(WRITE_FIRST) |   | R | Port A and B     | 1      | 16     | 
 |slave_fifo32     | gpif2_to_fifo64_tx/checker/gate_xfer/ram_i/impl/ram_reg         | 4 K x 33(READ_FIRST)   | W |   | 4 K x 33(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
-|slave_fifo32     | fifo64_to_gpif2_rx/cross_clock_fifo/ext_fifo_i/ram/impl/ram_reg | 16 K x 33(READ_FIRST)  | W |   | 16 K x 33(WRITE_FIRST) |   | R | Port A and B     | 1      | 16     | 
+|slave_fifo32     | fifo64_to_gpif2_rx/cross_clock_fifo/ext_fifo_i/ram/impl/ram_reg | 32 K x 33(READ_FIRST)  | W |   | 32 K x 33(WRITE_FIRST) |   | R | Port A and B     | 0      | 33     | 
 |slave_fifo32     | fifo64_to_gpif2_rx/buffer_whole_pkt/ram_i/impl/ram_reg          | 4 K x 33(READ_FIRST)   | W |   | 4 K x 33(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
 |slave_fifo32     | gpif2_to_fifo64_ctrl/min_read_buff/ram/impl/ram_reg             | 4 K x 33(READ_FIRST)   | W |   | 4 K x 33(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
 |slave_fifo32     | gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg       | 4 K x 33(READ_FIRST)   | W |   | 4 K x 33(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
@@ -2044,13 +2071,13 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:03:06 ; elapsed = 00:02:54 . Memory (MB): peak = 2751.965 ; gain = 994.520 ; free physical = 277 ; free virtual = 14144
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:03:06 ; elapsed = 00:02:38 . Memory (MB): peak = 2763.562 ; gain = 1007.582 ; free physical = 467 ; free virtual = 13210
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:03:33 ; elapsed = 00:03:21 . Memory (MB): peak = 2835.965 ; gain = 1078.520 ; free physical = 166 ; free virtual = 13959
+Finished Timing Optimization : Time (s): cpu = 00:03:47 ; elapsed = 00:03:26 . Memory (MB): peak = 2857.562 ; gain = 1101.582 ; free physical = 285 ; free virtual = 12956
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -2069,12 +2096,12 @@ Block RAM: Final Mapping Report
 |buffer_whole_pkt | ram_i/impl/ram_reg                                              | 2 K x 65(READ_FIRST)   | W |   | 2 K x 65(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
 |new_rx_framer    | datafifo/fifo_bram/ram/impl/ram_reg                             | 2 K x 65(READ_FIRST)   | W |   | 2 K x 65(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
 |libresdr_b210    | uart/simple_uart_rx/fifo/fifo_bram/ram/impl/ram_reg             | 128 x 8(READ_FIRST)    | W |   | 128 x 8(WRITE_FIRST)   |   | R | Port A and B     | 1      | 0      | 
-|libresdr_b210    | extra_rx_buff/fifo_bram/ram/impl/ram_reg                        | 4 K x 65(READ_FIRST)   | W |   | 4 K x 65(WRITE_FIRST)  |   | R | Port A and B     | 1      | 7      | 
-|libresdr_b210    | extra_tx_buff/fifo_bram/ram/impl/ram_reg                        | 4 K x 65(READ_FIRST)   | W |   | 4 K x 65(WRITE_FIRST)  |   | R | Port A and B     | 1      | 7      | 
+|libresdr_b210    | extra_rx_buff/fifo_bram/ram/impl/ram_reg                        | 8 K x 65(READ_FIRST)   | W |   | 8 K x 65(WRITE_FIRST)  |   | R | Port A and B     | 1      | 16     | 
+|libresdr_b210    | extra_tx_buff/fifo_bram/ram/impl/ram_reg                        | 8 K x 65(READ_FIRST)   | W |   | 8 K x 65(WRITE_FIRST)  |   | R | Port A and B     | 1      | 16     | 
 |slave_fifo32     | gpif2_to_fifo64_tx/min_read_buff/ram/impl/ram_reg               | 4 K x 33(READ_FIRST)   | W |   | 4 K x 33(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
 |slave_fifo32     | gpif2_to_fifo64_tx/cross_clock_fifo/ext_fifo_i/ram/impl/ram_reg | 16 K x 33(READ_FIRST)  | W |   | 16 K x 33(WRITE_FIRST) |   | R | Port A and B     | 1      | 16     | 
 |slave_fifo32     | gpif2_to_fifo64_tx/checker/gate_xfer/ram_i/impl/ram_reg         | 4 K x 33(READ_FIRST)   | W |   | 4 K x 33(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
-|slave_fifo32     | fifo64_to_gpif2_rx/cross_clock_fifo/ext_fifo_i/ram/impl/ram_reg | 16 K x 33(READ_FIRST)  | W |   | 16 K x 33(WRITE_FIRST) |   | R | Port A and B     | 1      | 16     | 
+|slave_fifo32     | fifo64_to_gpif2_rx/cross_clock_fifo/ext_fifo_i/ram/impl/ram_reg | 32 K x 33(READ_FIRST)  | W |   | 32 K x 33(WRITE_FIRST) |   | R | Port A and B     | 0      | 33     | 
 |slave_fifo32     | fifo64_to_gpif2_rx/buffer_whole_pkt/ram_i/impl/ram_reg          | 4 K x 33(READ_FIRST)   | W |   | 4 K x 33(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
 |slave_fifo32     | gpif2_to_fifo64_ctrl/min_read_buff/ram/impl/ram_reg             | 4 K x 33(READ_FIRST)   | W |   | 4 K x 33(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
 |slave_fifo32     | gpif2_to_fifo64_ctrl/checker/gate_xfer/ram_i/impl/ram_reg       | 4 K x 33(READ_FIRST)   | W |   | 4 K x 33(WRITE_FIRST)  |   | R | Port A and B     | 0      | 4      | 
@@ -2116,7 +2143,7 @@ INFO: [Synth 8-7052] The timing for the instance i_5/slave_fifo32/gpif2_to_fifo6
 INFO: [Synth 8-7052] The timing for the instance i_5/slave_fifo32/gpif2_to_fifo64_ctrl/min_read_buff/ram/impl/ram_reg_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 INFO: [Synth 8-7052] The timing for the instance i_5/slave_fifo32/gpif2_to_fifo64_ctrl/min_read_buff/ram/impl/ram_reg_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:03:46 ; elapsed = 00:03:43 . Memory (MB): peak = 2874.930 ; gain = 1117.484 ; free physical = 162 ; free virtual = 13037
+Finished Technology Mapping : Time (s): cpu = 00:04:04 ; elapsed = 00:04:00 . Memory (MB): peak = 2894.512 ; gain = 1138.531 ; free physical = 322 ; free virtual = 12015
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -2182,37 +2209,37 @@ INFO: [Synth 8-4163] Replicating register \gpio_atr_io_inst/gpio_out_iob_reg[9] 
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:03:58 ; elapsed = 00:03:56 . Memory (MB): peak = 2970.508 ; gain = 1213.062 ; free physical = 150 ; free virtual = 13026
+Finished IO Insertion : Time (s): cpu = 00:04:23 ; elapsed = 00:04:22 . Memory (MB): peak = 2979.098 ; gain = 1223.117 ; free physical = 309 ; free virtual = 11923
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:03:58 ; elapsed = 00:03:57 . Memory (MB): peak = 2970.508 ; gain = 1213.062 ; free physical = 186 ; free virtual = 13047
+Finished Renaming Generated Instances : Time (s): cpu = 00:04:24 ; elapsed = 00:04:23 . Memory (MB): peak = 2979.098 ; gain = 1223.117 ; free physical = 329 ; free virtual = 11929
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:04:09 ; elapsed = 00:04:08 . Memory (MB): peak = 3072.789 ; gain = 1315.344 ; free physical = 156 ; free virtual = 12943
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:04:39 ; elapsed = 00:04:40 . Memory (MB): peak = 3082.379 ; gain = 1326.398 ; free physical = 307 ; free virtual = 11824
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:04:10 ; elapsed = 00:04:08 . Memory (MB): peak = 3072.789 ; gain = 1315.344 ; free physical = 156 ; free virtual = 12943
+Finished Renaming Generated Ports : Time (s): cpu = 00:04:39 ; elapsed = 00:04:41 . Memory (MB): peak = 3082.379 ; gain = 1326.398 ; free physical = 329 ; free virtual = 11829
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:04:11 ; elapsed = 00:04:10 . Memory (MB): peak = 3072.789 ; gain = 1315.344 ; free physical = 156 ; free virtual = 12943
+Finished Handling Custom Attributes : Time (s): cpu = 00:04:42 ; elapsed = 00:04:44 . Memory (MB): peak = 3082.379 ; gain = 1326.398 ; free physical = 390 ; free virtual = 11892
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:04:11 ; elapsed = 00:04:10 . Memory (MB): peak = 3072.789 ; gain = 1315.344 ; free physical = 156 ; free virtual = 12943
+Finished Renaming Generated Nets : Time (s): cpu = 00:04:42 ; elapsed = 00:04:44 . Memory (MB): peak = 3082.379 ; gain = 1326.398 ; free physical = 393 ; free virtual = 11895
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -2243,72 +2270,72 @@ DSP Final Report (the ' indicates corresponding REG is set)
 +--------------------------------------------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
 |cic_droop_comp                                    | (A''*B)'    | 30     | 17     | -      | -      | 42     | 2    | 0    | -    | -    | -     | 0    | 1    | 
 |cic_droop_comp                                    | (A''*B)'    | 30     | 17     | -      | -      | 42     | 2    | 0    | -    | -    | -     | 0    | 1    | 
-|xil_internal_svlib_MULT_MACRO__parameterized1_390 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
-|xil_internal_svlib_MULT_MACRO__parameterized1_391 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
-|xil_internal_svlib_MULT_MACRO__parameterized0_384 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
-|xil_internal_svlib_MULT_MACRO__parameterized0_380 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
-|xil_internal_svlib_MULT_MACRO__parameterized0_363 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
-|xil_internal_svlib_MULT_MACRO__parameterized0_364 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
-|xil_internal_svlib_MULT_MACRO_268                 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
-|xil_internal_svlib_MULT_MACRO_269                 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|xil_internal_svlib_MULT_MACRO__parameterized1_387 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|xil_internal_svlib_MULT_MACRO__parameterized1_388 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|xil_internal_svlib_MULT_MACRO__parameterized0_381 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|xil_internal_svlib_MULT_MACRO__parameterized0_377 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|xil_internal_svlib_MULT_MACRO__parameterized0_360 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|xil_internal_svlib_MULT_MACRO__parameterized0_361 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|xil_internal_svlib_MULT_MACRO_265                 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|xil_internal_svlib_MULT_MACRO_266                 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|add_then_mac_315                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_316                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_317                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_318                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_319                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_320                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_321                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_322                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_323                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_307                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_308                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_309                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_310                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_311                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_312                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_313                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_314                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_315                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_299                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_300                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_301                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_302                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_303                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_304                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_305                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_306                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_307                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_291                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_292                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_293                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_294                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_295                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_296                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_297                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_298                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_299                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |cic_droop_comp                                    | (A''*B)'    | 30     | 17     | -      | -      | 42     | 2    | 0    | -    | -    | -     | 0    | 1    | 
 |cic_droop_comp                                    | (A''*B)'    | 30     | 17     | -      | -      | 42     | 2    | 0    | -    | -    | -     | 0    | 1    | 
 |xil_internal_svlib_MULT_MACRO__parameterized1     | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
-|xil_internal_svlib_MULT_MACRO__parameterized1_161 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
-|xil_internal_svlib_MULT_MACRO__parameterized0_156 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
-|xil_internal_svlib_MULT_MACRO__parameterized0_155 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|xil_internal_svlib_MULT_MACRO__parameterized1_158 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|xil_internal_svlib_MULT_MACRO__parameterized0_153 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|xil_internal_svlib_MULT_MACRO__parameterized0_152 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
 |xil_internal_svlib_MULT_MACRO__parameterized0     | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
-|xil_internal_svlib_MULT_MACRO__parameterized0_151 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|xil_internal_svlib_MULT_MACRO__parameterized0_148 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
 |xil_internal_svlib_MULT_MACRO                     | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
-|xil_internal_svlib_MULT_MACRO_103                 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|xil_internal_svlib_MULT_MACRO_100                 | (A*B)'      | 25     | 18     | -      | -      | 43     | 0    | 0    | -    | -    | -     | 1    | 0    | 
+|add_then_mac_135                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_136                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_137                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_138                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_139                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_140                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_141                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_142                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_143                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_127                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_128                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_129                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_130                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_131                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_132                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_133                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_134                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_135                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_122                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_123                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_124                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_125                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_126                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_127                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac                                      | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_117                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
-|add_then_mac_118                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_119                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_120                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 |add_then_mac_121                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_122                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_123                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_124                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac                                      | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_114                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_115                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_116                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_117                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|add_then_mac_118                                  | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
 +--------------------------------------------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
 
 
@@ -2341,38 +2368,38 @@ Report Cell Usage:
 |25    |BUFG                          |     3|
 |26    |BUFGMUX                       |     1|
 |27    |BUFR                          |     2|
-|29    |CARRY4                        |  4870|
+|29    |CARRY4                        |  4880|
 |30    |DNA_PORT                      |     1|
 |31    |DSP48E1                       |    68|
 |34    |IDDR                          |    13|
-|35    |LUT1                          |  1034|
-|36    |LUT2                          |  7470|
+|35    |LUT1                          |  1036|
+|36    |LUT2                          |  7495|
 |37    |LUT3                          | 12577|
-|38    |LUT4                          |  4432|
-|39    |LUT5                          |  3499|
-|40    |LUT6                          |  5585|
-|41    |MUXF7                         |   215|
+|38    |LUT4                          |  4431|
+|39    |LUT5                          |  3496|
+|40    |LUT6                          |  5594|
+|41    |MUXF7                         |   218|
 |42    |MUXF8                         |     8|
 |43    |ODDR                          |    15|
-|45    |RAMB18E1                      |    15|
-|49    |RAMB36E1                      |   102|
-|53    |SRL16E                        |     6|
-|54    |SRLC32E                       |  1501|
-|55    |FDCE                          |    17|
-|56    |FDPE                          |     2|
-|57    |FDRE                          | 30807|
-|58    |FDSE                          |   459|
-|59    |LD                            |   128|
-|60    |IBUF                          |    22|
-|61    |IOBUF                         |    43|
-|62    |OBUF                          |    65|
+|45    |RAMB18E1                      |    14|
+|49    |RAMB36E1                      |   137|
+|55    |SRL16E                        |     6|
+|56    |SRLC32E                       |  1501|
+|57    |FDCE                          |    17|
+|58    |FDPE                          |     2|
+|59    |FDRE                          | 30832|
+|60    |FDSE                          |   459|
+|61    |LD                            |   128|
+|62    |IBUF                          |    22|
+|63    |IOBUF                         |    43|
+|64    |OBUF                          |    65|
 +------+------------------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:04:11 ; elapsed = 00:04:10 . Memory (MB): peak = 3072.789 ; gain = 1315.344 ; free physical = 155 ; free virtual = 12942
+Finished Writing Synthesis Report : Time (s): cpu = 00:04:42 ; elapsed = 00:04:44 . Memory (MB): peak = 3082.379 ; gain = 1326.398 ; free physical = 391 ; free virtual = 11893
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 285 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:03:54 ; elapsed = 00:03:58 . Memory (MB): peak = 3076.703 ; gain = 1177.547 ; free physical = 6546 ; free virtual = 19333
-Synthesis Optimization Complete : Time (s): cpu = 00:04:11 ; elapsed = 00:04:13 . Memory (MB): peak = 3076.703 ; gain = 1319.258 ; free physical = 6561 ; free virtual = 19339
+Synthesis Optimization Runtime : Time (s): cpu = 00:04:27 ; elapsed = 00:04:36 . Memory (MB): peak = 3086.293 ; gain = 1214.508 ; free physical = 6808 ; free virtual = 18311
+Synthesis Optimization Complete : Time (s): cpu = 00:04:42 ; elapsed = 00:04:48 . Memory (MB): peak = 3086.293 ; gain = 1330.312 ; free physical = 6811 ; free virtual = 18305
 INFO: [Project 1-571] Translating synthesized netlist
 WARNING: [filemgmt 56-608] NGC format files are not supported in the Vivado Design Suite for UltraScale devices.
 ###################################### IMPORTANT ######################################
@@ -2421,18 +2448,18 @@ Processing design ...
    Preping design's macros ...
   finished :Prep
 Writing EDIF netlist file hbdec1.edif ...
-ngc2edif: Total memory usage is 103056 kilobytes
+ngc2edif: Total memory usage is 103064 kilobytes
 
 Reading core file '/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/ngc/hbdec1.ngc' for (cell view 'hbdec1', library 'work')
 Parsing EDIF File [./.ngc2edfcache/hbdec1_ngc_d2d03023.edif]
 Finished Parsing EDIF File [./.ngc2edfcache/hbdec1_ngc_d2d03023.edif]
-Netlist sorting complete. Time (s): cpu = 00:00:00.84 ; elapsed = 00:00:00.85 . Memory (MB): peak = 3076.703 ; gain = 0.000 ; free physical = 6547 ; free virtual = 19336
-INFO: [Netlist 29-17] Analyzing 10410 Unisim elements for replacement
-INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 3086.293 ; gain = 0.000 ; free physical = 6651 ; free virtual = 18241
+INFO: [Netlist 29-17] Analyzing 10457 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 1 CPU seconds
 INFO: [Project 1-479] Netlist was created with Xilinx ngc2edif P_INT.20191124
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 3158.008 ; gain = 0.000 ; free physical = 6531 ; free virtual = 19318
+Netlist sorting complete. Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 3168.598 ; gain = 0.000 ; free physical = 6616 ; free virtual = 18249
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 4798 instances were transformed.
   (MUXCY,XORCY) => CARRY4: 104 instances
@@ -2446,15 +2473,15 @@ INFO: [Project 1-111] Unisim Transformation Summary:
   MULT18X18S => DSP48E1: 4 instances
   RAM32X1D => RAM32X1D (RAMD32(x2)): 588 instances
 
-Synth Design complete | Checksum: b367545d
+Synth Design complete | Checksum: e01efc1c
 INFO: [Common 17-83] Releasing license: Synthesis
-606 Infos, 276 Warnings, 0 Critical Warnings and 0 Errors encountered.
+610 Infos, 279 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:04:40 ; elapsed = 00:04:43 . Memory (MB): peak = 3158.043 ; gain = 1549.746 ; free physical = 6529 ; free virtual = 19317
-INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 7418.003; main = 2233.482; forked = 5828.999
-INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 15351.637; main = 3158.008; forked = 12678.668
-Write ShapeDB Complete: Time (s): cpu = 00:00:00.56 ; elapsed = 00:00:00.21 . Memory (MB): peak = 3182.020 ; gain = 0.000 ; free physical = 6517 ; free virtual = 19319
+synth_design: Time (s): cpu = 00:05:23 ; elapsed = 00:05:36 . Memory (MB): peak = 3168.633 ; gain = 1560.832 ; free physical = 6437 ; free virtual = 18159
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 7514.982; main = 2248.574; forked = 5905.330
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 15451.148; main = 3168.598; forked = 12751.582
+Write ShapeDB Complete: Time (s): cpu = 00:00:00.92 ; elapsed = 00:00:00.4 . Memory (MB): peak = 3192.609 ; gain = 0.000 ; free physical = 6397 ; free virtual = 18145
 INFO: [Common 17-1381] The checkpoint '/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/libresdr_b210.dcp' has been generated.
-write_checkpoint: Time (s): cpu = 00:00:08 ; elapsed = 00:00:07 . Memory (MB): peak = 3182.020 ; gain = 23.977 ; free physical = 6494 ; free virtual = 19315
+write_checkpoint: Time (s): cpu = 00:00:13 ; elapsed = 00:00:12 . Memory (MB): peak = 3192.609 ; gain = 23.977 ; free physical = 6406 ; free virtual = 18192
 INFO: [Vivado 12-24828] Executing command : report_utilization -file libresdr_b210_utilization_synth.rpt -pb libresdr_b210_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Mon Mar 30 22:28:19 2026...
+INFO: [Common 17-206] Exiting Vivado at Thu Apr  2 10:45:15 2026...
