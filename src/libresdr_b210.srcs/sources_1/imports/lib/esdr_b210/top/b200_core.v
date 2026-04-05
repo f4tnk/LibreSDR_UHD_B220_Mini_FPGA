@@ -214,8 +214,14 @@ module b200_core
      (.clk(bus_clk), .rst(bus_rst), .strobe(set_stb), .addr(set_addr), .in(set_data),
       .out(rb_addr), .changed());
 
-    setting_reg #(.my_addr(SR_CORE_GPSDO_ST), .awidth(8), .width(8)) sr_gpsdo_st
-     (.clk(bus_clk), .rst(1'b0/*keep*/), .strobe(set_stb), .addr(set_addr), .in(set_data),
+    // V17: at_reset=8'h83 = B200_GPSDO_ST_NONE — tells UHD "no GPSDO" immediately on
+    // first boot. Previously rst=1'b0 caused gpsdo_st to start at 0x00 after every FPGA
+    // load, triggering a ~20s GPS UART probe before UHD wrote 0x83 itself.
+    // Now: FPGA starts with 0x83 → UHD skips GPSDO detection → init in ~1s always.
+    // The preserve-across-sessions behavior is unchanged: bus_rst is only asserted at
+    // FPGA power-on, not per-transaction, so the value written by UHD still persists.
+    setting_reg #(.my_addr(SR_CORE_GPSDO_ST), .awidth(8), .width(8), .at_reset(8'h83)) sr_gpsdo_st
+     (.clk(bus_clk), .rst(bus_rst), .strobe(set_stb), .addr(set_addr), .in(set_data),
       .out(gpsdo_st), .changed());
 
     setting_reg #(.my_addr(SR_CORE_SYNC), .awidth(8), .width(3)) sr_sync
