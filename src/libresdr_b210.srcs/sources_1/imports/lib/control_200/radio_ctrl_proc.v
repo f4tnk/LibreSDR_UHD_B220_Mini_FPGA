@@ -19,13 +19,14 @@
 //
 // Note -- if t0 is the requested time, the actual send time on the setting bus is t0 + 1 cycle.
 
-// F4TNK: added resp_tready watchdog (RESP_WATCHDOG_CYCLES, default 2s @ 32MHz).
-// If resp_tready stays LOW while in RC_RESP_* (USB session drop without FPGA reload),
+// F4TNK: added resp_tready watchdog (RESP_WATCHDOG_CYCLES, default 0.5s @ 32MHz).
+// If resp_tready stays LOW while in RC_RESP_* (USB session drop OR latency spike),
 // state machine was blocked forever. After WATCHDOG cycles, assert watchdog_clear 1 cycle
 // -> b200_core resets mux_for_resp + radio_ctrl_proc_timing_fifo to clean state.
+// 0.5s chosen to be well below UHD ACK_TIMEOUT=2.0s on Windows PothosSDR.
 
 module radio_ctrl_proc
-  #(parameter RESP_WATCHDOG_CYCLES = 27'd64_000_000)  // 2s @ 32MHz — recover from USB session drop
+  #(parameter RESP_WATCHDOG_CYCLES = 27'd16_000_000)  // 0.5s @ 32MHz — must fire BEFORE UHD 2s timeout
   (input clk, input reset, input clear,
    
    //====================================================
