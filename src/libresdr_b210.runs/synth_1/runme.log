@@ -7,7 +7,7 @@
   **** SW Build 6299465 on Fri Nov 14 12:34:56 MST 2025
   **** IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
   **** SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
-  **** Start of session at: Thu Apr  2 10:39:17 2026
+  **** Start of session at: Mon Jun 22 07:37:15 2026
     ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
     ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 
@@ -23,9 +23,9 @@ INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a200
 INFO: [Device 21-403] Loading part xc7a200tfbg484-2
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 7 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 52742
+INFO: [Synth 8-7075] Helper process launched with PID 1022432
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 2237.855 ; gain = 481.875 ; free physical = 2744 ; free virtual = 18701
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2238.484 ; gain = 482.875 ; free physical = 4956 ; free virtual = 17162
 ---------------------------------------------------------------------------------
 WARNING: [Synth 8-10929] literal value 'hff truncated to fit in 7 bits [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/add_then_mac.v:45]
 WARNING: [Synth 8-10929] literal value 'hff truncated to fit in 7 bits [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/add_then_mac.v:46]
@@ -35,8 +35,8 @@ WARNING: [Synth 8-10929] literal value 'h8000 truncated to fit in 15 bits [/home
 WARNING: [Synth 8-6901] identifier 'slrd2' is used before its declaration [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/gpif2/gpif2_slave_fifo32.v:79]
 INFO: [Synth 8-11241] undeclared symbol 'strobe_tx', assumed default net type 'wire' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/radio_200/radio_legacy.v:387]
 INFO: [Synth 8-6157] synthesizing module 'libresdr_b210' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/libresdr_b210.v:2]
-INFO: [Synth 8-6157] synthesizing module 'gen_clks' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/gen_clks_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'gen_clks' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/gen_clks_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'gen_clks' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/gen_clks_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'gen_clks' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/gen_clks_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'reset_sync' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/reset_sync.v:11]
 INFO: [Synth 8-6157] synthesizing module 'synchronizer' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/synchronizer.v:46]
 	Parameter STAGES bound to: 10 - type: integer 
@@ -75,8 +75,8 @@ INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/d
 INFO: [Synth 8-6155] done synthesizing module 'iic' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/HDL/Verilog_i2c_eeprom/iic.v:8]
 INFO: [Synth 8-6155] done synthesizing module 'eeprom' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/HDL/Verilog_i2c_eeprom/eeprom.v:8]
 INFO: [Synth 8-6155] done synthesizing module 'encpy' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/new/encpy.v:23]
-INFO: [Synth 8-6157] synthesizing module 'clk_wiz_0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/clk_wiz_0_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'clk_wiz_0' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/clk_wiz_0_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'clk_wiz_0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/clk_wiz_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'clk_wiz_0' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/clk_wiz_0_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'b205_ref_pll' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b205_ref_pll.v:7]
 INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b205_ref_pll.v:234]
 INFO: [Synth 8-6157] synthesizing module 'DACx311_auto_spi' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/DACx311_auto_spi.v:13]
@@ -174,10 +174,10 @@ INFO: [Synth 8-6157] synthesizing module 'simple_uart_tx' [/home/f4tnk/dev/Libre
 	Parameter SIZE bound to: 7 - type: integer 
 INFO: [Synth 8-6155] done synthesizing module 'simple_uart_tx' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/wishbone/simple_uart_tx.v:10]
 INFO: [Synth 8-6155] done synthesizing module 'cvita_uart' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control_200/cvita_uart.v:12]
-INFO: [Synth 8-6157] synthesizing module 'radio_ctrl_proc' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control_200/radio_ctrl_proc.v:22]
+INFO: [Synth 8-6157] synthesizing module 'radio_ctrl_proc' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control_200/radio_ctrl_proc.v:28]
 INFO: [Synth 8-6157] synthesizing module 'time_compare' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/timing/time_compare.v:15]
 INFO: [Synth 8-6155] done synthesizing module 'time_compare' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/timing/time_compare.v:15]
-INFO: [Synth 8-6155] done synthesizing module 'radio_ctrl_proc' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control_200/radio_ctrl_proc.v:22]
+INFO: [Synth 8-6155] done synthesizing module 'radio_ctrl_proc' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control_200/radio_ctrl_proc.v:28]
 INFO: [Synth 8-6157] synthesizing module 'setting_reg' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/setting_reg.v:15]
 	Parameter my_addr bound to: 8'b00010000 
 	Parameter awidth bound to: 8 - type: integer 
@@ -217,9 +217,9 @@ INFO: [Synth 8-6157] synthesizing module 'setting_reg__parameterized5' [/home/f4
 	Parameter width bound to: 32 - type: integer 
 INFO: [Synth 8-6155] done synthesizing module 'setting_reg__parameterized5' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/setting_reg.v:15]
 INFO: [Synth 8-6155] done synthesizing module 'simple_spi_core' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/simple_spi_core.v:35]
-WARNING: [Synth 8-7071] port 'readback_stb' of module 'simple_spi_core' is unconnected for instance 'misc_spi' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:228]
-WARNING: [Synth 8-7023] instance 'misc_spi' of module 'simple_spi_core' has 13 connections declared, but only 12 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:228]
-INFO: [Synth 8-226] default block is never used [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:236]
+WARNING: [Synth 8-7071] port 'readback_stb' of module 'simple_spi_core' is unconnected for instance 'misc_spi' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:234]
+WARNING: [Synth 8-7023] instance 'misc_spi' of module 'simple_spi_core' has 13 connections declared, but only 12 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:234]
+INFO: [Synth 8-226] default block is never used [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:242]
 INFO: [Synth 8-6157] synthesizing module 'axi_fifo__parameterized1' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo.v:17]
 	Parameter WIDTH bound to: 65 - type: integer 
 	Parameter SIZE bound to: 13 - type: integer 
@@ -240,12 +240,12 @@ INFO: [Synth 8-6155] done synthesizing module 'ram_2port__parameterized0' (0#1) 
 INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_bram.v:85]
 INFO: [Synth 8-6155] done synthesizing module 'axi_fifo_bram__parameterized0' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_bram.v:13]
 INFO: [Synth 8-6155] done synthesizing module 'axi_fifo__parameterized1' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo.v:17]
-WARNING: [Synth 8-7071] port 'space' of module 'axi_fifo' is unconnected for instance 'extra_rx_buff' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:259]
-WARNING: [Synth 8-7071] port 'occupied' of module 'axi_fifo' is unconnected for instance 'extra_rx_buff' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:259]
-WARNING: [Synth 8-7023] instance 'extra_rx_buff' of module 'axi_fifo' has 11 connections declared, but only 9 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:259]
-WARNING: [Synth 8-7071] port 'space' of module 'axi_fifo' is unconnected for instance 'extra_tx_buff' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:271]
-WARNING: [Synth 8-7071] port 'occupied' of module 'axi_fifo' is unconnected for instance 'extra_tx_buff' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:271]
-WARNING: [Synth 8-7023] instance 'extra_tx_buff' of module 'axi_fifo' has 11 connections declared, but only 9 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:271]
+WARNING: [Synth 8-7071] port 'space' of module 'axi_fifo' is unconnected for instance 'extra_rx_buff' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:265]
+WARNING: [Synth 8-7071] port 'occupied' of module 'axi_fifo' is unconnected for instance 'extra_rx_buff' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:265]
+WARNING: [Synth 8-7023] instance 'extra_rx_buff' of module 'axi_fifo' has 11 connections declared, but only 9 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:265]
+WARNING: [Synth 8-7071] port 'space' of module 'axi_fifo' is unconnected for instance 'extra_tx_buff' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:277]
+WARNING: [Synth 8-7071] port 'occupied' of module 'axi_fifo' is unconnected for instance 'extra_tx_buff' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:277]
+WARNING: [Synth 8-7023] instance 'extra_tx_buff' of module 'axi_fifo' has 11 connections declared, but only 9 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:277]
 INFO: [Synth 8-6157] synthesizing module 'axi_demux4__parameterized0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_demux4.v:10]
 	Parameter ACTIVE_CHAN bound to: 4'b0011 
 	Parameter WIDTH bound to: 64 - type: integer 
@@ -294,8 +294,8 @@ INFO: [Synth 8-6155] done synthesizing module 'gpio_atr' (0#1) [/home/f4tnk/dev/
 INFO: [Synth 8-6157] synthesizing module 'axi_fifo_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:24]
 	Parameter WIDTH bound to: 65 - type: integer 
 	Parameter SIZE bound to: 0 - type: integer 
-INFO: [Synth 8-6157] synthesizing module 'fifo_short_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/fifo_short_2clk_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'fifo_short_2clk' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/fifo_short_2clk_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'fifo_short_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/fifo_short_2clk_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'fifo_short_2clk' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/fifo_short_2clk_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'synchronizer__parameterized2' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/synchronizer.v:46]
 	Parameter INITIAL_VAL bound to: 1'b1 
 INFO: [Synth 8-6157] synthesizing module 'synchronizer_impl__parameterized2' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/synchronizer_impl.v:8]
@@ -308,8 +308,8 @@ INFO: [Synth 8-6155] done synthesizing module 'axi_fifo_2clk' (0#1) [/home/f4tnk
 INFO: [Synth 8-6157] synthesizing module 'axi_fifo_2clk__parameterized0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:24]
 	Parameter WIDTH bound to: 65 - type: integer 
 	Parameter SIZE bound to: 11 - type: integer 
-INFO: [Synth 8-6157] synthesizing module 'fifo_4k_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/fifo_4k_2clk_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'fifo_4k_2clk' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-52601-DESKTOP-8FU7G31/realtime/fifo_4k_2clk_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'fifo_4k_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/fifo_4k_2clk_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'fifo_4k_2clk' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/fifo_4k_2clk_stub.v:6]
 WARNING: [Synth 8-7071] port 'wr_rst_busy' of module 'fifo_4k_2clk' is unconnected for instance 'impl_bram_i' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:135]
 WARNING: [Synth 8-7071] port 'rd_rst_busy' of module 'fifo_4k_2clk' is unconnected for instance 'impl_bram_i' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:135]
 WARNING: [Synth 8-7023] instance 'impl_bram_i' of module 'fifo_4k_2clk' has 13 connections declared, but only 11 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:135]
@@ -373,6 +373,8 @@ INFO: [Synth 8-6157] synthesizing module 'setting_reg__parameterized14' [/home/f
 	Parameter width bound to: 3 - type: integer 
 INFO: [Synth 8-6155] done synthesizing module 'setting_reg__parameterized14' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/setting_reg.v:15]
 INFO: [Synth 8-6155] done synthesizing module 'timekeeper_legacy' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/timing/timekeeper_legacy.v:9]
+WARNING: [Synth 8-7071] port 'watchdog_clear' of module 'radio_ctrl_proc' is unconnected for instance 'radio_ctrl_proc' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/radio_200/radio_legacy.v:165]
+WARNING: [Synth 8-7023] instance 'radio_ctrl_proc' of module 'radio_ctrl_proc' has 19 connections declared, but only 18 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/radio_200/radio_legacy.v:165]
 INFO: [Synth 8-6157] synthesizing module 'axi_fifo_2clk__parameterized1' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:24]
 	Parameter WIDTH bound to: 64 - type: integer 
 	Parameter SIZE bound to: 0 - type: integer 
@@ -601,10 +603,10 @@ WARNING: [Synth 8-7023] instance 'final_clip' of module 'clip_reg' has 6 connect
 	Parameter STROBED bound to: 1 - type: integer 
 	Parameter bits_in bound to: 36 - type: integer 
 	Parameter bits_out bound to: 33 - type: integer 
-WARNING: [Synth 8-7071] port 'reset' of module 'clip_reg' is unconnected for instance 'clip_i' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/duc_chain.v:269]
-WARNING: [Synth 8-7023] instance 'clip_i' of module 'clip_reg' has 6 connections declared, but only 5 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/duc_chain.v:269]
-WARNING: [Synth 8-7071] port 'reset' of module 'clip_reg' is unconnected for instance 'clip_q' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/duc_chain.v:271]
-WARNING: [Synth 8-7023] instance 'clip_q' of module 'clip_reg' has 6 connections declared, but only 5 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/duc_chain.v:271]
+WARNING: [Synth 8-7071] port 'reset' of module 'clip_reg' is unconnected for instance 'clip_i' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/duc_chain.v:273]
+WARNING: [Synth 8-7023] instance 'clip_i' of module 'clip_reg' has 6 connections declared, but only 5 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/duc_chain.v:273]
+WARNING: [Synth 8-7071] port 'reset' of module 'clip_reg' is unconnected for instance 'clip_q' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/duc_chain.v:275]
+WARNING: [Synth 8-7023] instance 'clip_q' of module 'clip_reg' has 6 connections declared, but only 5 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/duc_chain.v:275]
 	Parameter BASE bound to: 8'b10001010 
 	Parameter my_addr bound to: 8'b10001010 
 	Parameter width bound to: 2 - type: integer 
@@ -680,10 +682,10 @@ INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/d
 	Parameter STROBED bound to: 1 - type: integer 
 	Parameter bits_in bound to: 43 - type: integer 
 	Parameter bits_out bound to: 33 - type: integer 
-WARNING: [Synth 8-7071] port 'reset' of module 'clip_reg' is unconnected for instance 'clip_i' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/ddc_chain.v:438]
-WARNING: [Synth 8-7023] instance 'clip_i' of module 'clip_reg' has 6 connections declared, but only 5 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/ddc_chain.v:438]
-WARNING: [Synth 8-7071] port 'reset' of module 'clip_reg' is unconnected for instance 'clip_q' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/ddc_chain.v:440]
-WARNING: [Synth 8-7023] instance 'clip_q' of module 'clip_reg' has 6 connections declared, but only 5 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/ddc_chain.v:440]
+WARNING: [Synth 8-7071] port 'reset' of module 'clip_reg' is unconnected for instance 'clip_i' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/ddc_chain.v:448]
+WARNING: [Synth 8-7023] instance 'clip_i' of module 'clip_reg' has 6 connections declared, but only 5 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/ddc_chain.v:448]
+WARNING: [Synth 8-7071] port 'reset' of module 'clip_reg' is unconnected for instance 'clip_q' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/ddc_chain.v:450]
+WARNING: [Synth 8-7023] instance 'clip_q' of module 'clip_reg' has 6 connections declared, but only 5 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/ddc_chain.v:450]
 	Parameter WIDTH_IN bound to: 33 - type: integer 
 	Parameter WIDTH_OUT bound to: 16 - type: integer 
 	Parameter SD_ORDER bound to: 2 - type: integer 
@@ -851,8 +853,8 @@ WARNING: [Synth 8-7071] port 'debug' of module 'chdr_16sc_to_8sc' is unconnected
 WARNING: [Synth 8-7023] instance 'convert_16sc_to_8sc' of module 'chdr_16sc_to_8sc' has 14 connections declared, but only 13 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/vita_200/chdr_16sc_to_xxxx_chain.v:78]
 	Parameter PRIO bound to: 0 - type: integer 
 	Parameter WIDTH bound to: 64 - type: integer 
-WARNING: [Synth 8-7071] port 'vita_time_b' of module 'radio_legacy' is unconnected for instance 'radio_0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:306]
-WARNING: [Synth 8-7023] instance 'radio_0' of module 'radio_legacy' has 32 connections declared, but only 31 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:306]
+WARNING: [Synth 8-7071] port 'vita_time_b' of module 'radio_legacy' is unconnected for instance 'radio_0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:312]
+WARNING: [Synth 8-7023] instance 'radio_0' of module 'radio_legacy' has 32 connections declared, but only 31 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:312]
 	Parameter RADIO_FIFO_SIZE bound to: 11 - type: integer 
 	Parameter SAMPLE_FIFO_SIZE bound to: 11 - type: integer 
 	Parameter FP_GPIO bound to: 0 - type: integer 
@@ -861,8 +863,10 @@ WARNING: [Synth 8-7023] instance 'radio_0' of module 'radio_legacy' has 32 conne
 	Parameter SOURCE_FLOW_CONTROL bound to: 0 - type: integer 
 	Parameter USER_SETTINGS bound to: 0 - type: integer 
 	Parameter DEVICE bound to: 7SERIES - type: string 
-WARNING: [Synth 8-7071] port 'vita_time_b' of module 'radio_legacy' is unconnected for instance 'radio_1' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:338]
-WARNING: [Synth 8-7023] instance 'radio_1' of module 'radio_legacy' has 32 connections declared, but only 31 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:338]
+WARNING: [Synth 8-7071] port 'watchdog_clear' of module 'radio_ctrl_proc' is unconnected for instance 'radio_ctrl_proc' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/radio_200/radio_legacy.v:165]
+WARNING: [Synth 8-7023] instance 'radio_ctrl_proc' of module 'radio_ctrl_proc' has 19 connections declared, but only 18 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/radio_200/radio_legacy.v:165]
+WARNING: [Synth 8-7071] port 'vita_time_b' of module 'radio_legacy' is unconnected for instance 'radio_1' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:344]
+WARNING: [Synth 8-7023] instance 'radio_1' of module 'radio_legacy' has 32 connections declared, but only 31 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b200_core.v:344]
 INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/serial_to_settings.v:54]
 INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/wishbone/simple_uart.v:42]
 INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/wishbone/simple_uart.v:47]
@@ -967,8 +971,8 @@ WARNING: [Synth 8-7137] Register tx_i_reg in module libresdr_b205_io has both Se
 WARNING: [Synth 8-7137] Register tx_q_reg in module libresdr_b205_io has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/cat_io/libresdr_b205_io.v:116]
 WARNING: [Synth 8-7137] Register tx_i0_hold_reg in module libresdr_b205_io has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/cat_io/libresdr_b205_io.v:141]
 WARNING: [Synth 8-7137] Register tx_q0_hold_reg in module libresdr_b205_io has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/cat_io/libresdr_b205_io.v:142]
-WARNING: [Synth 8-6014] Unused sequential element HAS_TIME_reg_reg was removed.  [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control_200/radio_ctrl_proc.v:63]
-WARNING: [Synth 8-3848] Net debug in module/entity radio_ctrl_proc does not have driver. [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control_200/radio_ctrl_proc.v:38]
+WARNING: [Synth 8-6014] Unused sequential element HAS_TIME_reg_reg was removed.  [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control_200/radio_ctrl_proc.v:74]
+WARNING: [Synth 8-3848] Net debug in module/entity radio_ctrl_proc does not have driver. [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control_200/radio_ctrl_proc.v:46]
 WARNING: [Synth 8-6014] Unused sequential element saved_d3_reg was removed.  [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/small_hb_int.v:86]
 WARNING: [Synth 8-6014] Unused sequential element stb_pipe7_reg was removed.  [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/hb47_int.v:145]
 WARNING: [Synth 8-6014] Unused sequential element stb_pipe8_reg was removed.  [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/hb47_int.v:146]
@@ -1106,18 +1110,18 @@ WARNING: [Synth 8-7129] Port debug[30] in module chdr_16sc_to_32f is either unco
 WARNING: [Synth 8-7129] Port debug[29] in module chdr_16sc_to_32f is either unconnected or has no load
 INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:17 ; elapsed = 00:00:19 . Memory (MB): peak = 2551.777 ; gain = 795.797 ; free physical = 2529 ; free virtual = 18492
+Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 2552.438 ; gain = 796.828 ; free physical = 4618 ; free virtual = 16831
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 2551.777 ; gain = 795.797 ; free physical = 2526 ; free virtual = 18490
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 2552.438 ; gain = 796.828 ; free physical = 4619 ; free virtual = 16832
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 2551.777 ; gain = 795.797 ; free physical = 2526 ; free virtual = 18490
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 2552.438 ; gain = 796.828 ; free physical = 4619 ; free virtual = 16832
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00.69 ; elapsed = 00:00:00.69 . Memory (MB): peak = 2551.777 ; gain = 0.000 ; free physical = 2520 ; free virtual = 18484
+Netlist sorting complete. Time (s): cpu = 00:00:00.42 ; elapsed = 00:00:00.41 . Memory (MB): peak = 2552.438 ; gain = 0.000 ; free physical = 4616 ; free virtual = 16829
 INFO: [Netlist 29-17] Analyzing 99 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
@@ -1168,28 +1172,28 @@ INFO: [Project 1-236] Implementation specific constraints were found while readi
 Resolution: To avoid this warning, move constraints listed in [.Xil/libresdr_b210_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2667.547 ; gain = 0.000 ; free physical = 2470 ; free virtual = 18451
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2669.176 ; gain = 0.000 ; free physical = 4571 ; free virtual = 16800
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 5 instances were transformed.
   BUFGMUX => BUFGCTRL (inverted pins: CE0): 1 instance 
   MULT18X18S => DSP48E1: 4 instances
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00.18 ; elapsed = 00:00:00.17 . Memory (MB): peak = 2667.582 ; gain = 0.000 ; free physical = 2469 ; free virtual = 18450
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.09 ; elapsed = 00:00:00.1 . Memory (MB): peak = 2669.211 ; gain = 0.000 ; free physical = 4570 ; free virtual = 16800
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:40 ; elapsed = 00:00:39 . Memory (MB): peak = 2667.582 ; gain = 911.602 ; free physical = 2462 ; free virtual = 18444
+Finished Constraint Validation : Time (s): cpu = 00:00:18 ; elapsed = 00:00:17 . Memory (MB): peak = 2669.211 ; gain = 913.602 ; free physical = 4561 ; free virtual = 16792
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a200tfbg484-2
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:40 ; elapsed = 00:00:39 . Memory (MB): peak = 2675.551 ; gain = 919.570 ; free physical = 2462 ; free virtual = 18443
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:18 ; elapsed = 00:00:17 . Memory (MB): peak = 2677.180 ; gain = 921.570 ; free physical = 4561 ; free virtual = 16792
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:41 ; elapsed = 00:00:39 . Memory (MB): peak = 2675.551 ; gain = 919.570 ; free physical = 2459 ; free virtual = 18441
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 2677.180 ; gain = 921.570 ; free physical = 4561 ; free virtual = 16792
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'b205_ref_pll'
 INFO: [Synth 8-802] inferred FSM for state register 'mx_state_reg' in module 'axi_mux4'
@@ -1546,7 +1550,7 @@ INFO: [Synth 8-3354] encoded FSM with state register 'read_state_reg' using enco
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'gpif2_slave_fifo32'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:51 ; elapsed = 00:00:50 . Memory (MB): peak = 2675.551 ; gain = 919.570 ; free physical = 2317 ; free virtual = 18304
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:22 ; elapsed = 00:00:22 . Memory (MB): peak = 2677.180 ; gain = 921.570 ; free physical = 4546 ; free virtual = 16784
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-223] decloning instance 'bus_sync' (reset_sync) to 'gpif_sync'
 ---------------------------------------------------------------------------------
@@ -1574,7 +1578,7 @@ Detailed RTL Component Info :
 	   2 Input   26 Bit       Adders := 5     
 	   2 Input   25 Bit       Adders := 34    
 	   3 Input   25 Bit       Adders := 4     
-	   2 Input   24 Bit       Adders := 25    
+	   2 Input   24 Bit       Adders := 28    
 	   3 Input   23 Bit       Adders := 96    
 	   2 Input   21 Bit       Adders := 8     
 	   3 Input   20 Bit       Adders := 4     
@@ -1623,7 +1627,7 @@ Detailed RTL Component Info :
 	               31 Bit    Registers := 8     
 	               29 Bit    Registers := 9     
 	               28 Bit    Registers := 5     
-	               27 Bit    Registers := 100   
+	               27 Bit    Registers := 103   
 	               26 Bit    Registers := 101   
 	               25 Bit    Registers := 20    
 	               24 Bit    Registers := 95    
@@ -1644,7 +1648,7 @@ Detailed RTL Component Info :
 	                4 Bit    Registers := 14    
 	                3 Bit    Registers := 13    
 	                2 Bit    Registers := 24    
-	                1 Bit    Registers := 906   
+	                1 Bit    Registers := 909   
 +---RAMs : 
 	            1056K Bit	(32768 X 33 bit)          RAMs := 1     
 	             528K Bit	(16384 X 33 bit)          RAMs := 1     
@@ -1676,6 +1680,7 @@ Detailed RTL Component Info :
 	  11 Input   28 Bit        Muxes := 2     
 	   4 Input   28 Bit        Muxes := 1     
 	   2 Input   27 Bit        Muxes := 102   
+	   7 Input   27 Bit        Muxes := 3     
 	   2 Input   26 Bit        Muxes := 102   
 	   4 Input   26 Bit        Muxes := 1     
 	   2 Input   25 Bit        Muxes := 101   
@@ -1700,7 +1705,7 @@ Detailed RTL Component Info :
 	   2 Input    8 Bit        Muxes := 42    
 	  15 Input    8 Bit        Muxes := 1     
 	   7 Input    7 Bit        Muxes := 3     
-	   2 Input    7 Bit        Muxes := 12    
+	   2 Input    7 Bit        Muxes := 18    
 	   6 Input    7 Bit        Muxes := 1     
 	   2 Input    5 Bit        Muxes := 51    
 	   5 Input    5 Bit        Muxes := 5     
@@ -1727,11 +1732,11 @@ Detailed RTL Component Info :
 	  12 Input    2 Bit        Muxes := 2     
 	   5 Input    2 Bit        Muxes := 3     
 	   3 Input    2 Bit        Muxes := 5     
-	   2 Input    1 Bit        Muxes := 743   
+	   2 Input    1 Bit        Muxes := 746   
 	   4 Input    1 Bit        Muxes := 143   
 	   3 Input    1 Bit        Muxes := 65    
 	   5 Input    1 Bit        Muxes := 19    
-	   7 Input    1 Bit        Muxes := 6     
+	   7 Input    1 Bit        Muxes := 15    
 	   6 Input    1 Bit        Muxes := 28    
 	  11 Input    1 Bit        Muxes := 20    
 	  15 Input    1 Bit        Muxes := 7     
@@ -1960,6 +1965,7 @@ INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instan
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (convert_xxxx_to_16sc/\convert_12sc_to_16sc/new_destination/out_reg[16] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (tx_control/\error_code_reg[63] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (response_mux/\FSM_onehot_mx_state_reg[3] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (radio_ctrl_proc/\resp_wdog_cnt_reg[26] )
 WARNING: [Synth 8-3332] Sequential element (FSM_onehot_mx_state_reg[3]) is unused and will be removed from module axi_mux4__parameterized1__1.
 INFO: [Synth 8-5544] ROM "p_0_out" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
 INFO: [Synth 8-5544] ROM "p_0_out" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
@@ -1976,6 +1982,7 @@ INFO: [Synth 8-3333] propagating constant 0 across sequential element (convert_1
 INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (convert_xxxx_to_16sc/\convert_12sc_to_16sc/new_destination/out_reg[16] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (tx_control/\error_code_reg[63] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (radio_ctrl_proc/\resp_wdog_cnt_reg[26] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (response_mux/\FSM_onehot_mx_state_reg[3] )
 WARNING: [Synth 8-3332] Sequential element (FSM_onehot_mx_state_reg[3]) is unused and will be removed from module axi_mux4__parameterized1.
 INFO: [Synth 8-5544] ROM "r0/frcon" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
@@ -2011,7 +2018,7 @@ INFO: [Synth 8-3333] propagating constant 0 across sequential element (nolabel_l
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (encpy_i/\aes_cipher_top_i/u0/r0/out_reg[2] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (encpy_i/\aes_cipher_top_i/text_in_r_reg[39] )
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:01:43 ; elapsed = 00:02:11 . Memory (MB): peak = 2703.484 ; gain = 947.504 ; free physical = 285 ; free virtual = 12955
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:40 ; elapsed = 00:00:55 . Memory (MB): peak = 2705.113 ; gain = 949.504 ; free physical = 168 ; free virtual = 11468
 ---------------------------------------------------------------------------------
  Sort Area is ddc_chain__GBM1 p2_r_reg_0 : 0 0 : 641 641 : Used 2 time 0
  Sort Area is ddc_chain__GBM1 p2_r_reg_2 : 0 0 : 641 641 : Used 2 time 0
@@ -2071,13 +2078,13 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:03:06 ; elapsed = 00:02:38 . Memory (MB): peak = 2763.562 ; gain = 1007.582 ; free physical = 467 ; free virtual = 13210
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:06 ; elapsed = 00:01:04 . Memory (MB): peak = 2764.191 ; gain = 1008.582 ; free physical = 351 ; free virtual = 11710
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:03:47 ; elapsed = 00:03:26 . Memory (MB): peak = 2857.562 ; gain = 1101.582 ; free physical = 285 ; free virtual = 12956
+Finished Timing Optimization : Time (s): cpu = 00:01:17 ; elapsed = 00:01:16 . Memory (MB): peak = 2858.191 ; gain = 1102.582 ; free physical = 256 ; free virtual = 11615
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -2143,7 +2150,7 @@ INFO: [Synth 8-7052] The timing for the instance i_5/slave_fifo32/gpif2_to_fifo6
 INFO: [Synth 8-7052] The timing for the instance i_5/slave_fifo32/gpif2_to_fifo64_ctrl/min_read_buff/ram/impl/ram_reg_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 INFO: [Synth 8-7052] The timing for the instance i_5/slave_fifo32/gpif2_to_fifo64_ctrl/min_read_buff/ram/impl/ram_reg_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:04:04 ; elapsed = 00:04:00 . Memory (MB): peak = 2894.512 ; gain = 1138.531 ; free physical = 322 ; free virtual = 12015
+Finished Technology Mapping : Time (s): cpu = 00:01:22 ; elapsed = 00:01:24 . Memory (MB): peak = 2894.133 ; gain = 1138.523 ; free physical = 160 ; free virtual = 10407
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -2209,37 +2216,37 @@ INFO: [Synth 8-4163] Replicating register \gpio_atr_io_inst/gpio_out_iob_reg[9] 
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:04:23 ; elapsed = 00:04:22 . Memory (MB): peak = 2979.098 ; gain = 1223.117 ; free physical = 309 ; free virtual = 11923
+Finished IO Insertion : Time (s): cpu = 00:01:28 ; elapsed = 00:01:30 . Memory (MB): peak = 2979.859 ; gain = 1224.250 ; free physical = 148 ; free virtual = 10338
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:04:24 ; elapsed = 00:04:23 . Memory (MB): peak = 2979.098 ; gain = 1223.117 ; free physical = 329 ; free virtual = 11929
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:28 ; elapsed = 00:01:30 . Memory (MB): peak = 2979.859 ; gain = 1224.250 ; free physical = 147 ; free virtual = 10337
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:04:39 ; elapsed = 00:04:40 . Memory (MB): peak = 3082.379 ; gain = 1326.398 ; free physical = 307 ; free virtual = 11824
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:33 ; elapsed = 00:01:36 . Memory (MB): peak = 3084.141 ; gain = 1328.531 ; free physical = 149 ; free virtual = 10210
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:04:39 ; elapsed = 00:04:41 . Memory (MB): peak = 3082.379 ; gain = 1326.398 ; free physical = 329 ; free virtual = 11829
+Finished Renaming Generated Ports : Time (s): cpu = 00:01:33 ; elapsed = 00:01:36 . Memory (MB): peak = 3084.141 ; gain = 1328.531 ; free physical = 149 ; free virtual = 10210
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:04:42 ; elapsed = 00:04:44 . Memory (MB): peak = 3082.379 ; gain = 1326.398 ; free physical = 390 ; free virtual = 11892
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:34 ; elapsed = 00:01:37 . Memory (MB): peak = 3084.141 ; gain = 1328.531 ; free physical = 149 ; free virtual = 10210
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:04:42 ; elapsed = 00:04:44 . Memory (MB): peak = 3082.379 ; gain = 1326.398 ; free physical = 393 ; free virtual = 11895
+Finished Renaming Generated Nets : Time (s): cpu = 00:01:34 ; elapsed = 00:01:37 . Memory (MB): peak = 3084.141 ; gain = 1328.531 ; free physical = 149 ; free virtual = 10210
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -2368,17 +2375,17 @@ Report Cell Usage:
 |25    |BUFG                          |     3|
 |26    |BUFGMUX                       |     1|
 |27    |BUFR                          |     2|
-|29    |CARRY4                        |  4880|
+|29    |CARRY4                        |  4898|
 |30    |DNA_PORT                      |     1|
 |31    |DSP48E1                       |    68|
 |34    |IDDR                          |    13|
 |35    |LUT1                          |  1036|
-|36    |LUT2                          |  7495|
-|37    |LUT3                          | 12577|
-|38    |LUT4                          |  4431|
-|39    |LUT5                          |  3496|
-|40    |LUT6                          |  5594|
-|41    |MUXF7                         |   218|
+|36    |LUT2                          |  7570|
+|37    |LUT3                          | 12582|
+|38    |LUT4                          |  4434|
+|39    |LUT5                          |  3498|
+|40    |LUT6                          |  5616|
+|41    |MUXF7                         |   224|
 |42    |MUXF8                         |     8|
 |43    |ODDR                          |    15|
 |45    |RAMB18E1                      |    14|
@@ -2387,7 +2394,7 @@ Report Cell Usage:
 |56    |SRLC32E                       |  1501|
 |57    |FDCE                          |    17|
 |58    |FDPE                          |     2|
-|59    |FDRE                          | 30832|
+|59    |FDRE                          | 30905|
 |60    |FDSE                          |   459|
 |61    |LD                            |   128|
 |62    |IBUF                          |    22|
@@ -2395,11 +2402,11 @@ Report Cell Usage:
 |64    |OBUF                          |    65|
 +------+------------------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:04:42 ; elapsed = 00:04:44 . Memory (MB): peak = 3082.379 ; gain = 1326.398 ; free physical = 391 ; free virtual = 11893
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:34 ; elapsed = 00:01:37 . Memory (MB): peak = 3084.141 ; gain = 1328.531 ; free physical = 148 ; free virtual = 10209
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 285 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:04:27 ; elapsed = 00:04:36 . Memory (MB): peak = 3086.293 ; gain = 1214.508 ; free physical = 6808 ; free virtual = 18311
-Synthesis Optimization Complete : Time (s): cpu = 00:04:42 ; elapsed = 00:04:48 . Memory (MB): peak = 3086.293 ; gain = 1330.312 ; free physical = 6811 ; free virtual = 18305
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:27 ; elapsed = 00:01:34 . Memory (MB): peak = 3088.055 ; gain = 1215.672 ; free physical = 6502 ; free virtual = 16563
+Synthesis Optimization Complete : Time (s): cpu = 00:01:34 ; elapsed = 00:01:40 . Memory (MB): peak = 3088.055 ; gain = 1332.445 ; free physical = 6511 ; free virtual = 16563
 INFO: [Project 1-571] Translating synthesized netlist
 WARNING: [filemgmt 56-608] NGC format files are not supported in the Vivado Design Suite for UltraScale devices.
 ###################################### IMPORTANT ######################################
@@ -2422,7 +2429,7 @@ Processing design ...
    Preping design's macros ...
   finished :Prep
 Writing EDIF netlist file hbdec2.edif ...
-ngc2edif: Total memory usage is 99584 kilobytes
+ngc2edif: Total memory usage is 99588 kilobytes
 
 Reading core file '/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/ngc/hbdec2.ngc' for (cell view 'hbdec2', library 'work')
 Parsing EDIF File [./.ngc2edfcache/hbdec2_ngc_d2d03023.edif]
@@ -2448,18 +2455,18 @@ Processing design ...
    Preping design's macros ...
   finished :Prep
 Writing EDIF netlist file hbdec1.edif ...
-ngc2edif: Total memory usage is 103064 kilobytes
+ngc2edif: Total memory usage is 103060 kilobytes
 
 Reading core file '/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/ngc/hbdec1.ngc' for (cell view 'hbdec1', library 'work')
 Parsing EDIF File [./.ngc2edfcache/hbdec1_ngc_d2d03023.edif]
 Finished Parsing EDIF File [./.ngc2edfcache/hbdec1_ngc_d2d03023.edif]
-Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 3086.293 ; gain = 0.000 ; free physical = 6651 ; free virtual = 18241
-INFO: [Netlist 29-17] Analyzing 10457 Unisim elements for replacement
-INFO: [Netlist 29-28] Unisim Transformation completed in 1 CPU seconds
+Netlist sorting complete. Time (s): cpu = 00:00:00.52 ; elapsed = 00:00:00.51 . Memory (MB): peak = 3088.055 ; gain = 0.000 ; free physical = 6479 ; free virtual = 16563
+INFO: [Netlist 29-17] Analyzing 10481 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-479] Netlist was created with Xilinx ngc2edif P_INT.20191124
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 3168.598 ; gain = 0.000 ; free physical = 6616 ; free virtual = 18249
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.02 . Memory (MB): peak = 3169.367 ; gain = 0.000 ; free physical = 6452 ; free virtual = 16538
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 4798 instances were transformed.
   (MUXCY,XORCY) => CARRY4: 104 instances
@@ -2473,15 +2480,14 @@ INFO: [Project 1-111] Unisim Transformation Summary:
   MULT18X18S => DSP48E1: 4 instances
   RAM32X1D => RAM32X1D (RAMD32(x2)): 588 instances
 
-Synth Design complete | Checksum: e01efc1c
+Synth Design complete | Checksum: c6a7d802
 INFO: [Common 17-83] Releasing license: Synthesis
-610 Infos, 279 Warnings, 0 Critical Warnings and 0 Errors encountered.
+612 Infos, 283 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:05:23 ; elapsed = 00:05:36 . Memory (MB): peak = 3168.633 ; gain = 1560.832 ; free physical = 6437 ; free virtual = 18159
-INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 7514.982; main = 2248.574; forked = 5905.330
-INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 15451.148; main = 3168.598; forked = 12751.582
-Write ShapeDB Complete: Time (s): cpu = 00:00:00.92 ; elapsed = 00:00:00.4 . Memory (MB): peak = 3192.609 ; gain = 0.000 ; free physical = 6397 ; free virtual = 18145
+synth_design: Time (s): cpu = 00:01:49 ; elapsed = 00:01:54 . Memory (MB): peak = 3169.402 ; gain = 1549.973 ; free physical = 6451 ; free virtual = 16537
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 7370.323; main = 2227.434; forked = 5766.002
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 15395.367; main = 3169.367; forked = 12694.172
+Write ShapeDB Complete: Time (s): cpu = 00:00:00.25 ; elapsed = 00:00:00.09 . Memory (MB): peak = 3193.379 ; gain = 0.000 ; free physical = 6440 ; free virtual = 16538
 INFO: [Common 17-1381] The checkpoint '/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/libresdr_b210.dcp' has been generated.
-write_checkpoint: Time (s): cpu = 00:00:13 ; elapsed = 00:00:12 . Memory (MB): peak = 3192.609 ; gain = 23.977 ; free physical = 6406 ; free virtual = 18192
 INFO: [Vivado 12-24828] Executing command : report_utilization -file libresdr_b210_utilization_synth.rpt -pb libresdr_b210_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Thu Apr  2 10:45:15 2026...
+INFO: [Common 17-206] Exiting Vivado at Mon Jun 22 07:39:16 2026...

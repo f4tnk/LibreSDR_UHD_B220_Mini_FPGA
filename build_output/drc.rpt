@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2025.2 (lin64) Build 6299465 Fri Nov 14 12:34:56 MST 2025
-| Date         : Thu Apr  2 11:02:16 2026
-| Host         : DESKTOP-8FU7G31 running 64-bit Debian GNU/Linux 13 (trixie)
+| Date         : Mon Jun 22 07:44:46 2026
+| Host         : DESKTOP-ALL4L3F running 64-bit unknown
 | Command      : report_drc -file /home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/build_output/drc.rpt
 | Design       : libresdr_b210
 | Device       : xc7a200tfbg484-2
@@ -34,7 +34,8 @@ Table of Contents
 | DPOP-1    | Warning  | PREG Output pipelining                                            | 20     |
 | DPOP-2    | Warning  | MREG Output pipelining                                            | 4      |
 | PDRC-61   | Warning  | SLICEM_5lutO5_C5                                                  | 1      |
-| PDRC-62   | Warning  | SLICEM_5lutO5_B5                                                  | 2      |
+| PDRC-62   | Warning  | SLICEM_5lutO5_B5                                                  | 1      |
+| PDRC-63   | Warning  | SLICEM_5lutO5_A5                                                  | 1      |
 | REQP-1839 | Warning  | RAMB36 async control check                                        | 20     |
 | RTSTAT-10 | Warning  | No routable loads                                                 | 1      |
 | AVAL-4    | Advisory | enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND | 28     |
@@ -384,17 +385,17 @@ Related violations: <none>
 
 PDRC-61#1 Warning
 SLICEM_5lutO5_C5  
-Dangling output pin O5 on site SLICE_X70Y101:C5LUT. For this programming the O5 output pin should have a signal.
+Dangling output pin O5 on site SLICE_X100Y78:C5LUT. For this programming the O5 output pin should have a signal.
 Related violations: <none>
 
 PDRC-62#1 Warning
 SLICEM_5lutO5_B5  
-Dangling output pin O5 on site SLICE_X64Y162:B5LUT. For this programming the O5 output pin should have a signal.
+Dangling output pin O5 on site SLICE_X88Y114:B5LUT. For this programming the O5 output pin should have a signal.
 Related violations: <none>
 
-PDRC-62#2 Warning
-SLICEM_5lutO5_B5  
-Dangling output pin O5 on site SLICE_X80Y100:B5LUT. For this programming the O5 output pin should have a signal.
+PDRC-63#1 Warning
+SLICEM_5lutO5_A5  
+Dangling output pin O5 on site SLICE_X40Y65:A5LUT. For this programming the O5 output pin should have a signal.
 Related violations: <none>
 
 REQP-1839#1 Warning
@@ -510,8 +511,8 @@ b200_core/radio_1/rx_fifo/fifo_section[0].impl_bram_i/U0/inst_fifo_gen/gconvfifo
 b200_core/radio_1/tx_fifo/fifo_section[0].impl_bram_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
 b200_core/radio_1/vita_time_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
 slave_fifo32/fifo64_to_gpif2_resp/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
-slave_fifo32/fifo64_to_gpif2_resp/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.rd_rst_reg[2:0],
 slave_fifo32/fifo64_to_gpif2_rx/cross_clock_fifo/fifo_section[0].impl_bram_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
+slave_fifo32/fifo64_to_gpif2_rx/cross_clock_fifo/fifo_section[0].impl_bram_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.rd_rst_reg[2:0],
 slave_fifo32/gpif2_to_fifo64_ctrl/cross_clock_fifo/fifo_section[0].impl_srl_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i,
 slave_fifo32/gpif2_to_fifo64_tx/cross_clock_fifo/fifo_section[0].impl_bram_i/U0/inst_fifo_gen/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.gr1_int.rfwft/aempty_fwft_i
  (the first 15 of 56 listed).

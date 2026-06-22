@@ -34,7 +34,8 @@ module ddc_chain
    localparam  zwidth = 24;
 
    wire [31:0] phase_inc;
-   wire [15:0] phase_inc_hi;     // V2: upper 16 bits for 48-bit NCO
+   wire [15:0] phase_inc_hi;     // V2: 48-bit NCO extension = LOW 16 bits (BASE+8). Le mot UHD
+                                 // 32 bits (BASE+0, phase_inc) est le POIDS FORT — cf. fix V13b.
    reg [47:0]  phase;            // V2: 48-bit phase accumulator
 
    wire [17:0] scale_factor;
@@ -163,13 +164,22 @@ module ddc_chain
 
    // V2: NCO — 48-bit phase accumulator for sub-Hz resolution
    // freq_resolution = fs / 2^48 ≈ 0.00022 Hz @ 61.44 MSPS
+   //
+   // V13b (F4TNK fix — DDC NCO word order): UHD écrit le mot de phase DDC sur 32 bits
+   // dans BASE+0 (phase_inc), avec la convention Ettus mot32 = round((dsp_freq/fs)*2^32).
+   // L'incrément 48 bits DOIT donc placer ce mot 32 bits en POIDS FORT (bits [47:16]) pour
+   // que freq = INC/2^48*fs = mot32/2^32*fs (= attendu, et « backward compatible 32-bit »
+   // quand l'extension hi=0). L'ordre précédent {phase_inc_hi, phase_inc} mettait le mot
+   // UHD dans les bits [31:0] → freq divisée par 2^16 (65536x trop lent) → l'offset tuning
+   // (et toute correction DSP de fréquence) ne décalait quasiment rien → spur DC bloqué au
+   // centre (mesuré). BASE+8 (phase_inc_hi) = extension sous-Hz en POIDS FAIBLE (bits [15:0]).
    always @(posedge clk)
      if(rst)
        phase <= 0;
      else if(~run)
        phase <= 0;
      else
-       phase <= phase + {phase_inc_hi, phase_inc};
+       phase <= phase + {phase_inc, phase_inc_hi};
 
    // CORDIC  24-bit I/O
    // (Algorithmic gain through CORDIC => 1.647 * 0.5 = 0.8235)

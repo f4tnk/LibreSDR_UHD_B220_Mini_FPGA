@@ -35,7 +35,8 @@ module duc_chain
 
    wire [17:0] scale_factor;
    wire [31:0] phase_inc;
-   wire [15:0] phase_inc_hi;     // V2: upper 16 bits for 48-bit NCO
+   wire [15:0] phase_inc_hi;     // V2: 48-bit NCO extension = LOW 16 bits (BASE+8). Mot UHD 32b
+                                 // (BASE+0, phase_inc) = POIDS FORT — cf. fix V13b.
    reg [47:0]  phase;            // V2: 48-bit phase accumulator
    wire [7:0]  interp_rate;
    wire [3:0]  tx_femux_a, tx_femux_b;
@@ -92,13 +93,16 @@ module duc_chain
    always @(posedge clk) strobe_cic <= strobe_cic_pre;
 
    // V2: NCO — 48-bit phase accumulator
+   // V13b (F4TNK fix — DUC NCO word order, miroir du DDC) : le mot de phase 32 bits d'UHD
+   // (BASE+0, phase_inc, convention mot32=(freq/fs)*2^32) DOIT être en POIDS FORT [47:16],
+   // sinon freq 2^16 trop lente (offset/fine-tune TX cassés). BASE+8 = extension poids faible.
    always @(posedge clk)
      if(rst)
        phase <= 0;
      else if(~run)
        phase <= 0;
      else
-       phase <= phase + {phase_inc_hi, phase_inc};
+       phase <= phase + {phase_inc, phase_inc_hi};
 
    wire        signed [17:0] da, db;
    wire        signed [35:0] prod_i, prod_q;
