@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2025.2 (lin64) Build 6299465 Fri Nov 14 12:34:56 MST 2025
-| Date             : Mon Jun 22 07:44:50 2026
+| Date             : Fri Jul  3 16:04:17 2026
 | Host             : DESKTOP-ALL4L3F running 64-bit unknown
 | Command          : report_power -file /home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/build_output/power.rpt
 | Design           : libresdr_b210
@@ -30,10 +30,10 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.573        |
+| Total On-Chip Power (W)  | 0.575        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.417        |
+| Dynamic (W)              | 0.419        |
 | Device Static (W)        | 0.156        |
 | Effective TJA (C/W)      | 2.5          |
 | Max Ambient (C)          | 83.6         |
@@ -52,9 +52,9 @@ Table of Contents
 +--------------------------+-----------+----------+-----------+-----------------+
 | On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
 +--------------------------+-----------+----------+-----------+-----------------+
-| Clocks                   |     0.108 |        9 |       --- |             --- |
-| Slice Logic              |     0.027 |    88771 |       --- |             --- |
-|   LUT as Logic           |     0.021 |    30244 |    134600 |           22.47 |
+| Clocks                   |     0.110 |       10 |       --- |             --- |
+| Slice Logic              |     0.026 |    88771 |       --- |             --- |
+|   LUT as Logic           |     0.020 |    30264 |    134600 |           22.48 |
 |   CARRY4                 |     0.005 |     5052 |     33650 |           15.01 |
 |   Register               |     0.001 |    39210 |    269200 |           14.57 |
 |   LUT as Shift Register  |    <0.001 |     4345 |     46200 |            9.40 |
@@ -62,13 +62,13 @@ Table of Contents
 |   F7/F8 Muxes            |    <0.001 |      232 |    134600 |            0.17 |
 |   LUT as Distributed RAM |    <0.001 |      812 |     46200 |            1.76 |
 |   Others                 |     0.000 |     1735 |       --- |             --- |
-| Signals                  |     0.033 |    67382 |       --- |             --- |
+| Signals                  |     0.033 |    67384 |       --- |             --- |
 | Block RAM                |     0.013 |      150 |       365 |           41.10 |
 | MMCM                     |     0.212 |        2 |        10 |           20.00 |
 | DSPs                     |    <0.001 |      116 |       740 |           15.68 |
 | I/O                      |     0.025 |      131 |       285 |           45.96 |
 | Static Power             |     0.156 |          |           |                 |
-| Total                    |     0.573 |          |           |                 |
+| Total                    |     0.575 |          |           |                 |
 +--------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -78,7 +78,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.217 |       0.182 |      0.035 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.219 |       0.184 |      0.035 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.149 |       0.118 |      0.031 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.009 |       0.004 |      0.005 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -153,8 +153,8 @@ Table of Contents
 +----------------------------+-----------+
 | Name                       | Power (W) |
 +----------------------------+-----------+
-| libresdr_b210              |     0.417 |
-|   b200_core                |     0.136 |
+| libresdr_b210              |     0.419 |
+|   b200_core                |     0.137 |
 |     demux_for_tx           |     0.002 |
 |       axi_fifo_flop2       |     0.002 |
 |     radio_0                |     0.064 |
@@ -166,7 +166,7 @@ Table of Contents
 |       resp_fifo            |     0.001 |
 |       rx_fifo              |     0.002 |
 |       tx_fifo              |     0.001 |
-|     radio_1                |     0.064 |
+|     radio_1                |     0.065 |
 |       convert_16sc_to_xxxx |     0.004 |
 |       convert_xxxx_to_16sc |     0.010 |
 |       ctrl_fifo            |     0.001 |
@@ -178,10 +178,10 @@ Table of Contents
 |       tx_fifo              |     0.001 |
 |   clk_wiz_0_10M_detect     |     0.106 |
 |     inst                   |     0.106 |
-|   encpy_i                  |     0.020 |
+|   encpy_i                  |     0.019 |
 |     aes_cipher_top_i       |     0.018 |
 |       u0                   |     0.008 |
-|   nolabel_line290          |     0.006 |
+|   nolabel_line290          |     0.007 |
 |   slave_fifo32             |     0.016 |
 |     fifo64_to_gpif2_resp   |     0.007 |
 |       buffer_whole_pkt     |     0.005 |
