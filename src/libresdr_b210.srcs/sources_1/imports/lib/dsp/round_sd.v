@@ -46,10 +46,18 @@ module round_sd #(
         else if (strobe_in)
           err_d1 <= err;
       end
-      wire signed [ERR_WIDTH:0] err_x2   = {err[ERR_WIDTH-1], err} + {err[ERR_WIDTH-1], err};
-      wire signed [ERR_WIDTH:0] err_d1_e = {err_d1[ERR_WIDTH-1], err_d1};
-      wire signed [ERR_WIDTH:0] err_diff = err_x2 - err_d1_e;
-      clip #(.bits_in(ERR_WIDTH+1), .bits_out(ERR_WIDTH)) clip_sd2
+      // V19: widen err_diff datapath by 1 bit (ERR_WIDTH+2 = 20b). err_diff =
+      // 2·err[n-1] − err[n-2] spans ±3·2^(ERR_WIDTH-1) (≈±393k for ERR_WIDTH=18),
+      // which needs 20 signed bits; the original 19-bit path WRAPPED for the ~12.5%
+      // of samples where |2a−b|>2, INVERTING the feedback sign (non-monotone, worse
+      // than saturation). Latent while the NTF ran 1st order (err_diff was just
+      // err[n-1], always in range); exposed once the true 2nd-order path is active.
+      // With 20 bits err_diff never overflows, so clip only ever saturates monotonically
+      // to ±err_fb range → clean saturating (1−z⁻¹)². Combinatorial-only, no latency change.
+      wire signed [ERR_WIDTH+1:0] err_x2   = {{2{err[ERR_WIDTH-1]}}, err} + {{2{err[ERR_WIDTH-1]}}, err};
+      wire signed [ERR_WIDTH+1:0] err_d1_e = {{2{err_d1[ERR_WIDTH-1]}}, err_d1};
+      wire signed [ERR_WIDTH+1:0] err_diff = err_x2 - err_d1_e;
+      clip #(.bits_in(ERR_WIDTH+2), .bits_out(ERR_WIDTH)) clip_sd2
         (.in(err_diff), .out(err_fb));
     end else begin : gen_sd1
       assign err_fb = err;
