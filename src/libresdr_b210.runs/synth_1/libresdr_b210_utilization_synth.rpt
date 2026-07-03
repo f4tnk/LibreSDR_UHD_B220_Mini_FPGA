@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2025.2 (lin64) Build 6299465 Fri Nov 14 12:34:56 MST 2025
-| Date         : Mon Jun 22 07:39:16 2026
+| Date         : Fri Jul  3 15:57:38 2026
 | Host         : DESKTOP-ALL4L3F running 64-bit unknown
 | Command      : report_utilization -file libresdr_b210_utilization_synth.rpt -pb libresdr_b210_utilization_synth.pb
 | Design       : libresdr_b210
@@ -41,7 +41,7 @@ Table of Contents
 |   Register as Latch        |   128 |     0 |          0 |    269200 |  0.05 |
 | F7 Muxes                   |   224 |     0 |          0 |     67300 |  0.33 |
 | F8 Muxes                   |     8 |     0 |          0 |     33650 |  0.02 |
-| Unique Control Sets        |   613 |       |          0 |     33650 |  1.82 |
+| Unique Control Sets        |   611 |       |          0 |     33650 |  1.82 |
 +----------------------------+-------+-------+------------+-----------+-------+
 * Warning! The Final LUT count, after physical optimizations and full implementation, is typically lower. Run opt_design after synthesis, if not already completed, for a more realistic count.
 Warning! LUT value is adjusted to account for LUT combining.
@@ -162,12 +162,12 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 | Ref Name |  Used | Functional Category |
 +----------+-------+---------------------+
 | FDRE     | 35901 |        Flop & Latch |
-| LUT3     | 12682 |                 LUT |
+| LUT3     | 12678 |                 LUT |
 | LUT2     |  7798 |                 LUT |
 | LUT6     |  5616 |                 LUT |
 | CARRY4   |  5002 |          CarryLogic |
-| LUT4     |  4862 |                 LUT |
-| LUT5     |  3522 |                 LUT |
+| LUT4     |  4798 |                 LUT |
+| LUT5     |  3590 |                 LUT |
 | SRLC16E  |  2900 |  Distributed Memory |
 | SRLC32E  |  1501 |  Distributed Memory |
 | RAMD32   |  1176 |  Distributed Memory |

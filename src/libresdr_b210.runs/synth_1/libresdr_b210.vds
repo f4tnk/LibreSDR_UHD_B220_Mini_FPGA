@@ -3,8 +3,8 @@
 # SW Build 6299465 on Fri Nov 14 12:34:56 MST 2025
 # IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
 # SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
-# Start of session at: Mon Jun 22 07:37:15 2026
-# Process ID         : 1022398
+# Start of session at: Fri Jul  3 15:55:18 2026
+# Process ID         : 386842
 # Current directory  : /home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1
 # Command line       : vivado -log libresdr_b210.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source libresdr_b210.tcl
 # Log file           : /home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/libresdr_b210.vds
@@ -19,7 +19,7 @@
 # Host memory        : 20972 MB
 # Swap memory        : 4294 MB
 # Total Virtual      : 25267 MB
-# Available Virtual  : 19271 MB
+# Available Virtual  : 19552 MB
 #-----------------------------------------------------------
 source libresdr_b210.tcl -notrace
 WARNING: [filemgmt 56-609] '/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/ngc/hbdec2.ngc' file is used.
@@ -33,9 +33,9 @@ INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a200
 INFO: [Device 21-403] Loading part xc7a200tfbg484-2
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 7 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 1022432
+INFO: [Synth 8-7075] Helper process launched with PID 386902
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2238.484 ; gain = 482.875 ; free physical = 4956 ; free virtual = 17162
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2237.770 ; gain = 480.188 ; free physical = 10981 ; free virtual = 17427
 ---------------------------------------------------------------------------------
 WARNING: [Synth 8-10929] literal value 'hff truncated to fit in 7 bits [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/add_then_mac.v:45]
 WARNING: [Synth 8-10929] literal value 'hff truncated to fit in 7 bits [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/dsp/add_then_mac.v:46]
@@ -45,8 +45,8 @@ WARNING: [Synth 8-10929] literal value 'h8000 truncated to fit in 15 bits [/home
 WARNING: [Synth 8-6901] identifier 'slrd2' is used before its declaration [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/gpif2/gpif2_slave_fifo32.v:79]
 INFO: [Synth 8-11241] undeclared symbol 'strobe_tx', assumed default net type 'wire' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/radio_200/radio_legacy.v:387]
 INFO: [Synth 8-6157] synthesizing module 'libresdr_b210' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/libresdr_b210.v:2]
-INFO: [Synth 8-6157] synthesizing module 'gen_clks' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/gen_clks_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'gen_clks' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/gen_clks_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'gen_clks' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-386842-DESKTOP-ALL4L3F/realtime/gen_clks_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'gen_clks' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-386842-DESKTOP-ALL4L3F/realtime/gen_clks_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'reset_sync' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/reset_sync.v:11]
 INFO: [Synth 8-6157] synthesizing module 'synchronizer' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/synchronizer.v:46]
 	Parameter STAGES bound to: 10 - type: integer 
@@ -85,8 +85,8 @@ INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/d
 INFO: [Synth 8-6155] done synthesizing module 'iic' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/HDL/Verilog_i2c_eeprom/iic.v:8]
 INFO: [Synth 8-6155] done synthesizing module 'eeprom' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/HDL/Verilog_i2c_eeprom/eeprom.v:8]
 INFO: [Synth 8-6155] done synthesizing module 'encpy' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/new/encpy.v:23]
-INFO: [Synth 8-6157] synthesizing module 'clk_wiz_0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/clk_wiz_0_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'clk_wiz_0' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/clk_wiz_0_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'clk_wiz_0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-386842-DESKTOP-ALL4L3F/realtime/clk_wiz_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'clk_wiz_0' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-386842-DESKTOP-ALL4L3F/realtime/clk_wiz_0_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'b205_ref_pll' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b205_ref_pll.v:7]
 INFO: [Synth 8-155] case statement is not full and has no default [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/b205_ref_pll.v:234]
 INFO: [Synth 8-6157] synthesizing module 'DACx311_auto_spi' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/esdr_b210/top/DACx311_auto_spi.v:13]
@@ -304,8 +304,8 @@ INFO: [Synth 8-6155] done synthesizing module 'gpio_atr' (0#1) [/home/f4tnk/dev/
 INFO: [Synth 8-6157] synthesizing module 'axi_fifo_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:24]
 	Parameter WIDTH bound to: 65 - type: integer 
 	Parameter SIZE bound to: 0 - type: integer 
-INFO: [Synth 8-6157] synthesizing module 'fifo_short_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/fifo_short_2clk_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'fifo_short_2clk' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/fifo_short_2clk_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'fifo_short_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-386842-DESKTOP-ALL4L3F/realtime/fifo_short_2clk_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'fifo_short_2clk' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-386842-DESKTOP-ALL4L3F/realtime/fifo_short_2clk_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'synchronizer__parameterized2' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/synchronizer.v:46]
 	Parameter INITIAL_VAL bound to: 1'b1 
 INFO: [Synth 8-6157] synthesizing module 'synchronizer_impl__parameterized2' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/control/synchronizer_impl.v:8]
@@ -318,8 +318,8 @@ INFO: [Synth 8-6155] done synthesizing module 'axi_fifo_2clk' (0#1) [/home/f4tnk
 INFO: [Synth 8-6157] synthesizing module 'axi_fifo_2clk__parameterized0' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:24]
 	Parameter WIDTH bound to: 65 - type: integer 
 	Parameter SIZE bound to: 11 - type: integer 
-INFO: [Synth 8-6157] synthesizing module 'fifo_4k_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/fifo_4k_2clk_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'fifo_4k_2clk' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-1022398-DESKTOP-ALL4L3F/realtime/fifo_4k_2clk_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'fifo_4k_2clk' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-386842-DESKTOP-ALL4L3F/realtime/fifo_4k_2clk_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'fifo_4k_2clk' (0#1) [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/.Xil/Vivado-386842-DESKTOP-ALL4L3F/realtime/fifo_4k_2clk_stub.v:6]
 WARNING: [Synth 8-7071] port 'wr_rst_busy' of module 'fifo_4k_2clk' is unconnected for instance 'impl_bram_i' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:135]
 WARNING: [Synth 8-7071] port 'rd_rst_busy' of module 'fifo_4k_2clk' is unconnected for instance 'impl_bram_i' [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:135]
 WARNING: [Synth 8-7023] instance 'impl_bram_i' of module 'fifo_4k_2clk' has 13 connections declared, but only 11 given [/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/fifo/axi_fifo_2clk.v:135]
@@ -699,7 +699,7 @@ WARNING: [Synth 8-7023] instance 'clip_q' of module 'clip_reg' has 6 connections
 	Parameter WIDTH_IN bound to: 33 - type: integer 
 	Parameter WIDTH_OUT bound to: 16 - type: integer 
 	Parameter SD_ORDER bound to: 2 - type: integer 
-	Parameter bits_in bound to: 19 - type: integer 
+	Parameter bits_in bound to: 20 - type: integer 
 	Parameter bits_out bound to: 18 - type: integer 
 	Parameter bits_in bound to: 18 - type: integer 
 	Parameter bits_out bound to: 33 - type: integer 
@@ -1120,18 +1120,18 @@ WARNING: [Synth 8-7129] Port debug[30] in module chdr_16sc_to_32f is either unco
 WARNING: [Synth 8-7129] Port debug[29] in module chdr_16sc_to_32f is either unconnected or has no load
 INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 2552.438 ; gain = 796.828 ; free physical = 4618 ; free virtual = 16831
+Finished RTL Elaboration : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 2551.723 ; gain = 794.141 ; free physical = 10650 ; free virtual = 17102
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 2552.438 ; gain = 796.828 ; free physical = 4619 ; free virtual = 16832
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 2551.723 ; gain = 794.141 ; free physical = 10650 ; free virtual = 17102
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 2552.438 ; gain = 796.828 ; free physical = 4619 ; free virtual = 16832
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 2551.723 ; gain = 794.141 ; free physical = 10650 ; free virtual = 17102
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00.42 ; elapsed = 00:00:00.41 . Memory (MB): peak = 2552.438 ; gain = 0.000 ; free physical = 4616 ; free virtual = 16829
+Netlist sorting complete. Time (s): cpu = 00:00:00.48 ; elapsed = 00:00:00.48 . Memory (MB): peak = 2551.723 ; gain = 0.000 ; free physical = 10646 ; free virtual = 17099
 INFO: [Netlist 29-17] Analyzing 99 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
@@ -1182,28 +1182,28 @@ INFO: [Project 1-236] Implementation specific constraints were found while readi
 Resolution: To avoid this warning, move constraints listed in [.Xil/libresdr_b210_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2669.176 ; gain = 0.000 ; free physical = 4571 ; free virtual = 16800
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2669.461 ; gain = 0.000 ; free physical = 10591 ; free virtual = 17061
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 5 instances were transformed.
   BUFGMUX => BUFGCTRL (inverted pins: CE0): 1 instance 
   MULT18X18S => DSP48E1: 4 instances
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00.09 ; elapsed = 00:00:00.1 . Memory (MB): peak = 2669.211 ; gain = 0.000 ; free physical = 4570 ; free virtual = 16800
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.11 ; elapsed = 00:00:00.1 . Memory (MB): peak = 2669.496 ; gain = 0.000 ; free physical = 10590 ; free virtual = 17060
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:18 ; elapsed = 00:00:17 . Memory (MB): peak = 2669.211 ; gain = 913.602 ; free physical = 4561 ; free virtual = 16792
+Finished Constraint Validation : Time (s): cpu = 00:00:21 ; elapsed = 00:00:20 . Memory (MB): peak = 2669.496 ; gain = 911.914 ; free physical = 10586 ; free virtual = 17058
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a200tfbg484-2
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:18 ; elapsed = 00:00:17 . Memory (MB): peak = 2677.180 ; gain = 921.570 ; free physical = 4561 ; free virtual = 16792
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:21 ; elapsed = 00:00:20 . Memory (MB): peak = 2677.465 ; gain = 919.883 ; free physical = 10586 ; free virtual = 17058
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 2677.180 ; gain = 921.570 ; free physical = 4561 ; free virtual = 16792
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:22 ; elapsed = 00:00:20 . Memory (MB): peak = 2677.465 ; gain = 919.883 ; free physical = 10586 ; free virtual = 17058
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'b205_ref_pll'
 INFO: [Synth 8-802] inferred FSM for state register 'mx_state_reg' in module 'axi_mux4'
@@ -1560,7 +1560,7 @@ INFO: [Synth 8-3354] encoded FSM with state register 'read_state_reg' using enco
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'gpif2_slave_fifo32'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:22 ; elapsed = 00:00:22 . Memory (MB): peak = 2677.180 ; gain = 921.570 ; free physical = 4546 ; free virtual = 16784
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:27 ; elapsed = 00:00:26 . Memory (MB): peak = 2677.465 ; gain = 919.883 ; free physical = 10571 ; free virtual = 17051
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-223] decloning instance 'bus_sync' (reset_sync) to 'gpif_sync'
 ---------------------------------------------------------------------------------
@@ -1592,8 +1592,8 @@ Detailed RTL Component Info :
 	   3 Input   23 Bit       Adders := 96    
 	   2 Input   21 Bit       Adders := 8     
 	   3 Input   20 Bit       Adders := 4     
+	   4 Input   20 Bit       Adders := 4     
 	   2 Input   19 Bit       Adders := 8     
-	   4 Input   19 Bit       Adders := 4     
 	   2 Input   18 Bit       Adders := 12    
 	   3 Input   18 Bit       Adders := 12    
 	   3 Input   17 Bit       Adders := 4     
@@ -2028,7 +2028,7 @@ INFO: [Synth 8-3333] propagating constant 0 across sequential element (nolabel_l
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (encpy_i/\aes_cipher_top_i/u0/r0/out_reg[2] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (encpy_i/\aes_cipher_top_i/text_in_r_reg[39] )
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:40 ; elapsed = 00:00:55 . Memory (MB): peak = 2705.113 ; gain = 949.504 ; free physical = 168 ; free virtual = 11468
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:47 ; elapsed = 00:01:02 . Memory (MB): peak = 2705.398 ; gain = 947.816 ; free physical = 5147 ; free virtual = 11697
 ---------------------------------------------------------------------------------
  Sort Area is ddc_chain__GBM1 p2_r_reg_0 : 0 0 : 641 641 : Used 2 time 0
  Sort Area is ddc_chain__GBM1 p2_r_reg_2 : 0 0 : 641 641 : Used 2 time 0
@@ -2088,13 +2088,13 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:06 ; elapsed = 00:01:04 . Memory (MB): peak = 2764.191 ; gain = 1008.582 ; free physical = 351 ; free virtual = 11710
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:18 ; elapsed = 00:01:11 . Memory (MB): peak = 2764.477 ; gain = 1006.895 ; free physical = 5332 ; free virtual = 11949
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:01:17 ; elapsed = 00:01:16 . Memory (MB): peak = 2858.191 ; gain = 1102.582 ; free physical = 256 ; free virtual = 11615
+Finished Timing Optimization : Time (s): cpu = 00:01:32 ; elapsed = 00:01:25 . Memory (MB): peak = 2859.477 ; gain = 1101.895 ; free physical = 5242 ; free virtual = 11857
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -2160,7 +2160,7 @@ INFO: [Synth 8-7052] The timing for the instance i_5/slave_fifo32/gpif2_to_fifo6
 INFO: [Synth 8-7052] The timing for the instance i_5/slave_fifo32/gpif2_to_fifo64_ctrl/min_read_buff/ram/impl/ram_reg_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 INFO: [Synth 8-7052] The timing for the instance i_5/slave_fifo32/gpif2_to_fifo64_ctrl/min_read_buff/ram/impl/ram_reg_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:01:22 ; elapsed = 00:01:24 . Memory (MB): peak = 2894.133 ; gain = 1138.523 ; free physical = 160 ; free virtual = 10407
+Finished Technology Mapping : Time (s): cpu = 00:01:38 ; elapsed = 00:01:35 . Memory (MB): peak = 2896.426 ; gain = 1138.844 ; free physical = 4010 ; free virtual = 10631
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -2226,37 +2226,37 @@ INFO: [Synth 8-4163] Replicating register \gpio_atr_io_inst/gpio_out_iob_reg[9] 
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:01:28 ; elapsed = 00:01:30 . Memory (MB): peak = 2979.859 ; gain = 1224.250 ; free physical = 148 ; free virtual = 10338
+Finished IO Insertion : Time (s): cpu = 00:01:45 ; elapsed = 00:01:42 . Memory (MB): peak = 2980.184 ; gain = 1222.602 ; free physical = 3889 ; free virtual = 10552
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:01:28 ; elapsed = 00:01:30 . Memory (MB): peak = 2979.859 ; gain = 1224.250 ; free physical = 147 ; free virtual = 10337
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:45 ; elapsed = 00:01:42 . Memory (MB): peak = 2980.184 ; gain = 1222.602 ; free physical = 3887 ; free virtual = 10549
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:33 ; elapsed = 00:01:36 . Memory (MB): peak = 3084.141 ; gain = 1328.531 ; free physical = 149 ; free virtual = 10210
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:51 ; elapsed = 00:01:49 . Memory (MB): peak = 3084.465 ; gain = 1326.883 ; free physical = 3762 ; free virtual = 10425
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:01:33 ; elapsed = 00:01:36 . Memory (MB): peak = 3084.141 ; gain = 1328.531 ; free physical = 149 ; free virtual = 10210
+Finished Renaming Generated Ports : Time (s): cpu = 00:01:52 ; elapsed = 00:01:49 . Memory (MB): peak = 3084.465 ; gain = 1326.883 ; free physical = 3762 ; free virtual = 10425
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:01:34 ; elapsed = 00:01:37 . Memory (MB): peak = 3084.141 ; gain = 1328.531 ; free physical = 149 ; free virtual = 10210
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:52 ; elapsed = 00:01:50 . Memory (MB): peak = 3084.465 ; gain = 1326.883 ; free physical = 3774 ; free virtual = 10437
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:01:34 ; elapsed = 00:01:37 . Memory (MB): peak = 3084.141 ; gain = 1328.531 ; free physical = 149 ; free virtual = 10210
+Finished Renaming Generated Nets : Time (s): cpu = 00:01:53 ; elapsed = 00:01:50 . Memory (MB): peak = 3084.465 ; gain = 1326.883 ; free physical = 3767 ; free virtual = 10431
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -2391,9 +2391,9 @@ Report Cell Usage:
 |34    |IDDR                          |    13|
 |35    |LUT1                          |  1036|
 |36    |LUT2                          |  7570|
-|37    |LUT3                          | 12582|
-|38    |LUT4                          |  4434|
-|39    |LUT5                          |  3498|
+|37    |LUT3                          | 12578|
+|38    |LUT4                          |  4370|
+|39    |LUT5                          |  3566|
 |40    |LUT6                          |  5616|
 |41    |MUXF7                         |   224|
 |42    |MUXF8                         |     8|
@@ -2412,11 +2412,11 @@ Report Cell Usage:
 |64    |OBUF                          |    65|
 +------+------------------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:01:34 ; elapsed = 00:01:37 . Memory (MB): peak = 3084.141 ; gain = 1328.531 ; free physical = 148 ; free virtual = 10209
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:53 ; elapsed = 00:01:50 . Memory (MB): peak = 3084.465 ; gain = 1326.883 ; free physical = 3767 ; free virtual = 10431
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 285 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:01:27 ; elapsed = 00:01:34 . Memory (MB): peak = 3088.055 ; gain = 1215.672 ; free physical = 6502 ; free virtual = 16563
-Synthesis Optimization Complete : Time (s): cpu = 00:01:34 ; elapsed = 00:01:40 . Memory (MB): peak = 3088.055 ; gain = 1332.445 ; free physical = 6511 ; free virtual = 16563
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:45 ; elapsed = 00:01:48 . Memory (MB): peak = 3088.379 ; gain = 1213.023 ; free physical = 10149 ; free virtual = 16813
+Synthesis Optimization Complete : Time (s): cpu = 00:01:53 ; elapsed = 00:01:54 . Memory (MB): peak = 3088.379 ; gain = 1330.797 ; free physical = 10160 ; free virtual = 16815
 INFO: [Project 1-571] Translating synthesized netlist
 WARNING: [filemgmt 56-608] NGC format files are not supported in the Vivado Design Suite for UltraScale devices.
 ###################################### IMPORTANT ######################################
@@ -2439,7 +2439,7 @@ Processing design ...
    Preping design's macros ...
   finished :Prep
 Writing EDIF netlist file hbdec2.edif ...
-ngc2edif: Total memory usage is 99588 kilobytes
+ngc2edif: Total memory usage is 99592 kilobytes
 
 Reading core file '/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/ngc/hbdec2.ngc' for (cell view 'hbdec2', library 'work')
 Parsing EDIF File [./.ngc2edfcache/hbdec2_ngc_d2d03023.edif]
@@ -2470,13 +2470,13 @@ ngc2edif: Total memory usage is 103060 kilobytes
 Reading core file '/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.srcs/sources_1/imports/lib/ngc/hbdec1.ngc' for (cell view 'hbdec1', library 'work')
 Parsing EDIF File [./.ngc2edfcache/hbdec1_ngc_d2d03023.edif]
 Finished Parsing EDIF File [./.ngc2edfcache/hbdec1_ngc_d2d03023.edif]
-Netlist sorting complete. Time (s): cpu = 00:00:00.52 ; elapsed = 00:00:00.51 . Memory (MB): peak = 3088.055 ; gain = 0.000 ; free physical = 6479 ; free virtual = 16563
+Netlist sorting complete. Time (s): cpu = 00:00:00.56 ; elapsed = 00:00:00.57 . Memory (MB): peak = 3088.379 ; gain = 0.000 ; free physical = 10111 ; free virtual = 16800
 INFO: [Netlist 29-17] Analyzing 10481 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-479] Netlist was created with Xilinx ngc2edif P_INT.20191124
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.02 . Memory (MB): peak = 3169.367 ; gain = 0.000 ; free physical = 6452 ; free virtual = 16538
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 3170.691 ; gain = 0.000 ; free physical = 10100 ; free virtual = 16790
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 4798 instances were transformed.
   (MUXCY,XORCY) => CARRY4: 104 instances
@@ -2490,14 +2490,14 @@ INFO: [Project 1-111] Unisim Transformation Summary:
   MULT18X18S => DSP48E1: 4 instances
   RAM32X1D => RAM32X1D (RAMD32(x2)): 588 instances
 
-Synth Design complete | Checksum: c6a7d802
+Synth Design complete | Checksum: 6fe417f9
 INFO: [Common 17-83] Releasing license: Synthesis
 612 Infos, 283 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:01:49 ; elapsed = 00:01:54 . Memory (MB): peak = 3169.402 ; gain = 1549.973 ; free physical = 6451 ; free virtual = 16537
-INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 7370.323; main = 2227.434; forked = 5766.002
-INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 15395.367; main = 3169.367; forked = 12694.172
-Write ShapeDB Complete: Time (s): cpu = 00:00:00.25 ; elapsed = 00:00:00.09 . Memory (MB): peak = 3193.379 ; gain = 0.000 ; free physical = 6440 ; free virtual = 16538
+synth_design: Time (s): cpu = 00:02:10 ; elapsed = 00:02:11 . Memory (MB): peak = 3170.727 ; gain = 1551.293 ; free physical = 10102 ; free virtual = 16792
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 7523.878; main = 2233.940; forked = 5921.278
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 15500.316; main = 3170.691; forked = 12798.836
+Write ShapeDB Complete: Time (s): cpu = 00:00:00.31 ; elapsed = 00:00:00.11 . Memory (MB): peak = 3194.703 ; gain = 0.000 ; free physical = 10093 ; free virtual = 16794
 INFO: [Common 17-1381] The checkpoint '/home/f4tnk/dev/LibreSDR_UHD_B220_Mini_FPGA/src/libresdr_b210.runs/synth_1/libresdr_b210.dcp' has been generated.
 INFO: [Vivado 12-24828] Executing command : report_utilization -file libresdr_b210_utilization_synth.rpt -pb libresdr_b210_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Mon Jun 22 07:39:16 2026...
+INFO: [Common 17-206] Exiting Vivado at Fri Jul  3 15:57:38 2026...
