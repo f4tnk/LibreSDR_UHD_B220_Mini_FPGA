@@ -631,7 +631,7 @@ flowchart LR
 | **V16** | May 2026 | — | 116 | ~26 | ✅ | RX FIFO buffers increased (USBIP overflow mitigation) |
 | **V17/V17b** | Jun 2026 | — | 116 | ~26 | ✅ | radio_ctrl_proc watchdog 2s→0.5s (fires before UHD ACK_TIMEOUT) |
 | ⭐ **V18** | Jun 2026 | — | 116+ | ~26 | **✅ PROD** | dc_offset_correct active by default + NCO DDC word-order fix (HW offset tuning) |
-| **V19** | Jul 2026 | *(pending build)* | — | — | 🔧 RTL | HB3 center tap 0.5 restored (`MID_ZEROS` 17→16) + sigma-delta true 2nd order (`err_d1` on `strobe_in`) |
+| **V19** | Jul 2026 | +0.080 | 116 | ~26 | ✅ BUILD OK (HW test pending) | HB3 center tap 0.5 restored (`MID_ZEROS` 17→16) + sigma-delta true 2nd order (`err_d1` on `strobe_in`) + err_diff widened 19→20b |
 
 ### 8.2 V14 Engineering Detail
 
