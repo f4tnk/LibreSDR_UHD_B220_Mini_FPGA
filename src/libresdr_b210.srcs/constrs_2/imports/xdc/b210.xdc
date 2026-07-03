@@ -206,3 +206,30 @@ set_property PACKAGE_PIN W22 [get_ports scl]
 set_property PACKAGE_PIN W21 [get_ports sda]
 set_property IOSTANDARD LVCMOS18 [get_ports scl]
 set_property IOSTANDARD LVCMOS18 [get_ports sda]
+
+# ─── V19b : timing de l'interface GPIF FX3 (jusqu'ici TOTALEMENT non contrainte) ──
+# Sans ces contraintes, chaque build rejouait le placement des I/O GPIF à la loterie :
+# c'est la maladie chronique de la carte (V14 assert packet_count CTRL, V15 desync
+# CTRL_RX, V17 watchdog, V19 wait_for_ack mort au boot — mêmes sources, tirage
+# différent). Le FPGA fournit l'horloge au FX3 (ODDR D1=1/D2=0 → copie en phase de
+# gpif_clk 100 MHz) et le pilote en slave-FIFO synchrone. Chiffres CYUSB3014 :
+# entrées FX3 tS=2,0 ns / tH=0,5 ns ; sorties FX3 (data+flags) tCO 2,0…7,5 ns.
+
+# Horloge forwardée sur le port IFCLK — référence de tous les délais I/O GPIF.
+create_generated_clock -name gpif_ifclk -source [get_pins ODDR_inst/C] -divide_by 1 [get_ports IFCLK]
+
+# FPGA → FX3 : data écrites + strobes (n_slcs/n_slwr/n_sloe/n_slrd/n_pktend) + adresse.
+set_output_delay -clock gpif_ifclk -max 2.000 [get_ports {GPIF_D[*] GPIF_CTL0 GPIF_CTL1 GPIF_CTL2 GPIF_CTL3 GPIF_CTL7 GPIF_CTL11 GPIF_CTL12}]
+set_output_delay -clock gpif_ifclk -min -0.500 [get_ports {GPIF_D[*] GPIF_CTL0 GPIF_CTL1 GPIF_CTL2 GPIF_CTL3 GPIF_CTL7 GPIF_CTL11 GPIF_CTL12}]
+
+# FX3 → FPGA : data lues + flags ready/watermark. La machine d'état compense la
+# latence FX3 en CYCLES FIXES (pipeline slrd3) : l'arrivée doit tomber dans une
+# fenêtre DÉTERMINISTE [front+1, front+2] — multicycle 2 (setup) / 1 (hold) :
+# jamais capturé au front 1 (hold), toujours prêt au front 2 (setup).
+set_input_delay -clock gpif_ifclk -max 7.500 [get_ports {GPIF_D[*] GPIF_CTL4 GPIF_CTL5}]
+set_input_delay -clock gpif_ifclk -min 2.000 [get_ports {GPIF_D[*] GPIF_CTL4 GPIF_CTL5}]
+set_multicycle_path 2 -setup -from [get_clocks gpif_ifclk] -to [get_clocks -of_objects [get_pins ODDR_inst/C]]
+set_multicycle_path 1 -hold  -from [get_clocks gpif_ifclk] -to [get_clocks -of_objects [get_pins ODDR_inst/C]]
+
+# Asynchrones vrais : bus série lent FX3 (SDA/SCL) + reset global.
+set_false_path -from [get_ports {GPIF_CTL6 GPIF_CTL8 GPIF_CTL9}]
