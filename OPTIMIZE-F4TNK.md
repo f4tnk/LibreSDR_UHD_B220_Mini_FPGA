@@ -628,6 +628,10 @@ flowchart LR
 | ⭐ **V13** | Mar 2026 | +0.266 | 116 | ~26 | **✅ PROD** | Restore CORDIC s23 + CDC is10meg + pipeline droop |
 | **V14** | Mar 2026 | +0.494 | 116 | ~26 | ❌ | GPIF USB 2.0 boundary fix (512B) — packet_count assertion on CTRL |
 | ⭐ **V15** | Apr 2026 | +0.879 | 116 | ~26 | **✅ PROD** | GPIF padding guard: DATA_RX only — fixes CTRL_RX desync |
+| **V16** | May 2026 | — | 116 | ~26 | ✅ | RX FIFO buffers increased (USBIP overflow mitigation) |
+| **V17/V17b** | Jun 2026 | — | 116 | ~26 | ✅ | radio_ctrl_proc watchdog 2s→0.5s (fires before UHD ACK_TIMEOUT) |
+| ⭐ **V18** | Jun 2026 | — | 116+ | ~26 | **✅ PROD** | dc_offset_correct active by default + NCO DDC word-order fix (HW offset tuning) |
+| **V19** | Jul 2026 | *(pending build)* | — | — | 🔧 RTL | HB3 center tap 0.5 restored (`MID_ZEROS` 17→16) + sigma-delta true 2nd order (`err_d1` on `strobe_in`) |
 
 ### 8.2 V14 Engineering Detail
 
@@ -658,7 +662,37 @@ This ensures 512B boundary padding only triggers for the data streaming endpoint
 
 **Build results:** WNS +0.879 ns (best of all versions), 0 failing endpoints, 4,519,920 bytes.
 
-### 8.4 DSP Improvement Accumulation
+### 8.4 V19 Engineering Detail — RTL audit fixes (2026-07-03, not yet built)
+
+Both defects were found by a full multi-agent RTL audit (35 mechanisms, 5 dimensions) and
+verified independently by bit-exact arithmetic before being fixed. Empirical context: the
+audit also **proved** (LO/gain/master-clock invariance + median stacking of 7 offset-aligned
+captures) that all visible spectrum lines are real external signals — the DDC generates no
+in-band spur above the 16-bit floor. These two fixes address *latent* defects.
+
+**Fix 1 — `small_hb_dec.v` (HB3): center tap wired 2× too heavy (V10 regression).**
+Coefficients are scaled 2^18 (`2*131072*halfgen4`, B=75809→0.289). The product `sum×coeff`
+enters the accumulator unshifted, so the middle term `d3<<1` must be padded by exactly
+**16** zero bits to weigh `d3·2^17` (= tap 0.5). The V10 formula `16+ACCWIDTH−PROD_WIDTH`
+yielded **17** → center tap 1.0: DC gain 1.497 (+3.5 dB), halfband property broken, the
+fs/2 zero degraded from −50 dB to −6 dB, stopband floor ≈ −9.5 dB → image rejection
+collapsed whenever HB3 was engaged (high-decimation / narrow-band modes). `MID_ZEROS=16`
+restores tap 0.5, the canonical Ettus output scale (no host recalibration needed), and
+>40 dB of HB3 image rejection. Combinatorial constant only — zero latency change.
+
+**Fix 2 — `round_sd.v`: 2nd-order NTF silently collapsed to 1st order (V5 regression).**
+`err` is combinatorial from `sum`, which is registered on `strobe_in`. Latching `err_d1`
+on `strobe_pre` (one cycle later) captured err[n] instead of err[n−1], so
+`err_diff = 2·err[n] − err[n] = err[n]` → realized NTF was `(1−z⁻¹)`, not `(1−z⁻¹)²`.
+Latching on `strobe_in` (while `sum` still holds sample n−1) realizes the true 2nd-order
+NTF at any strobe density. Affects the final 33→16-bit requantizers (`SD_ORDER(2)` in
+ddc_chain/duc_chain); the +8 dB in-band noise-shaping benefit announced in V5 is now real.
+Feedback-loop register only — output path and latency unchanged.
+
+⚠ **V19 status: RTL committed, Vivado build + mandatory hardware test still pending**
+(Rule 5). No USB/GPIF/FIFO file touched, no pipeline latency modified (Rules 1-2).
+
+### 8.5 DSP Improvement Accumulation
 
 ```mermaid
 flowchart TB

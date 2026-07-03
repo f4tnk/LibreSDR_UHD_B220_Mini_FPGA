@@ -118,16 +118,20 @@ module small_hb_dec
    localparam ACCWIDTH = INTWIDTH + 18 + 2;  // 24+18+2=44 bits
    reg [ACCWIDTH-1:0] 	 accum;
 
-   // V10: Accumulator alignment for wider product
-   // Product is (INTWIDTH+1+18)-bit = 43-bit signed.
-   // Middle is (INTWIDTH+1)-bit = 25-bit, represents tap 0.5 via d3<<1.
-   // Alignment: middle needs 16 zero-pad bits at bottom (matching Q1.17 coeff scaling)
-   // and sign-extension at top to fill ACCWIDTH.
-   // zeros = 16 + ACCWIDTH - (INTWIDTH+1+18) = 16 + 44 - 43 = 17
-   // sign  = ACCWIDTH - (INTWIDTH+1) - zeros = 44 - 25 - 17 = 2
+   // V10+V19: Accumulator alignment for wider product
+   // Product is (INTWIDTH+1+18)-bit = 43-bit signed, NOT shifted into accum: it carries
+   // the coefficient scale 2^18 (taps = 2*131072*halfgen4 → true_tap = coeff/2^18).
+   // Middle is (INTWIDTH+1)-bit = 25-bit and equals d3<<1. To represent the 0.5 center
+   // tap at the SAME 2^18 scale it must weigh d3*2^17, hence exactly 16 zero-pad bits:
+   //   d3 * 2 * 2^16 = d3 * 2^17 = 0.5 * d3 * 2^18.
+   // V19 FIX: the V10 formula "16 + ACCWIDTH - PROD_WIDTH" (=17) doubled the center tap
+   // to 1.0 — breaking the halfband property (DC gain 1.497, stopband floor ≈ -9.5 dB →
+   // image rejection collapsed whenever HB3 was engaged). 16 zeros restores tap 0.5,
+   // the canonical Ettus output scale, and the halfband stopband. Combinatorial-only
+   // change: no pipeline latency impact.
    localparam PROD_WIDTH = INTWIDTH + 1 + 18;  // 43 bits
-   localparam MID_ZEROS = 16 + ACCWIDTH - PROD_WIDTH;  // 17
-   localparam MID_SIGN  = ACCWIDTH - (INTWIDTH+1) - MID_ZEROS;  // 2
+   localparam MID_ZEROS = 16;                                   // V19 (was 17 in V10)
+   localparam MID_SIGN  = ACCWIDTH - (INTWIDTH+1) - MID_ZEROS;  // 3
    
    always @(posedge clk)
      if(rst)

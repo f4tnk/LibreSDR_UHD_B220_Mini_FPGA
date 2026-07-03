@@ -32,10 +32,18 @@ module round_sd #(
   generate
     if (SD_ORDER >= 2) begin : gen_sd2
       reg [ERR_WIDTH-1:0] err_d1;
+      // V19 FIX: latch err_d1 on strobe_in, NOT strobe_pre. `err` is combinatorial from
+      // `sum` (registered by add2_and_clip_reg on strobe_in): during the strobe_in cycle
+      // of sample n, sum still holds sample n-1 → err = err[n-1] (the value we need).
+      // One cycle later (strobe_pre), err has already advanced to err[n]: latching there
+      // made err_d1 == err at the next feedback use, so err_diff = 2·err - err = err —
+      // the NTF silently collapsed to 1st order (1-z^-1) since V5. With strobe_in the
+      // true 2nd-order NTF (1-z^-1)^2 is realized at any strobe density. Feedback-loop
+      // register only: output path/latency unchanged.
       always @(posedge clk) begin
         if (reset)
           err_d1 <= {ERR_WIDTH{1'b0}};
-        else if (strobe_pre)
+        else if (strobe_in)
           err_d1 <= err;
       end
       wire signed [ERR_WIDTH:0] err_x2   = {err[ERR_WIDTH-1], err} + {err[ERR_WIDTH-1], err};
